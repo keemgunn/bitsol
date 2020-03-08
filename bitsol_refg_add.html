@@ -1,0 +1,95 @@
+<!-- bitsol_refg_add -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap" rel="stylesheet">
+    <link href='assets/Fonts/NanumSquare/nanumsquare.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/Stylesheets/theme.css" type='text/css'>
+    <link rel="stylesheet" href="assets/Stylesheets/menu.css" type='text/css'>
+    <link rel="stylesheet" href="assets/Stylesheets/messageBar.css" type='text/css'>
+    <link rel="stylesheet" href="assets/Stylesheets/refgCon.css" type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>냉장고팩 지급</title>
+</head>
+<body onresize="winSize()" onload="winSize()">
+<!-------------------- MENU -->
+    <div style="width: 100%; height: 16px;"></div>
+    <div class="menu_std">
+        <div style="width: 100%; height: 16px;"></div> 
+        <img class="titleImg" src="assets/Img/title00.png" alt="title">
+        <div class="menu_links">
+            <a href="#">홈
+            </a> <br>
+            <a href="#">게시판
+            </a> <br>
+            냉장고팩<br>
+            <a href="#">등기우편
+            </a> <br>
+        </div>
+    </div>  <!--profile-->
+    <div class="profile_S" OnClick="location.href ='profileSetting.html'" style="cursor:pointer;">
+        <img src="assets/Img/profilePhoto_exm.png" alt="profile photo">
+        이름쓰기
+    </div>  <!--profile-->
+    <div class="profile_mini" OnClick="location.href ='profileSetting.html'" style="cursor:pointer;">
+        account: 김건
+    </div>  <!--drop menu-->
+    <div id="menu_drp_wrap">
+        <div class="menu_drp_links">
+            <a href="#">홈
+            </a> <br>
+            <a href="#">게시판
+            </a> <br>
+            냉장고팩<br>
+            <a href="#">등기우편
+            </a> <br>
+        </div>
+        <div id="menu_drp_btn" href="javascript:void(0)" onclick="drpper()">
+            menu▾
+        </div>
+    </div>
+
+<!-------------------- RFG -->
+    <div class="rfgCont">
+
+    </div>
+
+<!-------------------- MSG -->
+    <div class="msgCont">
+        <div class="msgBox">
+            <div class="msgIndex">
+                <div class="msgName">홍길동</div>
+                <div  class="msgTime">2020.02.28 13:45</div>
+            </div>
+            <div class="msgBody">
+                asfdsadfgasdfsaf 근데 한글은 어떨까 sdgfa asfds
+            </div>
+
+        </div>
+        <div class="msgBox"></div>
+        <div class="msgBox"></div>
+        <div class="msgBox"></div>
+
+
+
+
+
+        
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <script src="assets/Scripts/UIaction.js"></script>
+    <!-- <script src="assets/Scripts/themeChanger.js"></script> -->
+</body>
+</html>
