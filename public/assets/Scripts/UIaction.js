@@ -3,6 +3,7 @@ var drpWrap = document.getElementById("menu_drp_wrap");
 var drpBtn = document.getElementById("menu_drp_btn");
 
 function winSize() {
+    console.log('$ function winSize()');
     wd = window.innerWidth ;
     ht = window.innerHeight ;
     if (wd <= 840) {

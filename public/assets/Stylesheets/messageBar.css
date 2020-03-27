@@ -18,12 +18,14 @@
     /* max-height: 100px; */
     max-height: 200px;
     margin: 16px 20px 0px 20px;
-    border-top: 2px solid var(--ink2);     opacity: 0.8;
+    border-top: 2px solid var(--ink2);
+    opacity: 0.8;
     overflow: hidden;
     transition: 0.5s;
 }
 .msgBox:hover {
-    border-top: 2px solid var(--ink1);     opacity: 1;
+    border-top: 2px solid var(--ink1);
+    opacity: 1;
 }
 .msgIndex {
     background-color: aquamarine;
