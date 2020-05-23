@@ -1,10 +1,10 @@
 var express = require('express');
 var app = express();
 
-app.listen(3000, function(){
-    console.log("Server is running on port 3000");
+app.listen(3000, () => console.log("Server is running in port 3000")); // callback function
+
+app.use(express.static('public'));
+
+app.post('/apiTest', (request, response) => {
+    console.log(request);
 });
-
-// this is test 
-
-// all test
