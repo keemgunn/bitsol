@@ -1,14 +1,34 @@
 // input refresh method
+
+var roomList = document.getElementById("roomList");
+var timeCode;
+var keyword, keywordPack, keyReq, gotResponse;
+const account = "gunn"
+
 async function roomNumSearch() {
   console.log('f: roomNumSearch');
-  var roomList = document.getElementById("roomList");
-  var room;
+  timeCode = new Date();
 
-  room = document.getElementById("roomNum").value;
-  console.log(room);
+  keyword = document.getElementById("roomNum").value;
+  console.log(keyword);
+
+  keywordPack = {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"}, // more info: search about HTTP header...
+    body: JSON.stringify({account,timeCode,keyword})
+  };
+  keyReq = await fetch('/apiTest', keywordPack);
+
+  gotResponse = await keyReq.json();
+  console.log(gotResponse);  
+
+
+
+
+
 
   var newCell = document.createElement("p");
-  var text = document.createTextNode(room);
+  var text = document.createTextNode(keyword);
   newCell.appendChild(text);
   roomList.appendChild(newCell);
   // Making new html elements when roomNum input changed simultaneously
