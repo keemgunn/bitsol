@@ -1,5 +1,4 @@
 const express = require('express');
-const Datastore = require('nedb');
 const app = express();
 app.listen(3000, () => console.log("Server is running in port 3000")); // callback function
 console.log("--------------------------------------");
@@ -9,11 +8,6 @@ app.use(express.text({
     defaultCharset: "utf-8",
     limit:'199kb'
 }));
-
-
-const roomData = new Datastore('database/roomData.db');
-roomData.loadDatabase();
-
 
 app.post('/apiTest', (request, response) => {
     var data  = request.body;

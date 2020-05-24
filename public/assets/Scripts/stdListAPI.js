@@ -21,7 +21,9 @@ async function roomNumSearch() {
 
   gotResponse = await keyReq.json();
   console.log(gotResponse);  
-
+  // input 창 텍스트파일 JSON화 시켜서 보낸 다음에
+  // 받은거 확인하고 콘솔창에 로그 하고
+  // 데이터 그대로 다시 리패키징 해서 받아오기
 
 
 
