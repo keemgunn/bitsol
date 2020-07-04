@@ -9,8 +9,9 @@ app.use(express.text({
     limit:'199kb'
 }));
 
+var data
 app.post('/apiTest', (request, response) => {
-    var data  = request.body;
+    data  = request.body;
     console.log(data);
     response.json({
         status: 'success',
