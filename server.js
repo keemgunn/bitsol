@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-app.listen(3000, () => console.log("Server is running in port 3000")); // callback function
 console.log("--------------------------------------");
 app.use(express.static('public'));
 app.use(express.json({limit:'1mb'}));
@@ -19,5 +18,12 @@ app.post('/apiTest', (request, response) => {
         timeCode: data.timeCode,
         keyword: data.keyword
     })
-
 });
+
+
+
+
+
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}...`));
