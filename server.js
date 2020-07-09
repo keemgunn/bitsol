@@ -1,16 +1,26 @@
 const express = require('express');
+var path = require('path');
 const app = express();
 console.log("--------------------------------------");
-app.use(express.static('public'));
-app.use(express.json({limit:'1mb'}));
+app.use(express.static(path.join(__dirname,'public')));
+app.use(express.json());
 app.use(express.text({
     defaultCharset: "utf-8",
     limit:'199kb'
 }));
 
-var data
+const urls = {
+    refg: path.join(__dirname,'./public/refg.html')
+};
+
+app.get('/api/refg', (req,res) =>{
+    res.sendFile(urls.refg)
+});
+
+
+
 app.post('/apiTest', (request, response) => {
-    data  = request.body;
+    const data  = request.body;
     console.log(data);
     response.json({
         status: 'success',
