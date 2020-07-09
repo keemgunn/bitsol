@@ -10,12 +10,15 @@ app.use(express.text({
 }));
 
 const urls = {
-    refg: path.join(__dirname,'./public/refg.html')
+    refg: path.join(__dirname,'./html/refg.html')
 };
 
 app.get('/api/refg', (req,res) =>{
-    res.sendFile(urls.refg)
+    res.sendFile(urls.refg);    
 });
+
+
+
 
 
 

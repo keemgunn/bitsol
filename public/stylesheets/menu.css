@@ -156,7 +156,7 @@
         bottom: -80px;
     }   /* 프로필스몰 감추기 */
     .profile_mini {
-        /* bottom: 20px; */
+        bottom: 20px;
     }   /* 미니프로필 쇼*/
 }
 
