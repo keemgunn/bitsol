@@ -1,6 +1,6 @@
 const express = require('express');
-var path = require('path');
 const app = express();
+const path = require('path');
 console.log("--------------------------------------");
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json());
@@ -10,9 +10,8 @@ app.use(express.text({
 }));
 
 const urls = {
-    refg: path.join(__dirname,'./html/refg.html')
+    refg: path.join(__dirname,'/html/refg.html')
 };
-
 app.get('/api/refg', (req,res) =>{
     res.sendFile(urls.refg);    
 });
