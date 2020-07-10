@@ -9,6 +9,7 @@ app.use(express.text({
     limit:'199kb'
 }));
 
+
 const urls = {
     refg: path.join(__dirname,'/html/refg.html')
 };
@@ -21,10 +22,10 @@ app.get('/api/refg', (req,res) =>{
 
 
 
-app.post('/apiTest', (request, response) => {
-    const data  = request.body;
+app.post('/apiTest', (req, res) => {
+    const data  = req.body;
     console.log(data);
-    response.json({
+    res.json({
         status: 'success',
         account: data.account,
         timeCode: data.timeCode,

@@ -1,8 +1,7 @@
 // input refresh method
 
-var roomList = document.getElementById("roomList");
-var timeCode;
-var keyword, keywordPack, keyReq, gotResponse;
+const roomList = document.getElementById("roomList");
+var timeCode, keyword, keywordPack, keyReq, gotResponse;
 const account = "gunn"
 
 async function roomNumSearch() {
@@ -18,7 +17,6 @@ async function roomNumSearch() {
     body: JSON.stringify({account,timeCode,keyword})
   };
   keyReq = await fetch('/apiTest', keywordPack);
-
   gotResponse = await keyReq.json();
   console.log(gotResponse);  
   // input 창 텍스트파일 JSON화 시켜서 보낸 다음에
@@ -26,16 +24,11 @@ async function roomNumSearch() {
   // 데이터 그대로 다시 리패키징 해서 받아오기
 
 
-
-
-
   var newCell = document.createElement("p");
   var text = document.createTextNode(keyword);
   newCell.appendChild(text);
   roomList.appendChild(newCell);
   // Making new html elements when roomNum input changed simultaneously
-
-
 
 
   // 서버에서 데이터를 가져오면
