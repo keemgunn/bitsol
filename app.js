@@ -4,6 +4,8 @@ const fs = require('path');
 const XLSX = require('xlsx');
 const mysql = require('./data/mysql');
 
+
+
 const app = express();
 app.use(express.json({
     limit: "50mb"
@@ -13,6 +15,8 @@ app.use(express.text({
     limit: "50mb"
 }));
 app.use(express.static(path.join(__dirname,'public')));
+
+
 
 const urls = {
     refg: path.join(__dirname,'/html/refg.html'),
@@ -37,7 +41,6 @@ app.post('/apitest', (req, res) => {
         keyword: data.keyword
     })
 });
-
 app.post('/api/worksheet', (req, res) => {
     const data = req.body;
     console.log("--- REQUEST DETECTED ---");
@@ -45,9 +48,9 @@ app.post('/api/worksheet', (req, res) => {
     console.log(data);
     res.json(data);
 });
-
 app.post('/api/db/init', (req, res) => {
     const year = req.body.givenYear;
+    const data = req.body.data;
     console.log(req.body);
     console.log(year);
     mysql.initDB(year, res);

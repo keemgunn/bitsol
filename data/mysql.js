@@ -8,10 +8,10 @@ const connection = mysql.createConnection({
   database: 'opentutorials',
   multipleStatements: true
 });
-createConnection();
 
 
 function initDB(year, res) {
+  createConnection();
   var log = [];
   var affected = 0;
   var responsePack = new Object;
@@ -23,7 +23,7 @@ function initDB(year, res) {
   goQuery(`CREATE DATABASE ${schema};`);
   use(schema);
 
-  goQuery('CREATE TABLE `students` (`student_id` INT NOT NULL AUTO_INCREMENT,`serial_number` VARCHAR(20) NOT NULL,`name` VARCHAR(15) NOT NULL,`gender` CHAR(1) NOT NULL,`term` CHAR(2) NOT NULL,`student_number` VARCHAR(15) NOT NULL,`phone` VARCHAR(17),PRIMARY KEY (`student_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
+  goQuery('CREATE TABLE `students` (`student_id` INT NOT NULL AUTO_INCREMENT,`serial_number` VARCHAR(20) NOT NULL,`name` VARCHAR(15) NOT NULL,`gender` CHAR(1) NOT NULL,`term` CHAR(2) NOT NULL,`student_number` VARCHAR(15) NOT NULL,`phone` VARCHAR(17),`indate` VARCHAR(10),PRIMARY KEY (`student_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
   goQuery('CREATE TABLE `students_log` (`log_id` INT NOT NULL AUTO_INCREMENT,`time` VARCHAR(25) NOT NULL,`target_a` INT NOT NULL,`target_b` INT DEFAULT NULL,`adjustment` VARCHAR(6) NOT NULL,`description` TEXT,`client_id` INT NOT NULL,`client` VARCHAR(25) NOT NULL,PRIMARY KEY(`log_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
@@ -59,6 +59,7 @@ function initDB(year, res) {
     responsePack.packets = log;
     console.log(responsePack);
     res.json(responsePack); // send !
+    endConnection();
   })
 }
 
@@ -66,18 +67,7 @@ function initDB(year, res) {
 
 
 
-function createConnection(){
-  connection.connect((err) => { // connection status
-    if (err) {
-      console.error('error connecting: ' + err.stack);
-      return;
-    } console.log('########## connected as id ' + connection.threadId);
-  });
-}
-function backTick(string){
-  let converted = '\`' + string + '\`';
-  return converted
-}
+
 
 
 
@@ -116,13 +106,24 @@ function singleQuery(query){ // 아직 건들지도 않았어
 
 
 
-
-function use(schema){
-  goQuery(`USE ${schema};`);
+function createConnection(){
+  connection.connect((err) => { // connection status
+    if (err) {
+      console.error('error connecting: ' + err.stack);
+      return;
+    } console.log('########## connected as id ' + connection.threadId);
+  });
 }
 function endConnection(){
   connection.end();
   console.log('########## connection ended');
+}
+function backTick(string){
+  let converted = '\`' + string + '\`';
+  return converted
+}
+function use(schema){
+  goQuery(`USE ${schema};`);
 }
 
 module.exports.goQuery = goQuery;
