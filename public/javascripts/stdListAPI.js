@@ -16,7 +16,7 @@ async function roomNumSearch() {
     headers: {"Content-Type": "application/json"}, // more info: search about HTTP header...
     body: JSON.stringify({account,timeCode,keyword})
   };
-  keyReq = await fetch('/apiTest', keywordPack);
+  keyReq = await fetch('/apitest', keywordPack);
   gotResponse = await keyReq.json();
   console.log(gotResponse);  
   // input 창 텍스트파일 JSON화 시켜서 보낸 다음에

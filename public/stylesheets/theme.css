@@ -35,3 +35,12 @@ a:hover, a:visited, a:link, a:active {
     text-decoration: none;
     color: var(--ink1);
 }
+
+#diveBox {
+    /* position: absolute; */
+    left: 10px;
+    top: 100px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(93, 224, 137, 0.521);
+  }

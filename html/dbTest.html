@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/theme.css" type='text/css'>
+  <title>dbTest</title>
+</head>
+<body>
+  <h1>DB TEST PAGE</h1>
+  <p>DIVE BELOW</p>
+  <div id="diveBox" ondrop="excelExportDrop(event)" ondragover="excelExportOverHandler(event)"></div>
+  <input type="file" id="excelFile" onchange="excelExport(event)"/><br>
+  <button type="button" onclick="initDB()">db initiate</button><br>
+  <input type="text" id="input00">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+<script src="/javascripts/workbook.js"></script>
+<script src="/javascripts/dbConnect.js"></script>
+</body>
+</body>
+</html>

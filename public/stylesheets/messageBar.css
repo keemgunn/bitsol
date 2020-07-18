@@ -1,5 +1,5 @@
 .msgCont {
-    background-color: darkseagreen;
+    /* background-color: darkseagreen; */
     position: fixed;
     right: 0px;
 
@@ -11,7 +11,7 @@
     transition: 0.5s;
 }
 .msgBox {
-    background-color: violet;
+    /* background-color: violet; */
     width: 280px;
     height: 300px;
     min-height: 74px;
@@ -28,7 +28,7 @@
     opacity: 1;
 }
 .msgIndex {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     position: relative;
     left: 4px;
     top: 8px;
@@ -50,7 +50,7 @@
             line-height: 27px;
         }
 .msgBody {
-    background-color: cornflowerblue;
+    /* background-color: cornflowerblue; */
     position: relative;
     top: 4px;
     
