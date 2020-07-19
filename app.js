@@ -64,18 +64,15 @@ app.post('/api/db/init', (req, res) => {
     var test = {
         status: 'fuck you'
     }
-
-    // mysql.monitor.on('function complete', (arg) => {
-    //     console.log('---- FUNCTION COMPLETE ----');
-    //     res.json(test);
-    // })
-
     res.json(test)
-
-
-
+    
+    
 });
 
+
+mysql.monitor.on('function complete', (arg) => {
+    console.log('========MONITOR===========');
+})
 
 
 

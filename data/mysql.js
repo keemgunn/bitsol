@@ -10,9 +10,8 @@ const connection = mysql.createConnection({
 });
 createConnection();
 
-
-var log = [];
-var affected = 0;
+let log = [];
+let affected = 0;
 function initDB(year, res) {
   log = [];
   affected = 0;
@@ -46,24 +45,20 @@ function initDB(year, res) {
 }
 
 
-
 monitor.on('query error', (arg) => {
   console.log('### QUERY ERROR ###');
   console.log(arg);
 })
 monitor.on('query success', (arg) => {
+  console.log('affected before plus:', affected);
   console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
   affected += arg.affectedRows;
   log.push(arg);
 })
-// monitor.on('function complete', (arg) => {
-//   console.log('---- FUNCTION COMPLETE ----');
-//   res.json({
-//     "status": "fuck you",
-//     affected,
-//     log
-//   }); // send !
-// })
+monitor.on('function complete', (arg) => {
+  console.log('---- FUNCTION COMPLETE ----');
+  console.log('affected:', affected);
+})
 
 
 
