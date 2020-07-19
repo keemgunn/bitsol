@@ -8,14 +8,14 @@ const connection = mysql.createConnection({
   database: 'opentutorials',
   multipleStatements: true
 });
+createConnection();
 
 
+var log = [];
+var affected = 0;
 function initDB(year, res) {
-  createConnection();
-  var log = [];
-  var affected = 0;
-  var responsePack = new Object;
-
+  log = [];
+  affected = 0;
   const schemaSelection = 'bitsolDB_20' + String(year) + '_test00';
   const schema = backTick(schemaSelection);
 
@@ -43,28 +43,27 @@ function initDB(year, res) {
 
   lastQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
   
-  monitor.on('query error', (arg) => {
-    console.log('### QUERY ERROR ###');
-    console.log(arg);
-  })
-  monitor.on('query success', (arg) => {
-    console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
-    affected += arg.affectedRows;
-    log.push(arg);
-  })
-  monitor.on('function complete', (arg) => {
-    console.log('---- FUNCTION COMPLETE ----');
-    responsePack.status = "success";
-    responsePack.affected = affected;
-    responsePack.packets = log;
-    console.log(responsePack);
-    res.json(responsePack); // send !
-    endConnection();
-  })
 }
 
 
 
+monitor.on('query error', (arg) => {
+  console.log('### QUERY ERROR ###');
+  console.log(arg);
+})
+monitor.on('query success', (arg) => {
+  console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
+  affected += arg.affectedRows;
+  log.push(arg);
+})
+// monitor.on('function complete', (arg) => {
+//   console.log('---- FUNCTION COMPLETE ----');
+//   res.json({
+//     "status": "fuck you",
+//     affected,
+//     log
+//   }); // send !
+// })
 
 
 
@@ -131,3 +130,5 @@ module.exports.use = use;
 module.exports.backTick = backTick;
 module.exports.initDB = initDB;
 module.exports.end = endConnection;
+
+module.exports.monitor = monitor;
