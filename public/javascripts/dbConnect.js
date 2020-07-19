@@ -73,7 +73,7 @@ async function sendtoServer(content){
 function dbTrigger() {
   const trigger = infoCheck * dataCheck ;
   if (trigger === 1) {
-    initDB(worksheet);
+    initDB();
   } else {
     if (infoCheck === 0) {
       // DOM alert
@@ -86,14 +86,13 @@ function dbTrigger() {
 }
 
 // -------------- INITIATING DATABASE
-async function initDB(data) {
+async function initDB() {
   console.log('f: initDB');
   var package = {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      "givenYear": givenYear,
-      data
+      "givenYear": givenYear
     })};
   var dbAction = await fetch('/api/db/init', package);
   var response = await dbAction.json();

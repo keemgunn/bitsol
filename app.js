@@ -46,33 +46,19 @@ app.post('/api/worksheet', (req, res) => {
     worksheet = req.body;
     console.log(worksheet);
     console.log('###### WROKSHEET RECIEVED: total', worksheet.length, 'raws');
-
-    var replyPackage = {
-        "status": 'success',
+    res.json({
+        "status": 200,
         "data": worksheet
-    }; res.json(replyPackage);
+    });
 });
 app.post('/api/db/init', (req, res) => {
     const year = req.body.givenYear;
     const data = req.body.data;
-    // console.log(req.body);
     console.log(year);
-    mysql.initDB(year, res);
+    // console.log(req.body);
 
-
-
-    var test = {
-        status: 'fuck you'
-    }
-    res.json(test)
-    
-    
+    mysql.makeTables(year, res);
 });
-
-
-mysql.monitor.on('function complete', (arg) => {
-    console.log('========MONITOR===========');
-})
 
 
 

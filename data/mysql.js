@@ -1,20 +1,29 @@
 const EventEmitter = require('events');
-const monitor = new EventEmitter();
 const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'qwerty123', // user password
-  database: 'opentutorials',
   multipleStatements: true
-});
-createConnection();
+}); newConnection();
 
 let log = [];
 let affected = 0;
-function initDB(year, res) {
+let monitor = new EventEmitter();
+
+
+
+
+// ################# QUERIES ####################
+
+function makeTables(year, res) {
   log = [];
   affected = 0;
+  monitor = new EventEmitter();
+  addListener(monitor, res);
+
+  resumeConnection();
+
   const schemaSelection = 'bitsolDB_20' + String(year) + '_test00';
   const schema = backTick(schemaSelection);
 
@@ -41,34 +50,58 @@ function initDB(year, res) {
   goQuery('CREATE TABLE `refg_log` (`log_id` INT NOT NULL AUTO_INCREMENT,`time` VARCHAR(25) NOT NULL,`target` VARCHAR(20) NOT NULL,`month` VARCHAR(5) NOT NULL,`adjustment` CHAR(1) NOT NULL,`amount` INT NOT NULL,`result` INT NOT NULL,`client_id` INT NOT NULL,`client` VARCHAR(25) NOT NULL,PRIMARY KEY (`log_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
   lastQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
-  
+}
+
+function newStudent(){
+  log = [];
+  affected = 0;
+  monitor = new EventEmitter();
+  addListener(monitor, res);
+
+  resumeConnection();
+
+
+
 }
 
 
-monitor.on('query error', (arg) => {
-  console.log('### QUERY ERROR ###');
-  console.log(arg);
-})
-monitor.on('query success', (arg) => {
-  console.log('affected before plus:', affected);
-  console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
-  affected += arg.affectedRows;
-  log.push(arg);
-})
-monitor.on('function complete', (arg) => {
-  console.log('---- FUNCTION COMPLETE ----');
-  console.log('affected:', affected);
-})
+
+// ========================= MONITOR SETTING
+
+function addListener(monitor, res){
+  monitor.on('query error', (arg) => {
+    console.log('### QUERY ERROR ###');
+    console.log(arg);
+  });
+  monitor.on('query success', (arg) => {
+    console.log('affected before plus:', affected);
+    console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
+    affected += arg.affectedRows;
+    log.push(arg);
+  });
+  monitor.on('query end', (arg) => {
+    // ----------- response methods
+    res.json({
+      "status": 200,
+      affected,
+      log
+    })
+    console.log('---- FUNCTION COMPLETE ----\naffected:', affected);
+    pauseConnection();
+  });
+}
 
 
 
+// ========================= QUERY SETTING
 
-
-
-
-
-
-
+function backTick(string){
+  let converted = '\`' + string + '\`';
+  return converted
+}
+function use(schema){
+  goQuery(`USE ${schema};`);
+}
 function goQuery(query){
   connection.query(query, (error, results, fields) =>{
     if(error) {
@@ -83,7 +116,7 @@ function lastQuery(query){
       monitor.emit('query error', error);
     }
     monitor.emit('query success', results);
-    monitor.emit('function complete');
+    monitor.emit('query end');
   });
 }
 function singleQuery(query){ // 아직 건들지도 않았어
@@ -97,33 +130,37 @@ function singleQuery(query){ // 아직 건들지도 않았어
 
 
 
+// ========================= CONNECTION SETTING
 
-
-
-function createConnection(){
+function newConnection(){
   connection.connect((err) => { // connection status
     if (err) {
       console.error('error connecting: ' + err.stack);
       return;
-    } console.log('########## connected as id ' + connection.threadId);
+    } console.log('####### connected as id ' + connection.threadId + ' #######');
   });
 }
 function endConnection(){
   connection.end();
   console.log('########## connection ended');
 }
-function backTick(string){
-  let converted = '\`' + string + '\`';
-  return converted
+function pauseConnection(){
+  connection.pause();
+  console.log('########## CONNECTION PAUSED \n\n\n');
 }
-function use(schema){
-  goQuery(`USE ${schema};`);
+function resumeConnection(){
+  connection.resume();
+  if(connection.threadId){
+  console.log('####### RESUME CONNECTION:' + connection.threadId + ' #######');}
 }
 
-module.exports.goQuery = goQuery;
-module.exports.use = use;
-module.exports.backTick = backTick;
-module.exports.initDB = initDB;
-module.exports.end = endConnection;
 
-module.exports.monitor = monitor;
+
+// ========================= EXPORT SETTING
+
+module.exports.initDB = makeTables;
+module.exports.newStudent = newStudent;
+
+
+
+pauseConnection();
