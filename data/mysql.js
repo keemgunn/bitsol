@@ -1,16 +1,41 @@
 const EventEmitter = require('events');
+const fs = require('fs');
+const path = require('path');
+
 const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'qwerty123', // user password
   multipleStatements: true
-}); newConnection();
+}); 
+newConnection();
+
+const version = require('../api/config.js')
+let versionFile = path.join(__dirname, './db.json');
+let logFile = path.join(__dirname, './db_log.json');
+let versionInfo = version.readSync(versionFile);
+var currentSchema, currentBuild, currentVersion;
+
+if(versionInfo.hasOwnProperty('schema')){
+  currentSchema = versionInfo.schema;
+  use(versionInfo.schema);
+};
+if(versionInfo.hasOwnProperty('build')){
+  currentBuild = versionInfo.build;
+  console.log('$$$ current build:', versionInfo.build, ' ... @mysql.js');
+};
+if(versionInfo.hasOwnProperty('version')){
+  currentVersion = versionInfo.version;
+  console.log('$$$ current version:', versionInfo.version, ' ... @mysql.js');
+};
+
+
 
 let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
-
+// common resources
 
 
 
@@ -20,12 +45,20 @@ function makeTables(year, res) {
   log = [];
   affected = 0;
   monitor = new EventEmitter();
-  addListener(monitor, res);
-
+  addMonitor(monitor, res);
   resumeConnection();
+  
+  const schema = 'bitsolDB_20' + String(year) + '_test02';
 
-  const schemaSelection = 'bitsolDB_20' + String(year) + '_test00';
-  const schema = backTick(schemaSelection);
+  versionInfo = {
+    "schema": schema,
+    "version": String(year) + ".0",
+    "build": 0,
+    "date": new Date()
+  }
+  currentSchema = versionInfo.schema;
+  currentBuild = versionInfo.build;
+  currentVersion = versionInfo.version;
 
   goQuery(`DROP DATABASE IF EXISTS ${schema};`);
   goQuery(`CREATE DATABASE ${schema};`);
@@ -52,30 +85,79 @@ function makeTables(year, res) {
   lastQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 }
 
-function newStudent(){
+function firstData(worksheet, res){
   log = [];
   affected = 0;
   monitor = new EventEmitter();
-  addListener(monitor, res);
-
+  addMonitor(monitor, res);
   resumeConnection();
 
+  use('bitsolDB_2017_test00');
 
 
+
+
+
+  console.log(worksheet[0]);
+
+  var TargetTable
+  var name, gender, term, student_number, phone, indate, serial_number;
+  
+  for(i = 0; i < worksheet.length; i++){
+    TargetTable = backTick('students');
+    name = quote(worksheet[i].성명);
+    gender = quote(worksheet[i].성별);
+    term = quote(worksheet[i].기간);
+    student_number = quote(worksheet[i].학번);
+    phone = quote(worksheet[i].HP);
+    indate = quote(worksheet[i].입사일자);
+    serial_number = serialMaker(worksheet[i].차수, worksheet[i].성별, worksheet[i].학번);
+  
+    var query = "INSERT INTO " + TargetTable + " VALUES (DEFAULT," + serial_number +","+ name +","+ gender +","+ term +","+ student_number +","+ phone +","+ indate + ");"
+  
+    goQuery(query);
+  }
+  
+
+
+  
 }
+
+// ######### QUERY METHODS ##########
+
+function serialMaker(chasoo, gender, student_number) {
+  var result = chasoo[2];
+  result += chasoo[3];
+  result += chasoo[4];
+  result += chasoo[5];
+  result += chasoo[8];
+  result += chasoo[9];
+  result += gender;
+  result += student_number;
+  result = quote(result);
+  return result
+}
+
+
+
+
+
+
+
+
+
 
 
 
 // ========================= MONITOR SETTING
 
-function addListener(monitor, res){
+function addMonitor(monitor, res){
   monitor.on('query error', (arg) => {
-    console.log('### QUERY ERROR ###');
+    console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
     console.log(arg);
   });
   monitor.on('query success', (arg) => {
-    console.log('affected before plus:', affected);
-    console.log('- QUERY SUCCESS / affected: ', arg.affectedRows);
+    console.log('$$$ QUERY SUCCESS ... @mysql.js/monitor\n   affected: ', arg.affectedRows);
     affected += arg.affectedRows;
     log.push(arg);
   });
@@ -86,7 +168,24 @@ function addListener(monitor, res){
       affected,
       log
     })
-    console.log('---- FUNCTION COMPLETE ----\naffected:', affected);
+    console.log('### FUNCTION COMPLETE ... @mysql.js/monitor\n   affected:', affected);
+
+    // ----------- update version config file
+    version.update(versionFile, versionInfo);
+    console.log(versionInfo);
+
+    // ----------- update log file
+    let timecode = String(versionInfo.date.getTime());
+    let author = "gunn"
+    var logInfo = new Object;
+    logInfo[timecode] = {
+      "schema": versionInfo.schema,
+      "version": versionInfo.version,
+      author,
+      affected,
+      log
+    }; version.update(logFile, logInfo);
+
     pauseConnection();
   });
 }
@@ -99,8 +198,14 @@ function backTick(string){
   let converted = '\`' + string + '\`';
   return converted
 }
+function quote(string){
+  let converted = '\'' + string + '\'';
+  return converted
+}
 function use(schema){
-  goQuery(`USE ${schema};`);
+  var convertedStr = backTick(schema)
+  goQuery(`USE ${convertedStr};`);
+  console.log('$$$ USING', schema, ' ... @mysql.js/use');
 }
 function goQuery(query){
   connection.query(query, (error, results, fields) =>{
@@ -119,14 +224,6 @@ function lastQuery(query){
     monitor.emit('query end');
   });
 }
-function singleQuery(query){ // 아직 건들지도 않았어
-  connection.query(query, (error, results, fields) =>{
-    if(error) {
-      monitor.emit('query error', error);
-    }
-    monitor.emit('query success', results);
-  });
-}
 
 
 
@@ -135,32 +232,32 @@ function singleQuery(query){ // 아직 건들지도 않았어
 function newConnection(){
   connection.connect((err) => { // connection status
     if (err) {
-      console.error('error connecting: ' + err.stack);
+      console.error('$$$ error connecting ... @mysql.js/connection :\n' + err.stack);
       return;
-    } console.log('####### connected as id ' + connection.threadId + ' #######');
+    } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection');
   });
 }
 function endConnection(){
   connection.end();
-  console.log('########## connection ended');
+  console.log('$$$ CONNECTION ENDED ... @mysql.js/connection');
 }
 function pauseConnection(){
   connection.pause();
-  console.log('########## CONNECTION PAUSED \n\n\n');
+  console.log('$$$ CONNECTION PAUSED ... @mysql.js/connection');
 }
 function resumeConnection(){
   connection.resume();
   if(connection.threadId){
-  console.log('####### RESUME CONNECTION:' + connection.threadId + ' #######');}
+  console.log('$$$ RESUME CONNECTION:' + connection.threadId + ' ... @mysql.js/connection');}
 }
 
 
 
 // ========================= EXPORT SETTING
 
-module.exports.initDB = makeTables;
-module.exports.newStudent = newStudent;
-
+module.exports.makeTables = makeTables;
+module.exports.firstData = firstData;
+module.exports.use = use;
 
 
 pauseConnection();

@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const fs = require('path');
+const fs = require('fs');
 const XLSX = require('xlsx');
 const mysql = require('./data/mysql');
 
@@ -14,7 +14,6 @@ app.use(express.text({
     limit: "50mb"
 }));
 app.use(express.static(path.join(__dirname,'public')));
-
 
 const urls = {
     refg: path.join(__dirname,'/html/refg.html'),
@@ -45,7 +44,7 @@ var worksheet;
 app.post('/api/worksheet', (req, res) => {
     worksheet = req.body;
     console.log(worksheet);
-    console.log('###### WROKSHEET RECIEVED: total', worksheet.length, 'raws');
+    console.log('###### WORKSHEET RECIEVED: total', worksheet.length, 'raws');
     res.json({
         "status": 200,
         "data": worksheet
@@ -55,7 +54,6 @@ app.post('/api/db/init', (req, res) => {
     const year = req.body.givenYear;
     const data = req.body.data;
     console.log(year);
-    // console.log(req.body);
 
     mysql.makeTables(year, res);
 });
@@ -64,5 +62,25 @@ app.post('/api/db/init', (req, res) => {
 
 
 
+app.post('/api/db/init/test00', (req, res) => {
+
+
+    mysql.firstData(worksheet, res);
+
+    res.json({
+        "status": "fuck you"
+    })
+});
+
+
+
+
+
+
+
+
+
+
+
 const port = process.env.PORT || 5500;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js `));

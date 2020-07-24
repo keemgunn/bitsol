@@ -100,6 +100,20 @@ async function initDB() {
 }
 
 
+async function test00() {
+  console.log('f: test00');
+  var package = {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      "givenYear": givenYear
+    })};
+  var dbAction = await fetch('/api/db/init/test00', package);
+  var response = await dbAction.json();
+  console.log(response);
+}
+
+
 
 
 
