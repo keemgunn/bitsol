@@ -1679,5 +1679,244 @@
         "changedRows": 0
       }
     ]
+  },
+  "1595669709271": {
+    "schema": "bitsolDB_2018_test03",
+    "version": "18.0",
+    "author": "gunn",
+    "time": "2020-07-25T09:35:09.271Z",
+    "affected": 6,
+    "log": [
+      {
+        "fieldCount": 0,
+        "affectedRows": 5,
+        "insertId": 0,
+        "serverStatus": 258,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      }
+    ]
   }
 }
