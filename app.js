@@ -65,10 +65,6 @@ app.post('/api/db/init/test00', (req, res) => {
 
 
     mysql.firstData(worksheet, res);
-
-    res.json({
-        "status": "fuck you"
-    })
 });
 
 

@@ -97,8 +97,23 @@ function firstData(worksheet, res){
 
   use(currentSchema);
 
-  insertStudents(worksheet, "성명", "성별", "기간", "학번", "대학", "학과", "HP", "입사일자");
-  
+  var def = "DEFAULT";
+  var serial_number, name, gender, term, student_number, phone, faculty, major, indate;
+  for (i = 0; i < worksheet.length; i++){ // 학생수만큼
+    serial_number = serialMaker(worksheet[i].차수, worksheet[i].성별, worksheet[i].학번);
+    name = worksheet[i].성명;
+    gender = worksheet[i].성별;
+    term = worksheet[i].기간;
+    student_number = worksheet[i].학번;
+    faculty = worksheet[i].대학;
+    major = worksheet[i].학과;
+    phone = worksheet[i].HP;
+    indate = worksheet[i].입사일자;
+
+    insertQuery("students", def, serial_number, name, gender, term, student_number, faculty, major, phone, indate);
+
+  }
+
   closeQuery();
 }
 
@@ -113,7 +128,6 @@ function serialMaker(chasoo, gender, student_number) {
   result += chasoo[9];
   result += gender;
   result += student_number;
-  result = quote(result);
   return result
 }
 
@@ -205,40 +219,24 @@ function closeQuery(){
     console.log('$$$ QUERY END ... @mysql.js/closeQuery');
   });
 }
-function insertQuery(tableName, ...column){
-  var columnName, query, add;
+function insertQuery(tableName, ...args){
+  var data, query;
   let table = backTick(tableName);
   query = "INSERT INTO " + table + " VALUES (";
   for (k = 1; k < arguments.length; k++){ // 칼럼수만큼
-    columnName = arguments[k];
-    if (columnName === "DEFAULT"){
-      add = "," + columnName;
-    }if (typeof(columnName) === "number"){
-      add = "," + columnName;
+    data = arguments[k];
+    if (data === "DEFAULT"){
+      query = query.concat(data,",");
+    }else if (typeof(data) === "number"){
+      query = query.concat(data,",");
     }else {
-      add = "," + quote(columnName);
+      query = query.concat(quote(data),",");
     }
-    query += add;
-  } query += ");" ;
+  }
+  query = query.slice(0,-1);
+  query += ");" ;
   goQuery(query);
 }
-function insertStudents(worksheet, ...column){
-  var columnName, query, add;
-  var serial_number;
-  let table = backTick("students");
-  for (i = 0; i < worksheet.length; i++){ // 학생수만큼
-    query = "INSERT INTO " + table + " VALUES (DEFAULT";
-    serial_number = serialMaker(worksheet[i].차수, worksheet[i].성별, worksheet[i].학번);
-    query += ("," + serial_number);
-    for (k = 2; k < arguments.length; k++){ // 칼럼수만큼
-      columnName = arguments[k];
-      add = "," + quote(worksheet[i][columnName]);
-      query += add;
-    } query += ");" ;
-    goQuery(query);
-  }
-}
-
 
 
 
