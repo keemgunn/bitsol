@@ -71,6 +71,7 @@ async function sendtoServer(content){
 
 // -------------- CHECK
 function dbTrigger() {
+  console.log('f: dbTrigger');
   const trigger = infoCheck * dataCheck ;
   if (trigger === 1) {
     initDB();
@@ -112,10 +113,6 @@ async function test00() {
   var response = await dbAction.json();
   console.log(response);
 }
-
-
-
-
 
 
 

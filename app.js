@@ -52,8 +52,7 @@ app.post('/api/worksheet', (req, res) => {
 });
 app.post('/api/db/init', (req, res) => {
     const year = req.body.givenYear;
-    const data = req.body.data;
-    console.log(year);
+    console.log("givenYear:", year, " ... @api/db/init");
 
     mysql.makeTables(year, res);
 });
@@ -83,4 +82,4 @@ app.post('/api/db/init/test00', (req, res) => {
 
 
 const port = process.env.PORT || 5500;
-app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js `));
+app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js \n\n\n\n`));

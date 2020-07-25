@@ -30,8 +30,6 @@ if(versionInfo.hasOwnProperty('version')){
   console.log('$$$ current version:', versionInfo.version, ' ... @mysql.js');
 };
 
-
-
 let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
@@ -42,29 +40,25 @@ let monitor = new EventEmitter();
 // ################# QUERIES ####################
 
 function makeTables(year, res) {
-  log = [];
-  affected = 0;
-  monitor = new EventEmitter();
+  // resumeConnection();
+  log = []; affected = 0; monitor = new EventEmitter();
   addMonitor(monitor, res);
-  resumeConnection();
-  
-  const schema = 'bitsolDB_20' + String(year) + '_test02';
 
+  currentSchema = 'bitsolDB_20' + String(year) + '_test03';
+  currentBuild = 0;
+  currentVersion = String(year) + ".0";
   versionInfo = {
-    "schema": schema,
-    "version": String(year) + ".0",
-    "build": 0,
+    "schema": currentSchema,
+    "version": currentVersion,
+    "build": currentBuild,
     "date": new Date()
   }
-  currentSchema = versionInfo.schema;
-  currentBuild = versionInfo.build;
-  currentVersion = versionInfo.version;
+  
+  goQuery(`DROP DATABASE IF EXISTS ${currentSchema};`);
+  goQuery(`CREATE DATABASE ${currentSchema};`);
+  use(currentSchema);
 
-  goQuery(`DROP DATABASE IF EXISTS ${schema};`);
-  goQuery(`CREATE DATABASE ${schema};`);
-  use(schema);
-
-  goQuery('CREATE TABLE `students` (`student_id` INT NOT NULL AUTO_INCREMENT,`serial_number` VARCHAR(20) NOT NULL,`name` VARCHAR(15) NOT NULL,`gender` CHAR(1) NOT NULL,`term` CHAR(2) NOT NULL,`student_number` VARCHAR(15) NOT NULL,`phone` VARCHAR(17),`indate` VARCHAR(10),PRIMARY KEY (`student_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
+  goQuery('CREATE TABLE `students` (`student_id` INT NOT NULL AUTO_INCREMENT,`serial_number` VARCHAR(20) NOT NULL,`name` VARCHAR(15) NOT NULL,`gender` CHAR(1) NOT NULL,`term` CHAR(2) NOT NULL,`student_number` VARCHAR(15) NOT NULL, `faculty` VARCHAR(15), `major` VARCHAR(15), `phone` VARCHAR(17),`indate` VARCHAR(10),PRIMARY KEY (`student_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
   goQuery('CREATE TABLE `students_log` (`log_id` INT NOT NULL AUTO_INCREMENT,`time` VARCHAR(25) NOT NULL,`target_a` INT NOT NULL,`target_b` INT DEFAULT NULL,`adjustment` VARCHAR(6) NOT NULL,`description` TEXT,`client_id` INT NOT NULL,`client` VARCHAR(25) NOT NULL,PRIMARY KEY(`log_id`))ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
@@ -86,13 +80,20 @@ function makeTables(year, res) {
 }
 
 function firstData(worksheet, res){
-  log = [];
-  affected = 0;
-  monitor = new EventEmitter();
+  // resumeConnection();
+  log = []; affected = 0; monitor = new EventEmitter();
   addMonitor(monitor, res);
-  resumeConnection();
 
-  use('bitsolDB_2017_test00');
+  currentBuild = 1;
+  currentVersion = currentVersion[0] + currentVersion[1] + "." + String(currentBuild);
+  versionInfo = {
+    "schema": currentSchema,
+    "version": currentVersion,
+    "build": currentBuild,
+    "date": new Date()
+  }
+
+  use(currentSchema);
 
 
 
@@ -100,24 +101,27 @@ function firstData(worksheet, res){
 
   console.log(worksheet[0]);
 
-  var TargetTable
-  var name, gender, term, student_number, phone, indate, serial_number;
+  var TargetTable = backTick('students');
+  var name, gender, term, student_number, faculty, major, phone, indate, serial_number;
   
   for(i = 0; i < worksheet.length; i++){
-    TargetTable = backTick('students');
     name = quote(worksheet[i].성명);
     gender = quote(worksheet[i].성별);
     term = quote(worksheet[i].기간);
     student_number = quote(worksheet[i].학번);
+    faculty = quote(worksheet[i].대학);
+    major = quote(worksheet[i].학과);
     phone = quote(worksheet[i].HP);
     indate = quote(worksheet[i].입사일자);
     serial_number = serialMaker(worksheet[i].차수, worksheet[i].성별, worksheet[i].학번);
   
-    var query = "INSERT INTO " + TargetTable + " VALUES (DEFAULT," + serial_number +","+ name +","+ gender +","+ term +","+ student_number +","+ phone +","+ indate + ");"
+    var query = "INSERT INTO " + TargetTable + " VALUES (DEFAULT," + serial_number +","+ name +","+ gender +","+ term +","+ student_number +","+ faculty +","+ major +","+ phone +","+ indate + ");"
   
     goQuery(query);
   }
   
+  var show = "SELECT * FROM students";
+  goQuery_clg(show);
 
 
   
@@ -175,18 +179,19 @@ function addMonitor(monitor, res){
     console.log(versionInfo);
 
     // ----------- update log file
-    let timecode = String(versionInfo.date.getTime());
+    let timestamp = String(versionInfo.date.getTime());
     let author = "gunn"
     var logInfo = new Object;
-    logInfo[timecode] = {
+    logInfo[timestamp] = {
       "schema": versionInfo.schema,
       "version": versionInfo.version,
       author,
+      "time": versionInfo.date,
       affected,
       log
-    }; version.update(logFile, logInfo);
+    };  version.update(logFile, logInfo);
 
-    pauseConnection();
+    // pauseConnection();
   });
 }
 
@@ -224,6 +229,15 @@ function lastQuery(query){
     monitor.emit('query end');
   });
 }
+function goQuery_clg(query){
+  connection.query(query, (error, results, fields) =>{
+    if(error) {
+      monitor.emit('query error', error);
+    }
+    monitor.emit('query success', results);
+    console.log(results);
+  });
+}
 
 
 
@@ -232,8 +246,13 @@ function lastQuery(query){
 function newConnection(){
   connection.connect((err) => { // connection status
     if (err) {
-      console.error('$$$ error connecting ... @mysql.js/connection :\n' + err.stack);
-      return;
+      if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+        console.log('$$$ CONNECTION LOST ... @mysql.js/newConnection :\n', err);
+        console.log('\n$$$ RECONNECTING ... @mysql.js/newConnection :\n');
+        return newConnection();
+      } else {
+        console.error('$$$ CONNECTION ERROR ... @mysql.js/connection :\n' + err.stack);
+      }
     } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection');
   });
 }
@@ -260,4 +279,5 @@ module.exports.firstData = firstData;
 module.exports.use = use;
 
 
-pauseConnection();
+// pauseConnection();
+// reConnect();
