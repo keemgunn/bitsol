@@ -1201,5 +1201,483 @@
         "changedRows": 0
       }
     ]
+  },
+  "1595663392390": {
+    "schema": "bitsolDB_2018_test03",
+    "version": "18.0",
+    "author": "gunn",
+    "time": "2020-07-25T07:49:52.390Z",
+    "affected": 6,
+    "log": [
+      {
+        "fieldCount": 0,
+        "affectedRows": 5,
+        "insertId": 0,
+        "serverStatus": 258,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      }
+    ]
+  },
+  "1595663698616": {
+    "schema": "bitsolDB_2018_test03",
+    "version": "18.0",
+    "author": "gunn",
+    "time": "2020-07-25T07:54:58.616Z",
+    "affected": 6,
+    "log": [
+      {
+        "fieldCount": 0,
+        "affectedRows": 5,
+        "insertId": 0,
+        "serverStatus": 258,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "&Records: 0  Duplicates: 0  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      },
+      {
+        "fieldCount": 0,
+        "affectedRows": 0,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+      }
+    ]
   }
 }

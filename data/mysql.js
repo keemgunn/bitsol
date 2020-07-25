@@ -76,7 +76,9 @@ function makeTables(year, res) {
 
   goQuery('CREATE TABLE `refg_log` (`log_id` INT NOT NULL AUTO_INCREMENT,`time` VARCHAR(25) NOT NULL,`target` VARCHAR(20) NOT NULL,`month` VARCHAR(5) NOT NULL,`adjustment` CHAR(1) NOT NULL,`amount` INT NOT NULL,`result` INT NOT NULL,`client_id` INT NOT NULL,`client` VARCHAR(25) NOT NULL,PRIMARY KEY (`log_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
-  lastQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
+  goQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
+
+  closeQuery();
 }
 
 function firstData(worksheet, res){
@@ -208,7 +210,7 @@ function quote(string){
   return converted
 }
 function use(schema){
-  var convertedStr = backTick(schema)
+  var convertedStr = backTick(schema);
   goQuery(`USE ${convertedStr};`);
   console.log('$$$ USING', schema, ' ... @mysql.js/use');
 }
@@ -220,13 +222,14 @@ function goQuery(query){
     monitor.emit('query success', results);
   });
 }
-function lastQuery(query){
-  connection.query(query, (error, results, fields) =>{
+function closeQuery(){
+  var convertedStr = backTick(currentSchema);
+  connection.query(`USE ${convertedStr};`, (error, results, fields) =>{
     if(error) {
       monitor.emit('query error', error);
-    }
-    monitor.emit('query success', results);
+    } 
     monitor.emit('query end');
+    console.log('$$$ QUERY END ... @mysql.js/closeQuery');
   });
 }
 function goQuery_clg(query){
@@ -238,6 +241,7 @@ function goQuery_clg(query){
     console.log(results);
   });
 }
+
 
 
 
