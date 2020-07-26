@@ -111,15 +111,18 @@ function firstData(worksheet, res){
     indate = worksheet[i].입사일자;
     
     insertQuery("students", def, serial_number, name, gender, term, student_number, faculty, major, phone, indate);
-    
     insertQuery("refg", def, def, def, def, def, def, def, def, def, def, def, def, def, def, def, def);
-
     serials.push(serial_number);
   }
   
   versionUp();
   closeQuery();
 }
+
+
+
+
+
 
 // ######## QUERY METHODS #########
 

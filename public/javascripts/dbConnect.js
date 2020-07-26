@@ -59,7 +59,7 @@ async function sendtoServer(content){
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(content)
   };
-  const sendPackage = await fetch('/api/worksheet', package);
+  const sendPackage = await fetch('/api/db/worksheet', package);
   const confirmation = await sendPackage.json();
   console.log(confirmation);
 }
@@ -101,7 +101,7 @@ async function initDB() {
 }
 
 
-async function test00() {
+async function firstData() {
   console.log('f: test00');
   var package = {
     method: 'POST',
@@ -109,7 +109,7 @@ async function test00() {
     body: JSON.stringify({
       "givenYear": givenYear
     })};
-  var dbAction = await fetch('/api/db/init/test00', package);
+  var dbAction = await fetch('/api/db/init/dataforming', package);
   var response = await dbAction.json();
   console.log(response);
 }
