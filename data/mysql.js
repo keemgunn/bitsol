@@ -1,21 +1,24 @@
 const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
-
 const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'qwerty123', // user password
-  multipleStatements: true
-}); 
-newConnection();
-
 const version = require('../api/config.js')
+
 let versionFile = path.join(__dirname, './db.json');
 let logFile = path.join(__dirname, './db_log.json');
 let versionInfo = version.readSync(versionFile);
 var currentSchema, currentBuild, currentVersion;
+var serials = [];
+
+const hostName = versionInfo.connection.host || 'localhost';
+const userName = versionInfo.connection.user || 'root';
+const pw = versionInfo.connection.password || 'qwerty123';
+const connection = mysql.createConnection({
+  host: hostName,
+  user: userName,
+  password: pw, // user password
+  multipleStatements: true
+}); newConnection();
 
 if(versionInfo.hasOwnProperty('schema')){
   currentSchema = versionInfo.schema;
@@ -23,11 +26,15 @@ if(versionInfo.hasOwnProperty('schema')){
 };
 if(versionInfo.hasOwnProperty('build')){
   currentBuild = versionInfo.build;
-  console.log('$$$ current build:', versionInfo.build, ' ... @mysql.js');
+  console.log('### current build:', versionInfo.build, ' ... @mysql.js');
 };
 if(versionInfo.hasOwnProperty('version')){
   currentVersion = versionInfo.version;
-  console.log('$$$ current version:', versionInfo.version, ' ... @mysql.js');
+  console.log('### current version:', versionInfo.version, ' ... @mysql.js');
+};
+if(versionInfo.hasOwnProperty('serial-list')){
+  serials = versionInfo["serial-list"];
+  console.log('### total', serials.length, 'records in students ... @mysql.js');
 };
 
 let log = [];
@@ -45,13 +52,15 @@ function makeTables(year, res) {
   addMonitor(monitor, res);
 
   currentSchema = 'bitsolDB_20' + String(year) + '_test04';
-  currentBuild = 0;
   currentVersion = String(year) + ".0";
+  currentBuild = 0;
+  serials = [];
   versionInfo = {
     "schema": currentSchema,
     "version": currentVersion,
     "build": currentBuild,
-    "date": new Date()
+    "date": new Date(),
+    "serial-list": serials
   }
   
   goQuery(`DROP DATABASE IF EXISTS ${currentSchema};`);
@@ -85,10 +94,9 @@ function firstData(worksheet, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
-  versionUp();
-
+  
   use(currentSchema);
-
+  
   var def = "DEFAULT";
   var serial_number, name, gender, term, student_number, phone, faculty, major, indate;
   for (i = 0; i < worksheet.length; i++){ // 학생수만큼
@@ -101,12 +109,15 @@ function firstData(worksheet, res){
     major = worksheet[i].학과;
     phone = worksheet[i].HP;
     indate = worksheet[i].입사일자;
-
+    
     insertQuery("students", def, serial_number, name, gender, term, student_number, faculty, major, phone, indate);
-
+    
     insertQuery("refg", def, def, def, def, def, def, def, def, def, def, def, def, def, def, def, def);
-  }
 
+    serials.push(serial_number);
+  }
+  
+  versionUp();
   closeQuery();
 }
 
@@ -137,7 +148,8 @@ function versionUp(){
     "schema": currentSchema,
     "version": currentVersion,
     "build": currentBuild,
-    "date": new Date()
+    "date": new Date(),
+    "serial-list": serials
   };
 }
 
@@ -170,20 +182,21 @@ function addMonitor(monitor, res){
 
     // ----------- update version config file
     version.update(versionFile, versionInfo);
-    console.log(versionInfo);
+    console.log("### version updated:", versionInfo.version);
+    console.log('### total', serials.length, 'records in students ... @mysql.js');
 
     // ----------- update log file
-    let timestamp = String(versionInfo.date.getTime());
-    let author = "gunn"
-    var logInfo = new Object;
-    logInfo[timestamp] = {
-      "schema": versionInfo.schema,
-      "version": versionInfo.version,
-      author,
-      "time": versionInfo.date,
-      affected,
-      log
-    };  version.update(logFile, logInfo);
+    // let timestamp = String(versionInfo.date.getTime());
+    // let author = "gunn"
+    // var logInfo = new Object;
+    // logInfo[timestamp] = {
+    //   "schema": versionInfo.schema,
+    //   "version": versionInfo.version,
+    //   author,
+    //   "time": versionInfo.date,
+    //   affected,
+    //   log
+    // };  version.update(logFile, logInfo);
 
     // pauseConnection();
   });
