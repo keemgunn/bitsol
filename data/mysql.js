@@ -41,10 +41,10 @@ let monitor = new EventEmitter();
 
 function makeTables(year, res) {
   // resumeConnection();
-  log = []; affected = 0; monitor = new EventEmitter();
+  logRefresh();
   addMonitor(monitor, res);
 
-  currentSchema = 'bitsolDB_20' + String(year) + '_test03';
+  currentSchema = 'bitsolDB_20' + String(year) + '_test04';
   currentBuild = 0;
   currentVersion = String(year) + ".0";
   versionInfo = {
@@ -67,7 +67,7 @@ function makeTables(year, res) {
     monthIndex.push(String(year) + '_' + String(i));
   }
   for(i = 1; i < 4; i++){
-    monthIndex.push(String(year+1) + '_' + String(i));
+    monthIndex.push( String( parseInt(year)+1 ) + '_' + String(i));
   }
   goQuery('CREATE TABLE `refg` (`student_id` INT NOT NULL AUTO_INCREMENT,PRIMARY KEY (`student_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
   for(i = 0; i < 15; i++){
@@ -83,17 +83,9 @@ function makeTables(year, res) {
 
 function firstData(worksheet, res){
   // resumeConnection();
-  log = []; affected = 0; monitor = new EventEmitter();
+  logRefresh();
   addMonitor(monitor, res);
-
-  currentBuild += 1;
-  currentVersion = currentVersion[0] + currentVersion[1] + "." + String(currentBuild);
-  versionInfo = {
-    "schema": currentSchema,
-    "version": currentVersion,
-    "build": currentBuild,
-    "date": new Date()
-  }
+  versionUp();
 
   use(currentSchema);
 
@@ -112,12 +104,13 @@ function firstData(worksheet, res){
 
     insertQuery("students", def, serial_number, name, gender, term, student_number, faculty, major, phone, indate);
 
+    insertQuery("refg", def, def, def, def, def, def, def, def, def, def, def, def, def, def, def, def);
   }
 
   closeQuery();
 }
 
-// ######### QUERY METHODS ##########
+// ######## QUERY METHODS #########
 
 function serialMaker(chasoo, gender, student_number) {
   var result = chasoo[2];
@@ -131,10 +124,22 @@ function serialMaker(chasoo, gender, student_number) {
   return result
 }
 
+function logRefresh(){
+  log = [];
+  affected = 0;
+  monitor = new EventEmitter();
+}
 
-
-
-
+function versionUp(){
+  currentBuild += 1;
+  currentVersion = currentVersion[0] + currentVersion[1] + "." + String(currentBuild);
+  versionInfo = {
+    "schema": currentSchema,
+    "version": currentVersion,
+    "build": currentBuild,
+    "date": new Date()
+  };
+}
 
 
 
