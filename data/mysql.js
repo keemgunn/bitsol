@@ -2,7 +2,8 @@ const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql');
-const version = require('../api/config.js')
+const version = require('../api/config.js');
+const { brotliDecompress } = require('zlib');
 
 let versionFile = path.join(__dirname, './db.json');
 let logFile = path.join(__dirname, './db_log.json');
@@ -98,9 +99,53 @@ function firstData(worksheet, res){
   use(currentSchema);
   
   var def = "DEFAULT";
-  var serial_number, name, gender, term, student_number, phone, faculty, major, indate;
+
+  var ab = ["A","B"];
+  var floor_A = ["01", "02", "03", "04", "05", "06", "07", "B1"];
+  var count_A = [44, 44, 44, 44, 45, 46, 46, 13]; // ++
+  var floor_B = ["01", "02", "03", "04", "05", "06", "07"];
+  var count_B = [22, 26, 26, 26, 26, 27, 27]; // ++
+
+  var room_name, building, floor, room_number, seat;
+
+  building = "A";
+  for(f = 0; f < floor_A.length; f++){ // 층 수 만큼
+    floor = floor_A[f];
+    for(r = 1; r < count_A[f]; r++){ // 방 갯수만큼
+      room_number = String(r);
+      if(room_number.length === 1){
+        room_number = "0" + room_number;
+      }
+      for(i=0; i < ab.length; i++){
+        seat = ab[i];
+        room_name = building + floor + room_number + seat;
+        insertQuery("room", def, room_name, building, floor, room_number, seat, def);
+      }
+    }
+  }
+  building = "B";
+  for(f = 0; f < floor_B.length; f++){ // 층 수 만큼
+    floor = floor_B[f];
+    for(r = 1; r < count_B[f]; r++){ // 방 갯수만큼
+      room_number = String(r);
+      if(room_number.length === 1){
+        room_number = "0" + room_number;
+      }
+      for(i=0; i < ab.length; i++){
+        seat = ab[i];
+        room_name = building + floor + room_number + seat;
+        insertQuery("room", def, room_name, building, floor, room_number, seat, def);
+      }
+    }
+  }
+
+  var serial_number, name, gender, term, student_number, faculty, major, phone, indate;
+  var roomMatch;
+
   for (i = 0; i < worksheet.length; i++){ // 학생수만큼
     serial_number = serialMaker(worksheet[i].차수, worksheet[i].성별, worksheet[i].학번);
+    serials.push(serial_number);
+
     name = worksheet[i].성명;
     gender = worksheet[i].성별;
     term = worksheet[i].기간;
@@ -109,10 +154,13 @@ function firstData(worksheet, res){
     major = worksheet[i].학과;
     phone = worksheet[i].HP;
     indate = worksheet[i].입사일자;
+    roomMatch = worksheet[i].확정방;
     
     insertQuery("students", def, serial_number, name, gender, term, student_number, faculty, major, phone, indate);
+
     insertQuery("refg", def, def, def, def, def, def, def, def, def, def, def, def, def, def, def, def);
-    serials.push(serial_number);
+
+    updateQuery("room", "room_name", roomMatch, "student_id", i+1);
   }
   
   versionUp();
@@ -155,7 +203,6 @@ function versionUp(){
     "serial-list": serials
   };
 }
-
 
 
 
@@ -258,6 +305,33 @@ function insertQuery(tableName, ...args){
   query += ");" ;
   goQuery(query);
 }
+function updateQuery(tableName, condition, match, columnName, data){
+  var query = "UPDATE " + tableName + " SET " + columnName + " = ";
+  if (data === "DEFAULT"){
+    query = query.concat(data);
+  }else if (typeof(data) === "number"){
+    query = query.concat(data);
+  }else {
+    query = query.concat(quote(data));
+  }
+  query = query.concat(" WHERE " + condition + " = ");
+  if (match === "DEFAULT"){
+    query = query.concat(match);
+  }else if (typeof(match) === "number"){
+    query = query.concat(match);
+  }else {
+    query = query.concat(quote(match));
+  }
+  query = query.concat(";");
+  goQuery(query);
+}
+
+
+
+
+
+
+
 
 
 
