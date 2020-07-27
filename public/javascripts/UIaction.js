@@ -23,7 +23,8 @@ function winSize() {
 
     layoutCase = layoutRow * layoutCol ;
     if (layoutCase <= 3) {
-        drpWrap.style.top = "-112px";
+        // drpWrap.style.top = "-112px";
+        drpWrap.style.top = "-145px";
     } else {
         drpWrap.style.top = "-145px";
     }

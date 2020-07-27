@@ -13,31 +13,9 @@
 
     transition: 0.3s;
     /* background-color: brown; */
+
+    padding-left: 14px;
 }
-#searchBox {
-    position: absolute;
-    left: 20px;
-    top: 10px;
-
-    width: 400px;
-    height: 400px;
-    margin: 0;
-    padding: 5px;
-
-    /* background-color: aquamarine; */
-}
-#roomList {
-    position: absolute;
-    left: 20px;
-    top: 50px;
-    overflow: auto;
-
-    width: 300px;
-    height: 350px;
-    /* background-color: azure; */
-}
-
-
 
 
 

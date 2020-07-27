@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql');
 const version = require('./config.js');
-const { brotliDecompress } = require('zlib');
+const Joi = require('joi');
 
 let versionFile = path.join(__dirname, '../data/db.json');
 let logFile = path.join(__dirname, '../data/db_log.json');
@@ -192,14 +192,21 @@ function searchStudent(keyword, res){
   
   use(currentSchema);
 
-  var key = quote(keyword);
-  var query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+  let key = keyword;
+  let joiResult = searchKeySchema.validate({keyword:key});
+  if (joiResult.error){
+    res.json({
+      arg: []
+    });
+  }else {
+    key = quote(keyword);
 
-  query = query.concat("r.room_name REGEXP ", key, " || ");
-
-  query = query.concat("s.student_name REGEXP ", key, ");")
-
-  select(query);
+    let query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+    query = query.concat("r.room_name REGEXP ", key, " || ");
+    query = query.concat("s.student_name REGEXP ", key, ");")
+  
+    select(query);
+  }
 }
 
 // ######## QUERY METHODS #########
@@ -239,6 +246,12 @@ function getData00(){
   return result
 }
 
+const searchKeySchema = Joi.object({
+  keyword: Joi.string()
+    .alphanum()
+    .min(1)
+    .required()
+});
 
 
 // ========================= MONITOR SETTING

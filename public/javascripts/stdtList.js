@@ -5,11 +5,20 @@ let resultArr; // SEARCH RESULTS
 const author = "gunn"
 
 
+let displayScope = 0
+function selectDS(arg){
+  displayScope = arg;
+  console.log("displayScope:");
+  console.log(arg);
+}
+
+
+
 
 // ################################# SEARCH API
 
-let initialSearchMsg = "initial search message";
-displayResult(midCell, "initialMsg", initialSearchMsg);
+let displayContent = "호실번호 또는 이름으로 검색";
+displayResult(midCell, "no-result", displayContent);
 
 async function searchStudent() {
   console.log('### SEARCH REQUEST ... @stdtList/searchStudent');
@@ -27,7 +36,11 @@ async function searchStudent() {
 
   console.log(resultArr.length + " results"); // results callback
 
-  let displayContent; // make display elements
+  if(resultArr.length == 0){
+    displayContent = "검색결과가 없습니다...\n 호실번호 또는 이름으로 검색";
+    displayResult(midCell, "no-result", displayContent);
+  }
+
   for(i=0; i < resultArr.length; i++){
     displayContent = "room: " + resultArr[i].room_name + "\n" + "name:" + resultArr[i].student_name;
     displayResult(midCell, "result"+String(i), displayContent);
