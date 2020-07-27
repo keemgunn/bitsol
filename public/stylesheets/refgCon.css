@@ -17,6 +17,25 @@
     padding-left: 14px;
 }
 
+#midCell {
+    background-color: azure;
+
+}
+.units div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+    
+}
+.units div:hover {
+    background-color: navajowhite;
+    
+}
+.units button {
+    margin: 4px;
+}
+
+
 
 
 

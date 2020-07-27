@@ -18,7 +18,7 @@ function selectDS(arg){
 // ################################# SEARCH API
 
 let displayContent = "호실번호 또는 이름으로 검색";
-displayResult(midCell, "no-result", displayContent);
+noResult(midCell, "no-result", displayContent);
 
 async function searchStudent() {
   console.log('### SEARCH REQUEST ... @stdtList/searchStudent');
@@ -38,20 +38,13 @@ async function searchStudent() {
 
   if(resultArr.length == 0){
     displayContent = "검색결과가 없습니다...\n 호실번호 또는 이름으로 검색";
-    displayResult(midCell, "no-result", displayContent);
+    noResult(midCell, "no-result", displayContent);
   }
 
   for(i=0; i < resultArr.length; i++){
     displayContent = "room: " + resultArr[i].room_name + "\n" + "name:" + resultArr[i].student_name;
     displayResult(midCell, "result"+String(i), displayContent);
   }
-}
-
-function displayResult(parent, id, content){
-  var child = document.createElement("p");
-  child.setAttribute('id', id);
-  child.appendChild(document.createTextNode(content));
-  parent.appendChild(child);
 }
 
 function refreshNode(parent, child, id){
@@ -61,6 +54,45 @@ function refreshNode(parent, child, id){
   parent.appendChild(remake);
   return document.getElementById(id);
 }
+
+function noResult(parent, id, content){
+  var child = document.createElement("p");
+  child.setAttribute('id', id);
+  child.appendChild(document.createTextNode(content));
+  parent.appendChild(child);
+}
+
+function displayResult(parent, resultID, content){
+  var child = document.createElement("div");
+  child.setAttribute('class', 'units');
+  child.appendChild(makeResultForm(resultID, content));
+  parent.appendChild(child);
+}
+function makeResultForm(resultID, content){
+  let btn, text;
+  let result = document.createElement("div");
+  result.setAttribute('id', resultID);
+
+  result.appendChild(document.createTextNode(content));
+
+  btn = document.createElement('button');
+    text = document.createTextNode('-');
+      btn.appendChild(text);
+  result.appendChild(btn);
+
+  btn = document.createElement('button');
+  text = document.createTextNode('+');
+    btn.appendChild(text);
+  result.appendChild(btn);
+
+  return result
+}
+
+
+
+
+
+
 
 
 
