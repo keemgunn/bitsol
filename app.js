@@ -80,9 +80,9 @@ app.post('/api/db/update/refg', (req, res) => {
 
 app.post('/api/db/search', (req, res) => {
     console.log("search request for refg ... @api/db/search");
-    searchKey = req.body.searchKey;
+    searchKey = req.body.keyword;
 
-    mysql.searchRefgData(searchKey, res)
+    mysql.searchStudent(searchKey, res);
 })
 
 

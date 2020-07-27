@@ -99,13 +99,11 @@ function firstData(worksheet, res){
   use(currentSchema);
   
   var def = "DEFAULT";
-
   var ab = ["A","B"];
   var floor_A = ["01", "02", "03", "04", "05", "06", "07", "B1"];
   var count_A = [44, 44, 44, 44, 45, 46, 46, 13]; // ++
   var floor_B = ["01", "02", "03", "04", "05", "06", "07"];
   var count_B = [22, 26, 26, 26, 26, 27, 27]; // ++
-
   var room_name, building, floor, room_number, seat;
 
   building = "A";
@@ -188,7 +186,7 @@ function updateRefg(student_id, refgTerm, amount, adjust, res){
   close();
 }
 
-function searchRefgData(keyword, res){
+function searchStudent(keyword, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
@@ -196,12 +194,13 @@ function searchRefgData(keyword, res){
   use(currentSchema);
 
   var key = quote(keyword);
-  var query = "SELECT r.room_name, s.student_name, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+  var query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
 
   query = query.concat("r.room_name REGEXP ", key, " || ");
+
   query = query.concat("s.student_name REGEXP ", key, ");")
 
-  selectQuery(query);
+  select(query);
 }
 
 
@@ -349,8 +348,7 @@ function insertQuery(tableName, ...args){
       query = query.concat(data,",");
     }else {
       query = query.concat(quote(data),",");
-    }
-  }
+    }}
   query = query.slice(0,-1);
   query += ");" ;
   goQuery(query);
@@ -375,7 +373,7 @@ function updateQuery(tableName, condition, match, columnName, data){
   query = query.concat(";");
   goQuery(query);
 }
-function selectQuery(query){
+function select(query){
   connection.query(query, (error, results, fields) =>{
     if(error) {
       monitor.emit('query error', error);
@@ -433,7 +431,7 @@ module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
 module.exports.use = use;
 module.exports.updateRefg = updateRefg;
-module.exports.searchRefgData = searchRefgData;
+module.exports.searchStudent = searchStudent;
 
 // pauseConnection();
 // reConnect();
