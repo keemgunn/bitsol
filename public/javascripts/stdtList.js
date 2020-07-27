@@ -1,66 +1,60 @@
-// input refresh & search method
-var keyword, searchPack, searchReq, searchRes;
-var resultArr = []; var resultContent;
-var room_id, room_name, student_name, term, student_number, faculty, major, phone, indate, student_id;
+const stdtList = document.getElementById("stdtList"); // master
+let midCell = document.getElementById("midCell"); // refreshing
+let resultArr; // SEARCH RESULTS
 
-const stdtList = document.getElementById("stdtList");
-var midCell = document.getElementById("midCell");
-var newCell, resultBox;
+const author = "gunn"
 
-let refgTerm = '19_1';
-const account = "gunn"
 
-displayResult(midCell, newCell, "search manual here...");
 
-keyword = "101";
+// ################################# SEARCH API
+
+let initialSearchMsg = "initial search message";
+displayResult(midCell, "initialMsg", initialSearchMsg);
+
 async function searchStudent() {
   console.log('### SEARCH REQUEST ... @stdtList/searchStudent');
   keyword = document.getElementById("keyword").value;
-  var searchPack = {
+  var package = {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({ keyword })
   };
-  searchReq = await fetch('/api/db/search', searchPack);
-  searchRes = await searchReq.json(); // {arg: Array(n)}
-  resultArr = searchRes.arg
-  
-  refreshNode(stdtList, midCell, "midCell");
-  midCell = document.getElementById("midCell");
+  var request = await fetch('/api/db/search', package);
+  var response = await request.json(); // {arg: Array(n)}
+  resultArr = response.arg;
 
+  midCell = refreshNode(stdtList, midCell, "midCell");
+
+  console.log(resultArr.length + " results"); // results callback
+
+  let displayContent; // make display elements
   for(i=0; i < resultArr.length; i++){
-    room_name = resultArr[i].room_name;
-    student_name = resultArr[i].student_name;
-    resultContent = "room: " + room_name + "\n" + "name:" + student_name;
-    displayResult(midCell, newCell, resultContent);
+    displayContent = "room: " + resultArr[i].room_name + "\n" + "name:" + resultArr[i].student_name;
+    displayResult(midCell, "result"+String(i), displayContent);
   }
 }
-function displayResult(parent, child, content){
-  child = document.createElement("p");
-  child.setAttribute('id', 'resultBox');
+
+function displayResult(parent, id, content){
+  var child = document.createElement("p");
+  child.setAttribute('id', id);
   child.appendChild(document.createTextNode(content));
   parent.appendChild(child);
-  resultBox = document.getElementById("resultBox");
-  console.log(" ------ f: displayResult");
 }
+
 function refreshNode(parent, child, id){
   parent.removeChild(child);
   var remake = document.createElement('div');
   remake.setAttribute('id', id);
   parent.appendChild(remake);
-  // child = document.getElementById(id);
+  return document.getElementById(id);
 }
 
 
 
+// ################################# DB UPDATE API
 
-
-
-
-
-
-
-// key settings
+let refgTerm = '19_1';
+let keyword = "101";
 let adjust = "+";
 let amount = 2;
 
