@@ -93,21 +93,21 @@ async function initDB() {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      "givenYear": givenYear
+      givenYear
     })};
   var dbAction = await fetch('/api/db/init', package);
   var response = await dbAction.json();
   console.log(response);
 }
 
-
+// -------------- INSERT FIRST STUDENT LIST
 async function firstData() {
-  console.log('f: test00');
+  console.log('f: firstData');
   var package = {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      "givenYear": givenYear
+      givenYear
     })};
   var dbAction = await fetch('/api/db/init/dataforming', package);
   var response = await dbAction.json();
@@ -119,6 +119,7 @@ async function firstData() {
 
 
 function yearSet() {
+  console.log('f: yearSet');
   givenYear = document.getElementById("year").value;
   if (givenYear === 'none') {
     infoCheck = 0; // when entered

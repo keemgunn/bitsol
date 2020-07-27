@@ -62,6 +62,28 @@ app.post('/api/db/init/dataforming', (req, res) => {
 });
 
 
+var searchKey;
+var refgTerm, adjust, amount;
+
+var student_id = 726;
+
+app.post('/api/db/update/refg', (req, res) => {
+    console.log("update request for refg ... @api/db/update/refg");
+    console.log(req.body);
+
+    refgTerm = req.body.refgTerm;
+    adjust = req.body.adjust;
+    amount = req.body.amount;
+
+    mysql.updateRefg(student_id, refgTerm, amount, adjust, res);
+});
+
+app.post('/api/db/search', (req, res) => {
+    console.log("search request for refg ... @api/db/search");
+    searchKey = req.body.keyword;
+
+    mysql.searchStudent(searchKey, res);
+})
 
 
 

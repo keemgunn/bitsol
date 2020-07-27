@@ -53,10 +53,12 @@
 <!-------------------- RFG -->
     <div class="rfgCont">
         <div id="searchBox">
-            <label for="roomNum">room number:</label>
-            <input type="text" id="roomNum" name="roomNum" onkeyup="roomNumSearch()"><br><br>
-            <div id="roomList">
-                <!-- dynamic -->
+            <label for="keyword">keyword:</label>
+            <input type="text" id="keyword" name="keyword" onkeyup="searchStudent()"><br><br>
+            <div id="stdtList">
+                <div id="midCell">
+                    <!-- dynamic -->
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +88,7 @@
 
 
     <script src="/javascripts/UIaction.js"></script>
-    <script src="/javascripts/stdListAPI.js"></script>
+    <script src="/javascripts/stdtList.js"></script>
     <!-- <script src="/javascripts/themeChanger.js"></script> -->
 </body>
 </html>
