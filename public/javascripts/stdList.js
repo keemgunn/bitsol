@@ -35,3 +35,44 @@ async function roomNumSearch() {
   // 그 데이터를 표시해야함
   // 색인된 호실 갯수만큼 리스트 박스를 생성하고, 동시에 각각의 박스에 내용을 채워넣는다
 }
+
+
+
+
+let refgTerm = "19_1";
+let adjust = "+";
+let amount = 2;
+
+async function refgUpdate() {
+  console.log('f: refgUpdate');
+  var package = {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      refgTerm,
+      adjust,
+      amount
+    })
+  };
+  var request = await fetch('/api/db/update/refg', package);
+  var response = await request.json();
+  console.log(response);
+}
+
+
+
+let searchKey = "101";
+
+async function searchRefgData(){
+  console.log('f: searchRefgData');
+  var package = {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      searchKey
+    })
+  };
+  var request = await fetch('/api/db/search', package);
+  var result = await request.json(); // {arg: Array(n)}
+  console.log(result);
+}
