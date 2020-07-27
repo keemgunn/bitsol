@@ -4,6 +4,10 @@ let resultArr; // SEARCH RESULTS
 
 const author = "gunn"
 
+let refgTerm = '19_1';
+let keyword = "101";
+let adjust = "+";
+let amount = 0;
 
 let displayScope = 0
 function selectDS(arg){
@@ -42,8 +46,8 @@ async function searchStudent() {
   }
 
   for(i=0; i < resultArr.length; i++){
-    displayContent = "room: " + resultArr[i].room_name + "\n" + "name:" + resultArr[i].student_name;
-    displayResult(midCell, "result"+String(i), displayContent);
+    displayContent = "room: " + resultArr[i].room_name + "\n" + "name:" + resultArr[i].student_name + " refg:" + resultArr[i]["19_1"] + "  ";
+    displayResult(midCell, i, displayContent);
   }
 }
 
@@ -63,30 +67,60 @@ function noResult(parent, content){
 
 
 
-function displayResult(parent, resultID, content){
+function displayResult(parent, resultNum, content){
   var child = document.createElement("div");
   child.setAttribute('class', 'units');
-  child.appendChild(makeResultForm(resultID, content));
+  child.appendChild(makeResultForm(resultNum, content));
   parent.appendChild(child);
 }
-function makeResultForm(resultID, content){
+
+function makeResultForm(resultNum, content){
   let btn, text;
   let result = document.createElement("div");
-  result.setAttribute('id', resultID);
+  result.setAttribute('id', "result"+String(resultNum));
 
+  // ~~~~~~~~~ 검색결과, string
   result.appendChild(document.createTextNode(content));
 
+  // ~~~~~~~~~ (-) 버튼
   btn = document.createElement('button');
+  btn.onclick =function(){adjustBtn("-");};
     text = document.createTextNode('-');
       btn.appendChild(text);
   result.appendChild(btn);
 
+  // ~~~~~~~~~ (+) 버튼
   btn = document.createElement('button');
-  text = document.createTextNode('+');
+    btn.onclick =function(){adjustBtn("+");};
+    text = document.createTextNode('+');
+      btn.appendChild(text);
+  result.appendChild(btn);
+
+  // ~~~~~~~~~ (확인) 버튼
+  btn = document.createElement('button');
+  // btn.setAttribute('onclick', refgUpdate());
+  text = document.createTextNode('submit');
     btn.appendChild(text);
   result.appendChild(btn);
 
   return result
+}
+
+function adjustBtn(arg, resultNum){
+  adjust = arg;
+  if(arg === "+"){
+    amount += 1;
+  }else {
+    amount -= 1;
+  }
+  if(amount > 2){
+    console.log("amount is bigger than 2");
+    amount = 2;
+  }else if(amount < 0) {
+    console.log("amount is less than 0");
+    amount = 0;
+  }
+  console.log('amount: ' + amount);
 }
 
 
@@ -99,10 +133,7 @@ function makeResultForm(resultID, content){
 
 // ################################# DB UPDATE API
 
-let refgTerm = '19_1';
-let keyword = "101";
-let adjust = "+";
-let amount = 2;
+
 
 async function refgUpdate() {
   console.log('f: refgUpdate');
