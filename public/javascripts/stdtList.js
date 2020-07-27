@@ -18,7 +18,7 @@ function selectDS(arg){
 // ################################# SEARCH API
 
 let displayContent = "호실번호 또는 이름으로 검색";
-noResult(midCell, "no-result", displayContent);
+noResult(midCell, displayContent);
 
 async function searchStudent() {
   console.log('### SEARCH REQUEST ... @stdtList/searchStudent');
@@ -38,7 +38,7 @@ async function searchStudent() {
 
   if(resultArr.length == 0){
     displayContent = "검색결과가 없습니다...\n 호실번호 또는 이름으로 검색";
-    noResult(midCell, "no-result", displayContent);
+    noResult(midCell, displayContent);
   }
 
   for(i=0; i < resultArr.length; i++){
@@ -54,13 +54,14 @@ function refreshNode(parent, child, id){
   parent.appendChild(remake);
   return document.getElementById(id);
 }
-
-function noResult(parent, id, content){
+function noResult(parent, content){
   var child = document.createElement("p");
-  child.setAttribute('id', id);
+  child.setAttribute('id', 'no_result');
   child.appendChild(document.createTextNode(content));
   parent.appendChild(child);
 }
+
+
 
 function displayResult(parent, resultID, content){
   var child = document.createElement("div");
