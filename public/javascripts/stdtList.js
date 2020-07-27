@@ -65,43 +65,105 @@ function noResult(content){
 
 
 function displayResult(i){ // i is from resultArr(i)
-  var child = document.createElement("div");
-  child.setAttribute('class', 'units');
-  child.appendChild(makeResultForm(i));
-  midCell.appendChild(child);
+  var unit = document.createElement("div");
+  unit.setAttribute('class', "unit" + resultArr[i].building + resultArr[i].seat);
+
+  unit.appendChild(RefgName());
+  unit.appendChild(RefgPack(i));
+  unit.appendChild(RefgBtn(i));
+  unit.appendChild(RefgSubmit(i));
+
+  midCell.appendChild(unit);
 }
 
-function makeResultForm(i){
-  let btn, text;
-  let result = document.createElement("div");
-  result.setAttribute('id', "result"+String(i));
+function RefgName(){
+  let results = document.createElement("div");
+  results.setAttribute('class', 'refgName');
+  results.appendChild(document.createTextNode(displayContent))
 
-  // ~~~~~~~~~ 검색결과, string
-  result.appendChild(document.createTextNode(displayContent));
-
-  // ~~~~~~~~~ (-) 버튼
-  btn = document.createElement('button');
-  btn.onclick =function(){adjustBtn("-", i);};
-    text = document.createTextNode('-');
-      btn.appendChild(text);
-  result.appendChild(btn);
-
-  // ~~~~~~~~~ (+) 버튼
-  btn = document.createElement('button');
-    btn.onclick =function(){adjustBtn("+", i);};
-    text = document.createTextNode('+');
-      btn.appendChild(text);
-  result.appendChild(btn);
-
-  // ~~~~~~~~~ (확인) 버튼
-  btn = document.createElement('button');
-    btn.onclick =function(){refgUpdate(i)};
-    text = document.createTextNode('submit');
-      btn.appendChild(text);
-  result.appendChild(btn);
-
-  return result
+  return results
 }
+
+function RefgPack(i) {
+  let results = document.createElement("div");
+  results.setAttribute('class', 'refgPack');
+  let cast0, cast1;
+
+  cast0 = document.createElement('div'); // "pack[i]0"
+  cast0.setAttribute('id', "pack" + String(i) + "0");
+  
+  cast1 = document.createElement('div'); // "pack[i]1"
+  cast1.setAttribute('id', "pack" + String(i) + "1");
+  
+  if(resultArr[i][refgTerm] == 0){
+    cast0.appendChild(attatch_pack(1));
+    cast1.appendChild(attatch_pack(1));
+  }else if(resultArr[i][refgTerm] == 1){
+    cast0.appendChild(attatch_pack(1));
+    cast1.appendChild(attatch_pack(0));
+  }else{
+    cast0.appendChild(attatch_pack(0));
+    cast1.appendChild(attatch_pack(0));
+  }
+  
+  results.appendChild(cast0); // "pack[i]0"
+  results.appendChild(cast1); // "pack[i]1"
+
+  return results
+}
+function attatch_pack(type){
+  let src = "/../images/refgPack_" + String(type) + ".png";
+  let results = document.createElement("img");
+  results.setAttribute('src', src);
+  return results
+}
+
+
+
+
+function refresh_pack(i, num){
+
+  return results
+}
+
+
+
+
+function RefgBtn(i) {
+  let results = document.createElement("div");
+  results.setAttribute('class', 'refgBtn');
+  let cast, text;
+
+  cast = document.createElement('button'); 
+  cast.onclick =function(){adjustBtn("-", i);};
+  text = document.createTextNode('-');
+  cast.appendChild(text);
+  results.appendChild(cast); // (-) 버튼
+
+  cast = document.createElement('button');
+  cast.onclick =function(){adjustBtn("+", i);};
+  text = document.createTextNode('+');
+  cast.appendChild(text);
+  results.appendChild(cast); // (+) 버튼
+
+  return results
+}
+
+function RefgSubmit(i) {
+  let results = document.createElement("div");
+  results.setAttribute('class', 'refgSubmit');
+  let cast, text;
+
+  cast = document.createElement('button'); 
+  cast.onclick =function(){refgUpdate(i);};
+  text = document.createTextNode('submit');
+  cast.appendChild(text);
+  results.appendChild(cast);
+
+  return results
+}
+
+
 
 function adjustBtn(arg, i){
   if(arg === "+"){
@@ -116,20 +178,8 @@ function adjustBtn(arg, i){
     console.log("less than 0");
     resultArr[i].update = 0;
   }
-  console.log('amount: ' + resultArr[i].update);
+  console.log('update: ' + resultArr[i].update);
 }
-
-
-
-
-
-
-
-
-
-// ################################# DB UPDATE API
-
-
 
 async function refgUpdate(i) {
   console.log('f: refgUpdate');

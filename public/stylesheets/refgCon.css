@@ -19,23 +19,75 @@
 
 #midCell {
     background-color: azure;
-
 }
-.units div {
+#midCell button {
+    margin: 4px;
+}
+/* 
+
+
+
+.unitAA div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: rgb(221, 104, 49);
+} .unitAA div:hover {
+    background-color: navajowhite;
+}
+.unitAB div {
     padding: 3px;
     padding-bottom: 5px;
     background-color: bisque;
-    
-}
-.units div:hover {
+} .unitAB div:hover {
     background-color: navajowhite;
+}
+.unitBA div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+} .unitBA div:hover {
+    background-color: navajowhite;
+}
+.unitBB div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+} .unitBB div:hover {
+    background-color: navajowhite;
+}
+.refgName {
+    position: absolute;
+    left: 0;
+}
+
+.refgPack {
+    position: absolute;
+    left: 500px;
+
+    background-color: blue;
+}
+.refgPack img {
+    display: inline-flex;
     
-}
-.units button {
-    margin: 4px;
+    width: 24px;
+    height: 24px;
+    
+    background-color: aqua;
 }
 
+.refgBtn {
+    position: absolute;
+    left: 550px;
+}
 
+.refgSubmit {
+    position: absolute;
+    left: 600;
+} 
+
+
+
+*/
 
 
 
