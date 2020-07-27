@@ -2,11 +2,11 @@ const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql');
-const version = require('../api/config.js');
+const version = require('./config.js');
 const { brotliDecompress } = require('zlib');
 
-let versionFile = path.join(__dirname, './db.json');
-let logFile = path.join(__dirname, './db_log.json');
+let versionFile = path.join(__dirname, '../data/db.json');
+let logFile = path.join(__dirname, '../data/db_log.json');
 let versionInfo = version.readSync(versionFile);
 var currentSchema, currentBuild, currentVersion;
 var serials = [];
@@ -41,7 +41,6 @@ if(versionInfo.hasOwnProperty('serial-list')){
 let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
-// common resources
 
 
 
@@ -203,13 +202,6 @@ function searchStudent(keyword, res){
   select(query);
 }
 
-
-
-
-
-
-
-
 // ######## QUERY METHODS #########
 
 function serialMaker(chasoo, gender, student_number) {
@@ -246,9 +238,6 @@ function getData00(){
   var result = 0;
   return result
 }
-
-
-
 
 
 
@@ -385,15 +374,6 @@ function select(query){
 
 
 
-
-
-
-
-
-
-
-
-
 // ========================= CONNECTION SETTING
 
 function newConnection(){
@@ -430,8 +410,8 @@ function resumeConnection(){
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
 module.exports.use = use;
-module.exports.updateRefg = updateRefg;
 module.exports.searchStudent = searchStudent;
+module.exports.updateRefg = updateRefg;
 
 // pauseConnection();
 // reConnect();
