@@ -163,21 +163,12 @@ function firstData(worksheet, res){
   close();
 }
 
-function updateRefg(student_id, refgTerm, amount, adjust, res){
+function updateRefg(student_id, refgTerm, update, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
   
   use(currentSchema);
-
-  let history = getData00();  // return 0
-  var update;
-
-  if(adjust == "+"){
-    update = history + amount;
-  }else {
-    update = history - amount;
-  }
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
 
@@ -192,16 +183,15 @@ function searchStudent(keyword, res){
   
   use(currentSchema);
 
-  let key = keyword;
-  let joiResult = searchKeySchema.validate({keyword:key});
+  let joiResult = searchKeySchema.validate({keyword});
   if (joiResult.error){
     res.json({
       arg: []
     });
   }else {
-    key = quote(keyword);
+    let key = quote(joiResult.value.keyword);
 
-    let query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+    let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");")
   
@@ -241,16 +231,12 @@ function versionUp(){
   };
 }
 
-function getData00(){
-  var result = 0;
-  return result
-}
-
 const searchKeySchema = Joi.object({
   keyword: Joi.string()
-    .alphanum()
+    .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
     .min(1)
     .required()
+    .trim(true)
 });
 
 
