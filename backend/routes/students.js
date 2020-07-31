@@ -4,11 +4,12 @@ const router = express.Router();
 const users = require('../data/users.json')
 
 router.get('/', (req, res, next) => {
-  let user = users[req.body.id];
-  res.json({
-    "username": user["username"],
-    "color-config": user["color-config"]
-  })
+  // let user = users[req.body.id];
+  // res.json({
+  //   "username": user["username"],
+  //   "color-config": user["color-config"]
+  // })
+  res.send(users);
 });
 
 module.exports = router;

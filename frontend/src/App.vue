@@ -1,46 +1,44 @@
 <template>
-  <div id="app"
-    v-bind:style="theme_gray"
+  <div
+    id="app"
   >
 
-
-
-
+  <router-view></router-view>
 
   </div>
 </template>
 
 
 <script>
-
-import colors from './assets/colors.json';
-
-
-
 export default {
   name: 'App',
   components: {
 
   },
   data() { return {
-    theme_gray: {
-      "background-color": colors["default"]["i98-bg"]
-    }
+
   }}
 }
 </script>
 
 
-<style>
+<style lang="scss">
+@import "@/assets/styles/_color_default.scss";
+
 #app {
-  position: absolute;
+  display: flex;
   width: 100vw;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
 
   font-family: 'Space Mono', 'Nanum Square', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
 
+  color: $i30;
+  background-color: $i94;
 }
 </style>
