@@ -14,6 +14,31 @@ app.use(express.text({
     limit: "50mb"
 }));
 
+const studentsRouter = require('./routes/students');
+
+
+
+
+
+
+
+app.use('/api/students', studentsRouter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const urls = {
     refg: path.join(__dirname,'/html/refg.html'),
     dbtest: path.join(__dirname, '/html/dbTest.html')

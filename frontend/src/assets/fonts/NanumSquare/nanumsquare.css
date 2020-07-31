@@ -13,6 +13,7 @@
 	url(./NanumSquareR.woff) format('woff'),
 	url(./NanumSquareR.ttf) format('truetype');
 	font-weight: 400;
+	font-display: swap;
 }
 
 @font-face {
@@ -24,6 +25,7 @@
 	url(./NanumSquareL.woff) format('woff'),
 	url(./NanumSquareL.ttf) format('truetype');
 	font-weight: 300;
+	font-display: swap;
 }
 
 @font-face {
@@ -35,6 +37,7 @@
 	url(./NanumSquareB.woff) format('woff'),
 	url(./NanumSquareB.ttf) format('truetype');
 	font-weight: 700;
+	font-display: swap;
 }
 
 @font-face {
@@ -46,4 +49,5 @@
 	url(./NanumSquareEB.woff) format('woff'),
 	url(./NanumSquareEB.ttf) format('truetype');
 	font-weight: 800;
+	font-display: swap;
 }

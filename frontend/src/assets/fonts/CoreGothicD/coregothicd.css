@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'Core Gothic D';
+    src: url('CoreGothicD-4Regular.eot'),
+    url('CoreGothicD-4Regular.eot?#iefix') format('embedded-opentype'),
+    url('CoreGothicD-4Regular.woff2') format('woff2'),
+    url('CoreGothicD-4Regular.woff') format('woff'),
+    url('CoreGothicD-4Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Core Gothic D';
+    src: url('CoreGothicD-6Bold.eot'),
+    url('CoreGothicD-6Bold.eot?#iefix') format('embedded-opentype'),
+    url('CoreGothicD-6Bold.woff2') format('woff2'),
+    url('CoreGothicD-6Bold.woff') format('woff'),
+    url('CoreGothicD-6Bold.ttf') format('truetype');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Core Gothic D';
+    src: url('CoreGothicD-5Medium.eot'),
+    url('CoreGothicD-5Medium.eot?#iefix') format('embedded-opentype'),
+    url('CoreGothicD-5Medium.woff2') format('woff2'),
+    url('CoreGothicD-5Medium.woff') format('woff'),
+    url('CoreGothicD-5Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-display: swap;
+}
+
