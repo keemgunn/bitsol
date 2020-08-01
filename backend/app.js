@@ -25,7 +25,7 @@ const studentsRouter = require('./routes/students');
 // app.use('/api/students', studentsRouter);
 
 
-app.post('/api/login', (req,res) => {
+app.post('/api/auth', (req,res) => {
     console.log("got something ....");
     
     let userId = req.body.userId;

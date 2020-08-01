@@ -18,15 +18,19 @@
     class="btn"
   />
   </form>
+  <router-link 
+    to="/students" 
+    tag="button"
+    class="btn"
+  >foo</router-link>
 
-  <p v-bind="test"> {{ test }} </p>
+  <p v-bind="testArr"> {{ testArr }}</p>
 </div>
 </template>
 
 
 <script>
-// let themeSelect = "default"
-// let themeRoot = "@/assets/styles/_color_"+ themeSelect + ".scss";
+
 
 
 
@@ -35,8 +39,8 @@ export default {
   data() { return {
     message: "Hello",
     id: '',
-    test: [],
-    axiostest: null
+    testArr: [],
+    test00: null
   }},
   computed: {
     reversedMessage: function() {
@@ -47,59 +51,21 @@ export default {
     async login(e) {
       e.preventDefault();
 
-      // let pack = {
-      //   method: 'POST',
-      //   headers: {"Content-Type": "application/json"},
-      //   body: JSON.stringify({userId: this.id})
-      // };
-      // console.log(pack.body);
-      // let request = await fetch('/api/login', pack);
-      // console.log(request);
-      // let response = await request.json();
-      // console.log(response);
+      // const baseURI = 'https://jsonplaceholder.typicode.com';
+      // this.$http.get(`${baseURI}/posts`)
+      // .then( result => 
+      //   this.testArr = result.data
+      // ) // IT WORKS !!!!!!
 
-
-      // this.$http.get('/api/students')
-      // .then((response) => {
-      //   this.test = response.data
-      // })
-
-      // let res = await fetch('/students')
-      // console.log(res);
-
-      // let data = await res.json();
-      // this.test = data;
-      // console.log(this.test);
-
-      const baseURI = 'https://jsonplaceholder.typicode.com';
-      this.$http.get(`${baseURI}/posts`)
-      .then( result => 
-        this.test = result.data
-      )
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      this.$http.post('/api/auth', {
+        userID: this.id
+        })
+        .then( res => {
+          this.test00 = res;
+        })
+        .catch( err => {
+          console.log(err);
+      });
 
 
       console.log(this.id);
@@ -111,6 +77,7 @@ export default {
     },
     input() {
       console.log(this.id);
+      // this.$router.push('/students');
     }
   }
 }
