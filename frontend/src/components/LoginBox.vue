@@ -11,20 +11,13 @@
     id = "id_field"
     required
   />
-  <label class="id_label" for="id">id:</label>
   <input 
     type="submit" 
     value="login" 
     class="btn"
   />
+  <label class="id_label" for="id">id:</label>
   </form>
-  <router-link 
-    to="/students" 
-    tag="button"
-    class="btn"
-  >foo</router-link>
-
-  <p v-bind="testArr"> {{ testArr }}</p>
 </div>
 </template>
 
@@ -51,12 +44,6 @@ export default {
     async login(e) {
       e.preventDefault();
 
-      // const baseURI = 'https://jsonplaceholder.typicode.com';
-      // this.$http.get(`${baseURI}/posts`)
-      // .then( result => 
-      //   this.testArr = result.data
-      // ) // IT WORKS !!!!!!
-
       this.$http.post('/api/auth', {
         userID: this.id
         })
@@ -66,7 +53,6 @@ export default {
         .catch( err => {
           console.log(err);
       });
-
 
       console.log(this.id);
 
@@ -114,7 +100,8 @@ export default {
     }
     &:placeholder-shown 
     ~ .id_label {
-    top: 480px;
+    position: relative;
+    bottom: 61px;
     font-size: 24px;
     cursor: text;
     }
@@ -128,19 +115,18 @@ export default {
   }
 
   .id_label {
-  position: absolute;
-  top: 462px;
-  font-size: 15px;
-  display: block;
+  display: -moz-popup;
+  position: relative;
+  bottom: 81px;
+  font-size: 17px;
   transition: 0.2s;
   }
 
   .id_field:focus {
   ~ .id_label {
-    position: absolute;
-    top: 462px;
-    font-size: 15px;
-    display: block;
+    position: relative;
+    bottom: 81px;
+    font-size: 17px;
     transition: 0.2s;
     }
   }

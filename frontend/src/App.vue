@@ -3,12 +3,9 @@
     id="app"
     v-bind:style="themeColor"
   >
-
   <router-view></router-view>
-
   </div>
 </template>
-
 
 <script>
 export default {
@@ -33,7 +30,6 @@ export default {
   }}
 }
 </script>
-
 
 <style lang="scss">
 #app {
