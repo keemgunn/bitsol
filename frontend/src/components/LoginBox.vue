@@ -18,6 +18,8 @@
     class="btn"
   />
   </form>
+
+  <p v-bind="test"> {{ test }} </p>
 </div>
 </template>
 
@@ -31,41 +33,76 @@
 export default {
   name:"LoginBox",
   data() { return {
+    message: "Hello",
     id: '',
-    test: []
+    test: [],
+    axiostest: null
   }},
+  computed: {
+    reversedMessage: function() {
+      return this.message.split('').reverse().join('')
+    }
+  },
   methods: {
-    login(e) {
+    async login(e) {
       e.preventDefault();
 
       // let pack = {
       //   method: 'POST',
       //   headers: {"Content-Type": "application/json"},
-      //   body: JSON.stringify({ id: this.id })
+      //   body: JSON.stringify({userId: this.id})
       // };
-      // let request = await fetch('/api/students', pack);
+      // console.log(pack.body);
+      // let request = await fetch('/api/login', pack);
+      // console.log(request);
       // let response = await request.json();
       // console.log(response);
 
 
-      this.$http.get('/api/students')
-      .then((response) => {
-        this.test = response.data
-      })
+      // this.$http.get('/api/students')
+      // .then((response) => {
+      //   this.test = response.data
+      // })
+
+      // let res = await fetch('/students')
+      // console.log(res);
+
+      // let data = await res.json();
+      // this.test = data;
+      // console.log(this.test);
+
+      const baseURI = 'https://jsonplaceholder.typicode.com';
+      this.$http.get(`${baseURI}/posts`)
+      .then( result => 
+        this.test = result.data
+      )
+
+      
 
 
-      // let res = await fetch('/api/students')
-      // let commits = await res.json();
-      // console.log(commits);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
       console.log(this.id);
-
-
-
 
       // SEND TO PARENT
       // this.$emit('add-todo', newTodo);
@@ -81,7 +118,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "@/assets/styles/_color_default.scss";
 
   #loginBox {
     width: 262px;
@@ -117,8 +153,8 @@ export default {
     }
     &:placeholder-shown 
     ~ .btn {
-      color: $i70;
-      background-color: $i90;
+      color: var(--i70);
+      background-color: var(--i90);
       pointer-events: none;
       outline: 0;
     }
@@ -158,13 +194,13 @@ export default {
     cursor: pointer;
 
     border: 0px;
-    color: $i30;
-    background-color: $accent01;
+    outline: 0px;
+    color: var(--i30);
+    background-color: var(--accent01);
   }
   .btn:hover {
-    color: $i100;
-    background-color: $accent02;
-    outline: 0;
+    color: var(--i100);
+    background-color: var(--accent02);
   }
 
 

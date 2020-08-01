@@ -4,7 +4,7 @@ import router  from './router.js'
 import axios from 'axios'
 
 Vue.config.productionTip = false;
-Vue.prototype.$http = axios;
+Vue.prototype.$http = axios
 
 new Vue({
   router,
