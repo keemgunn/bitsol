@@ -7,8 +7,28 @@ function signToken(id) {
   return jwt.sign({id}, secret, {expiresIn})
 }
 
+function ensureAuth () {
+  return (req, res, next) => {
+    const {authorization} = req.headers
+    if (!authorization) {
+      res.status(401)
+      throw Error('No Authorization headers')
+    }
+    
+    try {
+      req.user = this.verify(authorization)
+    } catch (e) {
+      res.status(401)
+      throw e
+    }
 
+    next()
+  }
+}
 
+function verify (token) {
+  return jwt.verify(token.replace(/^Bearer\s/, ''), secret)
+}
 
 
 
@@ -16,3 +36,5 @@ function signToken(id) {
 
 
 module.exports.signToken = signToken;
+module.exports.ensureAuth = ensureAuth;
+module.exports.verify = verify;

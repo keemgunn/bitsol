@@ -51,7 +51,19 @@ app.post('/api/auth', (req, res) => {
     }
 })
 
-app.post('/api/login', (req, res) => {
+
+
+
+
+app.get('/students', (req, res) => {
+    console.log(req.headers);
+    res.json({"msg": "YES"});
+})
+
+
+
+
+app.post('/api/login', async (req, res) => {
     const {key} = req.body;
     let accessToken;
     if(user.hasOwnProperty(key)) {

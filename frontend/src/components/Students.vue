@@ -1,16 +1,25 @@
 <template>
   <div class="hello">
     <h1>students.vue</h1>
-    <h1>{{ this.$route.query.user }}</h1>
+    <h3> {{ msg }} </h3>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Students',
   data() { return {
-
-  }}
+    msg: ''
+  }},
+  created() {
+    axios.get('/students')
+     .then(({data}) => (this.msg = data.msg))
+     .catch(() => {
+       console.log('FUCK')
+     })
+  }
 }
 </script>
 

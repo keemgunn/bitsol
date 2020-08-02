@@ -42,7 +42,9 @@ export default {
       this.heimdall(this.key);
     },
     input() {
-      console.log(this.key);
+      const {search} = window.location;
+      console.log('search:');
+      console.log(search);
     },
     heimdall(key) {
       // LOGIN 액션 실행

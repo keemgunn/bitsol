@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router  from './router.js'
-import store from './store.js'
+import router  from './router'
+import store from './store'
 // import axios from 'axios'
 
 Vue.config.productionTip = false;
@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 // Vue.prototype.$rou = router;
 
 new Vue({
-  store,
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

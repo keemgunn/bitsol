@@ -19,7 +19,7 @@ export default new Vuex.Store({
   },
   getters: {
     isAuthenticated (state) {
-      state.accessToken = state.accessToken || localStorage.accessToken;
+      state.accessToken = state.accessToken || localStorage.accessToken
       return state.accessToken
     }
   },
