@@ -2,8 +2,15 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const XLSX = require('xlsx');
-const mysql = require('./api/mysql');
 
+    // CUSTOM MODULES
+const mysql = require('./api/mysql');
+const version = require('./api/config');
+
+    // ROUTES
+const studentsRouter = require('./routes/students');
+
+    // APP SETTING
 const app = express();
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json({
@@ -14,10 +21,9 @@ app.use(express.text({
     limit: "50mb"
 }));
 
-const studentsRouter = require('./routes/students');
-
-
-
+    // USER CONFIG
+let userFile = path.join(__dirname, '../data/users.json');
+let user = version.readSync(userFile);//users.json
 
 
 
@@ -25,7 +31,10 @@ const studentsRouter = require('./routes/students');
 // app.use('/api/students', studentsRouter);
 
 
-app.post('/api/auth', (req,res) => {
+
+
+
+app.post('/api/auth', (req, res) => {
     console.log("got something ....");
     
     let userId = req.body.userId;
