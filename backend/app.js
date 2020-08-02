@@ -38,14 +38,18 @@ app.post('/api/auth', (req, res) => {
     console.log("got something ....");
     let userID = req.body.userID;
 
-    console.log(userID);
-    
-    console.log(user.hasOwnProperty(userID));
+    if(user.hasOwnProperty(userID)) {
+        console.log("userID confirmed");
+        res.json({
+            "authorized": true
+        })
+    }else {
+        console.log("no userID");
+        res.json({
+            "authorized": false
+        })
+    }
 
-    res.json({
-        "status": 200,
-        "user" : userID
-    })
 })
 
 

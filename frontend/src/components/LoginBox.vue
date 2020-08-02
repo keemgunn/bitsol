@@ -4,7 +4,7 @@
   <input
     type="text" 
     class = "id_field"
-    v-model="id"
+    v-model="user"
     v-on:keyup = "input"
     placeholder="id:"
     name="id" 
@@ -31,7 +31,8 @@ export default {
   name:"LoginBox",
   data() { return {
     message: "Hello",
-    id: '',
+    user: '',
+    authorized: false,
     testArr: [],
     test00: null
   }},
@@ -45,28 +46,35 @@ export default {
       e.preventDefault();
 
       let pack = {
-        "userID": this.id
+        "userID": this.user
       }
 
       this.$http.post('/api/auth', pack)
         .then( res => {
-          this.test00 = res;
+          this.authorized = res.data.authorized;
+          this.heimdall(this.authorized, this.user);
         })
         .catch( err => {
           console.log(err);
       });
 
-      console.log(this.id);
-
-      // SEND TO PARENT
-      // this.$emit('add-todo', newTodo);
-      
-      // this.id = ''; // clear
+      console.log(this.user);
     },
     input() {
-      console.log(this.id);
-      // this.$router.push('/students');
+      console.log(this.user);
+    },
+    heimdall(authorized, user){
+      if(authorized) {
+        this.$router.push({path:'/students', query: { user: this.user }});
+        console.log(user);
+      }else {
+        console.log("unauthorized");
+      }
     }
+
+
+
+
   }
 }
 </script>
