@@ -44,9 +44,11 @@ export default {
     async login(e) {
       e.preventDefault();
 
-      this.$http.post('/api/auth', {
-        userID: this.id
-        })
+      let pack = {
+        "userID": "123123123"
+      }
+
+      this.$http.post('/api/auth', pack)
         .then( res => {
           this.test00 = res;
         })
@@ -59,7 +61,7 @@ export default {
       // SEND TO PARENT
       // this.$emit('add-todo', newTodo);
       
-      this.id = ''; // clear
+      // this.id = ''; // clear
     },
     input() {
       console.log(this.id);
@@ -90,7 +92,7 @@ export default {
     outline: 0;
     background: transparent;
 
-    font-family: 'Space Mono';
+    font-family: 'Space Mono', 'Nanum Square';
     color: inherit;
     font-size: 23px;
     cursor: text;

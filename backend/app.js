@@ -22,9 +22,9 @@ app.use(express.text({
 }));
 
     // USER CONFIG
-let userFile = path.join(__dirname, '../data/users.json');
+let userFile = path.join(__dirname, './data/users.json');
 let user = version.readSync(userFile);//users.json
-
+console.log(user);
 
 
 
@@ -36,8 +36,10 @@ let user = version.readSync(userFile);//users.json
 
 app.post('/api/auth', (req, res) => {
     console.log("got something ....");
-    
-    let userId = req.body.userId;
+    let userId = req.IncomingMessage.body.userID;
+    console.log(userID);
+    console.log(user.hasOwnProperty(userId));
+
     res.json({
         "status": 200,
         "user" : userId

@@ -32,6 +32,9 @@ export default {
 </script>
 
 <style lang="scss">
+@import "assets/fonts/NanumSquare/nanumsquare.css";
+@import "assets/fonts/CoreGothicD/coregothicd.css";
+
 #app {
   display: flex;
   width: 100vw;
@@ -41,11 +44,15 @@ export default {
 
   position: absolute;
 
-  font-family: 'Space Mono', 'Nanum Square', sans-serif;
+  font-family: 'Space Mono', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   color: var(--i30);
   background-color: var(--i94);
+}
+h1 {
+  font-family: 'Nanum Square';
+  // 한글 띄어쓰기 간격 문제 해결하려면 일일이 폰트패밀리 지정해줘야
 }
 </style>
