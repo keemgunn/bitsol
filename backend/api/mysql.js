@@ -89,7 +89,7 @@ function makeTables(year, res) {
 
   goQuery('CREATE TABLE `room` (`room_id` INT NOT NULL AUTO_INCREMENT,`room_name` CHAR(6) NOT NULL,`building` CHAR(1) NOT NULL,`floor` CHAR(2) NOT NULL,`room_number` CHAR(2) NOT NULL,`seat` CHAR(1) NOT NULL,`student_id` INT DEFAULT NULL,PRIMARY KEY (`room_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
-  goQuery('CREATE TABLE `user` (`user_id` INT NOT NULL AUTO_INCREMENT,`user_name` VARCHAR(25) NOT NULL,PRIMARY KEY (`user_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
+  goQuery('CREATE TABLE `user` (`user_id` INT NOT NULL AUTO_INCREMENT,`user_key` VARCHAR(20) NOT NULL,`user_name` VARCHAR(25) NOT NULL,PRIMARY KEY (`user_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;');
 
   close();
 }

@@ -4,7 +4,7 @@
   <input
     type="text" 
     class = "id_field"
-    v-model="user"
+    v-model="key"
     v-on:keyup = "input"
     placeholder="id:"
     name="id" 
@@ -30,51 +30,29 @@
 export default {
   name:"LoginBox",
   data() { return {
-    message: "Hello",
-    user: '',
+    msg: "Hello",
+    key: '',
     authorized: false,
     testArr: [],
     test00: null
   }},
-  computed: {
-    reversedMessage: function() {
-      return this.message.split('').reverse().join('')
-    }
-  },
   methods: {
     async login(e) {
       e.preventDefault();
-
-      let pack = {
-        "userID": this.user
-      }
-
-      this.$http.post('/api/auth', pack)
-        .then( res => {
-          this.authorized = res.data.authorized;
-          this.heimdall(this.authorized, this.user);
-        })
-        .catch( err => {
-          console.log(err);
-      });
-
-      console.log(this.user);
+      this.heimdall(this.key);
     },
     input() {
-      console.log(this.user);
+      console.log(this.key);
     },
-    heimdall(authorized, user){
-      if(authorized) {
-        this.$router.push({path:'/students', query: { user: this.user }});
-        console.log(user);
-      }else {
-        console.log("unauthorized");
-      }
+    heimdall(key) {
+      // LOGIN 액션 실행
+      this.$store.dispatch('LOGIN', {key})
+      .then(() => this.doorOpened())
+      .catch(({message}) => this.msg = message)
+    },
+    doorOpened(){
+      this.$router.push('/students');
     }
-
-
-
-
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <h1>students.vue</h1>
     <h1>{{ this.$route.query.user }}</h1>
   </div>
 </template>

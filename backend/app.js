@@ -6,6 +6,7 @@ const XLSX = require('xlsx');
     // CUSTOM MODULES
 const mysql = require('./api/mysql');
 const version = require('./api/config');
+const auth = require('./api/auth');
 
     // ROUTES
 const studentsRouter = require('./routes/students');
@@ -22,9 +23,8 @@ app.use(express.text({
 }));
 
     // USER CONFIG
-let userFile = path.join(__dirname, './data/users.json');
-let user = version.readSync(userFile);//users.json
-console.log(user);
+let user = version.readSync(path.join(__dirname, './data/users.json'));  //users.json
+console.log('AUTHORIZED USERS: ', user);
 
 
 
@@ -51,7 +51,18 @@ app.post('/api/auth', (req, res) => {
     }
 })
 
-
+app.post('/api/login', (req, res) => {
+    const {key} = req.body;
+    let accessToken;
+    if(user.hasOwnProperty(key)) {
+        console.log("### userID confirmed .../api/login");
+        accessToken = auth.signToken(user[key]["id"]);
+        res.json({accessToken});
+    }else {
+        console.log("### no userID .../api/login");
+        return res.status(401).json({error: 'Login failure'})
+    }
+})
 
 
 

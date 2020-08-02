@@ -6,6 +6,12 @@ import Students from '@/components/Students'
 
 Vue.use(Router)
 
+const requireAuth = () => (from, to, next) => {
+  const isAuthenticated = false
+  if (isAuthenticated) return next()
+  next('/login?returnPath=me')
+}
+
 export default new Router({
  mode: 'history',
  base: process.env.BASE_URL,
@@ -18,7 +24,8 @@ export default new Router({
   {
     path: '/students',
     name: 'Students',
-    component: Students
+    component: Students,
+    beforeEnter: requireAuth()
   }
  ]
 })
