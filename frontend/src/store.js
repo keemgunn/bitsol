@@ -4,9 +4,9 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const resourceHost = 'http://localhost:3000'
+// const resourceHost = 'http://localhost:3000'
 
-export default new Veux.Store({
+export default new Vuex.Store({
   state: {
     accessToken: null
   },
@@ -23,7 +23,7 @@ export default new Veux.Store({
   },
   actions: {
     LOGIN ({commit}, {email, password}) {
-      return axios.post(`${resourceHost}/login`, {email, password})
+      return axios.post('/api/login', {email, password})
         .then(({data}) => commit('LOGIN', data))
     },
     LOGOUT ({commit}) {

@@ -9,6 +9,7 @@ Vue.prototype.$http = axios;
 // Vue.prototype.$rou = router;
 
 new Vue({
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')

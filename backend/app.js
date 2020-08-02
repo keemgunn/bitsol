@@ -49,7 +49,6 @@ app.post('/api/auth', (req, res) => {
             "authorized": false
         })
     }
-
 })
 
 
