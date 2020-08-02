@@ -36,13 +36,15 @@ console.log(user);
 
 app.post('/api/auth', (req, res) => {
     console.log("got something ....");
-    let userId = req.IncomingMessage.body.userID;
+    let userID = req.body.userID;
+
     console.log(userID);
-    console.log(user.hasOwnProperty(userId));
+    
+    console.log(user.hasOwnProperty(userID));
 
     res.json({
         "status": 200,
-        "user" : userId
+        "user" : userID
     })
 })
 

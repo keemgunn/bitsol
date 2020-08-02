@@ -45,7 +45,7 @@ export default {
       e.preventDefault();
 
       let pack = {
-        "userID": "123123123"
+        "userID": this.id
       }
 
       this.$http.post('/api/auth', pack)
