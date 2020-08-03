@@ -1,0 +1,48 @@
+/* 
+ * Nanum Square Web Fonts
+ * Copyright (c) 2010, NAVER Corporation (http://www.nhncorp.com) 
+ */
+
+@font-face {
+	font-family: 'Nanum Square';
+	src: url('NanumSquareOTFL00.eot'),
+	url('NanumSquareOTFL00.eot?#iefix') format('embedded-opentype'),
+	url('NanumSquareOTFL00.woff2') format('woff2'),
+	url('NanumSquareOTFL00.woff') format('woff'),
+	url('NanumSquareOTFL00.ttf') format('truetype');
+	font-weight: 300;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nanum Square';
+	src: url('NanumSquareOTFR00.eot'),
+	url('NanumSquareOTFR00.eot?#iefix') format('embedded-opentype'),
+			url('NanumSquareOTFR00.woff2') format('woff2'),
+			url('NanumSquareOTFR00.woff') format('woff'),
+			url('NanumSquareOTFR00.ttf') format('truetype');
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nanum Square';
+	src: url('NanumSquareOTFB00.eot'),
+	url('NanumSquareOTFB00.eot?#iefix') format('embedded-opentype'),
+	url('NanumSquareOTFB00.woff2') format('woff2'),
+	url('NanumSquareOTFB00.woff') format('woff'),
+	url('NanumSquareOTFB00.ttf') format('truetype');
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nanum Square';
+	src: url('NanumSquareOTFEB00.eot'),
+	url('NanumSquareOTFEB00.eot?#iefix') format('embedded-opentype'),
+	url('NanumSquareOTFEB00.woff2') format('woff2'),
+	url('NanumSquareOTFEB00.woff') format('woff'),
+	url('NanumSquareOTFEB00.ttf') format('truetype');
+	font-weight: 800;
+	font-display: swap;
+}
