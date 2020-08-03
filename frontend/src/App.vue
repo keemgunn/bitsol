@@ -37,9 +37,10 @@
     v-on:click="logout"
   />
 
-  <br><br>
+  <br><br><br>
+  userKey: {{ userKey }}
+  <br>
   access-level: {{ guard.accessLevel }}
-
   <br>
   message: <br>
   {{ msg }}
@@ -73,11 +74,11 @@ export default {
     },
     guard: {
       key: '',
-      currentID: 0,
       accessLevel: 0,
       expiresIn_3h: 60*60*3, // 3h
       expiresIn_5s: 5, // 5s
     },
+    userKey: '',
     msg: "Hello",
     testArr: [],
     test00: null
@@ -91,16 +92,27 @@ export default {
     getToken( key, expiresIn ) {
       this.$store.dispatch('LOGIN', { key, expiresIn })
       .then(() => this.heimdall())
-      .catch(({message}) => this.msg = message)
+      .catch(({message}) => {
+        this.guard.accessLevel = 0;
+        this.userKey = ""
+        this.msg = message
+        // *** LOGIN ALERT: NO USER
+      }) 
     },
     heimdall(){
       axios.get('auth/verify')
         .then( res => {
-          this.guard.accessLevel = res.data.accessLevel
-          this.msg = res.data.msg
+          this.guard.accessLevel = res.data.accessLevel;
+          this.userKey = this.$store.state.userKey;
+          this.msg = res.data.msg;
         })
         .catch( err => {
           console.log(err);
+          this.guard.accessLevel = 0;
+          this.userKey = ""
+          this.msg = "Request failed with status code 401"
+          // *** AUTH ALART: FAILD
+          // *** REDIRECTION TO LOGIN PAGE
       });
     },
     logout(){
