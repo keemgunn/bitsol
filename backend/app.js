@@ -22,9 +22,7 @@ app.use(express.text({
     limit: "50mb"
 }));
 
-    // USER CONFIG
-let user = version.readSync(path.join(__dirname, './data/users.json'));  //users.json
-console.log('AUTHORIZED USERS: ', user);
+
 
 
 
@@ -34,41 +32,23 @@ console.log('AUTHORIZED USERS: ', user);
 
 
 
-app.post('/api/auth', (req, res) => {
-    console.log("got something ....");
-    let userID = req.body.userID;
-
-    if(user.hasOwnProperty(userID)) {
-        console.log("userID confirmed");
-        res.json({
-            "authorized": true
-        })
-    }else {
-        console.log("no userID");
-        res.json({
-            "authorized": false
-        })
-    }
-})
 
 
 
 
 
-app.get('/students', (req, res) => {
-    console.log(req.headers);
-    res.json({"msg": "YES"});
-})
 
 
+// USER CONFIG
+let user = version.readSync(path.join(__dirname, './data/users.json'));  //users.json
+console.log('AUTHORIZED USERS: ', user);
 
-
-app.post('/api/login', async (req, res) => {
-    const {key} = req.body;
+app.post('/auth/login', async (req, res) => {
     let accessToken;
+    const {key, expiresIn} = req.body;
     if(user.hasOwnProperty(key)) {
         console.log("### userID confirmed .../api/login");
-        accessToken = auth.signToken(user[key]["id"]);
+        accessToken = auth.signToken(user[key]["id"], user[key]["access-level"], expiresIn);
         res.json({accessToken});
     }else {
         console.log("### no userID .../api/login");
@@ -76,7 +56,26 @@ app.post('/api/login', async (req, res) => {
     }
 })
 
+app.get('/auth/verify', (req, res) => {
+    let accessToken;
+    console.log(req.headers);
+    if(req.headers.authorization) {
+        accessToken = req.headers.authorization
+        console.log("...got headers.authorization");
+        auth.verify(accessToken)
 
+
+        res.json({
+            "authorized" : 1,
+            "msg": "Authorization Complete (200)"
+        });
+    }else {
+        res.json({
+            "authorized": 0,
+            "msg": "Authorization Failed err(401)"
+        })
+    }
+})
 
 
 

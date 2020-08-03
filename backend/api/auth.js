@@ -1,11 +1,29 @@
 const jwt = require('jsonwebtoken');
 const secret = 'token secret';
-const expiresIn = 60 * 60 * 3 // 3 hours
-
-
-function signToken(id) {
-  return jwt.sign({id}, secret, {expiresIn})
+const secretKey = {
+  1: "access-level-1",
+  2: "access-level-2",
+  3: "access-level-3"
 }
+
+function signToken(id, accessLevel, expiresIn) {
+  return jwt.sign({id}, secretKey[accessLevel], {expiresIn})
+}
+
+
+function verify (token) {
+  return jwt.verify(token, secret)
+}
+
+
+
+
+
+
+
+
+
+
 
 function ensureAuth () {
   return (req, res, next) => {
@@ -26,15 +44,9 @@ function ensureAuth () {
   }
 }
 
-function verify (token) {
-  return jwt.verify(token.replace(/^Bearer\s/, ''), secret)
-}
-
-
-
 
 
 
 module.exports.signToken = signToken;
-module.exports.ensureAuth = ensureAuth;
 module.exports.verify = verify;
+module.exports.ensureAuth = ensureAuth;

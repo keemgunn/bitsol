@@ -36,19 +36,20 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    LOGIN ({commit}, {key}) {
+    async LOGIN ({commit}, {key, expiresIn}) {
       console.log("$$$ action:LOGIN ...store.js");
-      return axios.post('/api/login', {key})
-        .then(({data}) => { // accessToken 추출
-          console.log("access token: ", data.accessToken);
-          commit('LOGIN', data) // LOGIN mutation
-          axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-        })
+      const { data } = await axios.post('/auth/login', { key, expiresIn })
+      // LOGIN mutation
+      commit('LOGIN', data) 
+      // header set
+      axios.defaults.headers.common['Authorization'] = data.accessToken;
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT ...store.js");
-      axios.defaults.headers.common['Authorization'] = undefined;
+      // LOGOUT mutation
       commit('LOGOUT');
+      // header set
+      axios.defaults.headers.common['Authorization'] = undefined;
     },
   }
 })

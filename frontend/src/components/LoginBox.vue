@@ -5,7 +5,6 @@
     type="text" 
     class = "id_field"
     v-model="key"
-    v-on:keyup = "input"
     placeholder="id:"
     name="id" 
     id = "id_field"
@@ -23,9 +22,7 @@
 
 
 <script>
-
-
-
+import axios from 'axios'
 
 export default {
   name:"LoginBox",
@@ -41,20 +38,27 @@ export default {
       e.preventDefault();
       this.heimdall(this.key);
     },
-    input() {
-      const {search} = window.location;
-      console.log('search:');
-      console.log(search);
-    },
     heimdall(key) {
-      // LOGIN 액션 실행
       this.$store.dispatch('LOGIN', {key})
       .then(() => this.doorOpened())
       .catch(({message}) => this.msg = message)
     },
     doorOpened(){
-      this.$router.push('/students');
+      // this.$router.push('/students');
+      axios.get('api/auth')
+        .then( res => {
+          // this.authorized = res.data.authorized;
+          // this.heimdall(this.authorized, this.user);
+          console.log(res);
+        })
+        .catch( err => {
+          console.log(err);
+      });
     }
+
+    
+
+
   }
 }
 </script>
