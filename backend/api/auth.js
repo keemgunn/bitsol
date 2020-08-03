@@ -21,15 +21,15 @@ function verify (token) {
         if (err){
           return jwt.verify(token, secretKey[3], (err,decoded)=>{
             if (err){
-              return err
+              return { "accessLevel": 0 , "msg": "Invalid Token" }
             }
-            return { "accessLevel": 3 }
+            return { "accessLevel": 3 , "msg": "Authorized" }
           })
         }
-        return { "accessLevel": 2 }
+        return { "accessLevel": 2 , "msg": "Authorized" }
       })
     }
-    return { "accessLevel": 1 }
+    return { "accessLevel": 1 , "msg": "Authorized" }
   });
 
   return result;

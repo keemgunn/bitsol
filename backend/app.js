@@ -24,7 +24,7 @@ app.use(express.text({
 
 
 
-app.use('/auth', authentic, errorHandler);
+app.use('/auth', authentic);
 
 
 

@@ -10,6 +10,7 @@ let user = version.readSync(path.join(__dirname, '../data/users.json'));  //user
 console.log('AUTHORIZED USERS: ', user);
 
 
+// GET TOKEN
 router.post('/login', async (req, res) => {
   let accessToken;
   const {key, expiresIn} = req.body;
@@ -24,7 +25,8 @@ router.post('/login', async (req, res) => {
 })
 
 
-router.get('/verify', (req, res, next) => {
+// VERIFY TOKEN
+router.get('/verify', (req, res) => {
   console.log("### USER VERIFIED ... /auth/verify");
   console.log(req.headers);
   if(req.headers.authorization) {
@@ -33,15 +35,21 @@ router.get('/verify', (req, res, next) => {
     if(result) {
         res.json({
             "accessLevel": result.accessLevel,
-            "msg": "Authorized"
+            "msg": result.msg
         });
     }else {
       console.log("authorization-failed");
-      next();
+      res.json({
+        "accessLevel": 0,
+        "msg": "something wrong"
+    });
     }
   }else {
     console.log("no-access-token");
-    next();
+    res.json({
+      "accessLevel": 0,
+      "msg": "No Token"
+    });
   }
 })
 

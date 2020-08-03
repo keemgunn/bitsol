@@ -99,7 +99,7 @@ export default {
         // *** LOGIN ALERT: NO USER
       }) 
     },
-    heimdall(){
+    heimdall(){ // accessToken in Header
       axios.get('auth/verify')
         .then( res => {
           this.guard.accessLevel = res.data.accessLevel;
@@ -120,8 +120,15 @@ export default {
     }
   },
   created() {
-    // ----- AUTHORIZATION -----
+    // ----- INITIATING USER CONFIGS -----
 
+
+    // 기존에 발급 받았던 토큰으로 인증 __heimdall()
+        // 통과하면 students.vue 랜더링,
+        // 인증 실패하면 로그인 페이지 렌더링
+
+    // students.vue에 진입하게 되면
+    // 같은 정보를 이용해서 3시간 짜리 토큰 override
 
 
 
@@ -129,6 +136,11 @@ export default {
     window.addEventListener("beforeunload", function(e) {
       e.preventDefault();
       console.log("beforeunload");
+
+      // 5초짜리 인증 토큰 override __getToken()
+
+
+
 
       // var confirmationMessage = "before unload";
       // (e || window.event).returnValue = confirmationMessage;
