@@ -1,3 +1,4 @@
+    // CORE MODULES
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -5,11 +6,10 @@ const XLSX = require('xlsx');
 
     // CUSTOM MODULES
 const mysql = require('./api/mysql');
-const version = require('./api/config');
-const auth = require('./api/auth');
 
     // ROUTES
-const studentsRouter = require('./routes/students');
+const authentic = require('./routes/authenticate');
+const errorHandler = require('./routes/errorHandler');
 
     // APP SETTING
 const app = express();
@@ -24,10 +24,7 @@ app.use(express.text({
 
 
 
-
-
-// app.use('/api/students', studentsRouter);
-
+app.use('/auth', authentic, errorHandler);
 
 
 
@@ -38,44 +35,6 @@ app.use(express.text({
 
 
 
-
-// USER CONFIG
-let user = version.readSync(path.join(__dirname, './data/users.json'));  //users.json
-console.log('AUTHORIZED USERS: ', user);
-
-app.post('/auth/login', async (req, res) => {
-    let accessToken;
-    const {key, expiresIn} = req.body;
-    if(user.hasOwnProperty(key)) {
-        console.log("### userID confirmed .../api/login");
-        accessToken = auth.signToken(user[key]["id"], user[key]["access-level"], expiresIn);
-        res.json({accessToken});
-    }else {
-        console.log("### no userID .../api/login");
-        return res.status(401).json({error: 'Login failure'})
-    }
-})
-
-app.get('/auth/verify', (req, res) => {
-    let accessToken;
-    console.log(req.headers);
-    if(req.headers.authorization) {
-        accessToken = req.headers.authorization
-        console.log("...got headers.authorization");
-        auth.verify(accessToken)
-
-
-        res.json({
-            "authorized" : 1,
-            "msg": "Authorization Complete (200)"
-        });
-    }else {
-        res.json({
-            "authorized": 0,
-            "msg": "Authorization Failed err(401)"
-        })
-    }
-})
 
 
 

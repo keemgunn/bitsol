@@ -12,7 +12,25 @@ function signToken(id, accessLevel, expiresIn) {
 
 
 function verify (token) {
-  return jwt.verify(token, secret)
+  jwt.verify(token, secretKey[1], (err, decoded) => {
+    if(err){
+      jwt.verify(token, secretKey[2], (err, decoded) => {
+        if(err){
+          jwt.verify(token, secretKey[3], (err, decoded) => {
+            if(err){
+              return { "accessLevel": 0 }
+            }else {
+              return { "accessLevel": 3 }
+            }
+          })
+        }else {
+          return { "accessLevel": 2 }
+        }
+      })
+    }else {
+      return { "accessLevel": 1}
+    }
+  })
 }
 
 

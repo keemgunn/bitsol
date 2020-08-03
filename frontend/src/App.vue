@@ -26,11 +26,10 @@
 
   <input 
     type="button" 
-    value="doorOpened"
+    value="heimdall"
     class="btn"
-    v-on:click="doorOpened"
+    v-on:click="heimdall"
   />
-
   <input 
     type="button" 
     value="logout"
@@ -38,7 +37,12 @@
     v-on:click="logout"
   />
 
-  <h2> {{ guard.authorized }} </h2>
+  <br><br>
+  access-level: {{ guard.accessLevel }}
+
+  <br>
+  message: <br>
+  {{ msg }}
 
 <router-view></router-view>
 </div>
@@ -69,7 +73,8 @@ export default {
     },
     guard: {
       key: '',
-      authorized: 0,
+      currentID: 0,
+      accessLevel: 0,
       expiresIn_3h: 60*60*3, // 3h
       expiresIn_5s: 5, // 5s
     },
@@ -91,7 +96,8 @@ export default {
     heimdall(){
       axios.get('auth/verify')
         .then( res => {
-          console.log(res);
+          this.guard.accessLevel = res.data.accessLevel
+          this.msg = res.data.msg
         })
         .catch( err => {
           console.log(err);
@@ -102,12 +108,11 @@ export default {
     }
   },
   created() {
-    // --- AUTHORIZATION ---
-    if(this.$store.getters.isAuthenticated) {
-      this.guard.authorized = true;
-    }else {
-      this.guard.authorized = false;
-    }
+    // ----- AUTHORIZATION -----
+
+
+
+
 
     window.addEventListener("beforeunload", function(e) {
       e.preventDefault();
