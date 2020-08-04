@@ -30,6 +30,12 @@
     class="btn"
     v-on:click="heimdall"
   />
+  <input 
+  type="button" 
+  value="test"
+  class="btn"
+  v-on:click="test"
+  />
 
   <br><br><br>
   online.key: {{ online.key }}
@@ -96,7 +102,7 @@ export default {
       this.getToken(this.guard.key, 10800);
     },
     getToken( key, expiresIn ) {
-      this.$store.dispatch('LOGIN', { key, expiresIn })
+      this.$store.dispatch('LOGIN', {key, expiresIn})
       .then(() => this.heimdall())
       .catch(({message}) => {
         this.guard.accessLevel = 0;
@@ -121,6 +127,11 @@ export default {
           // *** AUTH ALART: FAILD
           // *** REDIRECTION TO LOGIN PAGE
       });
+    },
+    test(){
+      // this.msg = localStorage.userName //완벽
+      this.msg = this.$store.state.userName;
+      // store
     },
     destroyView(){
       console.log("something ####################");
