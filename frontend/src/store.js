@@ -54,7 +54,7 @@ export default new Vuex.Store({
   actions: {
     async LOGIN ({commit}, {key, expiresIn}) {
       console.log("$$$ action:LOGIN ...store.js");
-      const { data } = await axios.post('/auth/login', { key, expiresIn });
+      const { data } = await axios.post('/auth/issue', { key, expiresIn });
       const userKey = key;
       // LOGIN mutation
       commit('LOGIN', {data, userKey}) ;

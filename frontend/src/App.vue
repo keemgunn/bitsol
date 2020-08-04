@@ -1,10 +1,8 @@
 <template>
-<div
-  id="app"
-  :style="themeColor"
->
+<div id="app" :style="themeColor">
 
-  <div id="loginBox">
+
+  <div id="loginBox" v-if="!guard.accessLevel">
     <form @submit="login" autocomplete="off">
       <input
         type="text" 
@@ -22,34 +20,24 @@
       />
       <label class="id_label" for="id">id:</label>
     </form>
+    <input 
+      type="button" 
+      value="heimdall"
+      class="btn"
+      v-on:click="heimdall"
+    />
   </div>
 
-  <input 
-    type="button" 
-    value="heimdall"
-    class="btn"
-    v-on:click="heimdall"
-  />
-  <input 
-  type="button" 
-  value="test"
-  class="btn"
-  v-on:click="test"
-  />
 
-  <br><br><br>
-  online.key: {{ online.key }}
-  <br>
-  access-level: {{ guard.accessLevel }}
-  <br>
-  message: <br>
-  {{ msg }}
-
-  <Online
+  <Manager
     v-if="guard.accessLevel"
-    :userKey="online.key"
+    :accessLevel="guard.accessLevel"
+    :state="state"
+    :modal="modal"
+    @manager-created="reIssueToken"
+    @logout="logout"
 
-    key="online"
+    key="manager"
   />
 
 <router-view></router-view>
@@ -59,13 +47,13 @@
 <script>
 import axios from 'axios'
 
-import Online from '@/components/Online'
+import Manager from '@/components/Manager'
 
 
 export default {
   name: 'App',
   components: {
-    Online
+    Manager
   },
   data() { return {
     themeColor: {
@@ -86,10 +74,13 @@ export default {
       key: '',
       accessLevel: 0
     },
-    online: {
-      key: '',
+    state: {
+      userKey: '',
       userName: '',
       colorConfig: ''
+    },
+    modal: {
+      display: 'refg'
     },
     msg: "Hello",
     testArr: [],
@@ -99,56 +90,75 @@ export default {
     // LOGIN METHOD: login -> getToken -> heimdall
     async login(e) {
       e.preventDefault();
-      this.getToken(this.guard.key, 10800);
+      await this.getToken(this.guard.key, 10800);
+      this.setModal("display", "refg");
+      this.heimdall();
     },
-    getToken( key, expiresIn ) {
-      this.$store.dispatch('LOGIN', {key, expiresIn})
-      .then(() => this.heimdall())
-      .catch(({message}) => {
-        this.guard.accessLevel = 0;
-        this.online.key = ""
-        this.msg = message
-        // *** LOGIN ALERT: NO USER
-      }) 
+    async getToken( key, expiresIn ) {
+      const {data} = await axios.post('/auth/issue', {key, expiresIn});
+      axios.defaults.headers.common['Authorization'] = data.accessToken;
+      this.saveToLocal(data, "accessToken", "userKey", "colorConfig", "userName");
     },
-    heimdall(){ // accessToken in Header
+    saveToLocal(data, ...args){
+      let arr = args;
+      for(var i=0; i<arr.length; i++){
+        localStorage[arr[i]] = data[arr[i]];
+        this["state"][arr[i]] = localStorage[arr[i]];
+      }
+    },
+    setModal(property, state){
+      localStorage.display = state;
+      this["modal"][property] = state;
+    },
+    loadFromLocal(){
+      this.state.userKey = localStorage.userKey || "";
+      this.state.userName = localStorage.userName || "";
+      this.state.colorConfig = localStorage.colorConfig || "";
+      this.modal.display = localStorage.display || "refg";
+    },
+    heimdall(){
       axios.get('auth/verify')
         .then( res => {
           this.guard.accessLevel = res.data.accessLevel;
-          this.online.key = this.$store.state.userKey;
-          // userName, colorConfig
-          this.msg = res.data.msg;
         })
         .catch( err => {
           console.log(err);
           this.guard.accessLevel = 0;
-          this.online.key = ""
-          this.msg = "Request failed with status code 401"
           // *** AUTH ALART: FAILD
           // *** REDIRECTION TO LOGIN PAGE
       });
     },
-    test(){
-      // this.msg = localStorage.userName //완벽
-      this.msg = this.$store.state.userName;
-      // store
+    logout(){
+      this.guard.accessLevel = 0;
+      axios.defaults.headers.common['Authorization'] = undefined;
+      this.state.userKey = '';
+      this.state.userName = '';
+      this.state.colorConfig = '';
+      delete localStorage.accessToken;
+      delete localStorage.userKey;
+      delete localStorage.userName;
+      delete localStorage.colorConfig;
     },
-    destroyView(){
-      console.log("something ####################");
+    initiating(){
+      this.loadFromLocal();
+      axios.defaults.headers.common['Authorization'] = localStorage.accessToken;
+      this.heimdall();
+    },
+    async destroy(){
+      await this.getToken(this.state.userKey, 5);
+    },
+    async reIssueToken(){
+      await this.getToken(this.state.userKey, 10800);
+      console.log("TOKEN REISSUED");
     }
   },
   created() {
-    // ----- INITIATING USER CONFIGS -----
-    
-    // 기존에 발급 받았던 토큰으로 인증 __heimdall()
-        // 통과하면 students.vue 랜더링,
-        // 인증 실패하면 로그인 페이지 렌더링
-    
+    this.initiating();
     window.addEventListener("beforeunload", () => {
-      // destroy Online.vue
-      this.guard.accessLevel = 0;
+      // this.destroy();
+      this.getToken(this.state.userKey, 5);
     })
-  }
+  },
 }
 </script>
 
