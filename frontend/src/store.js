@@ -17,7 +17,9 @@ enhanceTokens()
 export default new Vuex.Store({
   state: {
     accessToken: null,
-    userKey: "none"
+    userKey: null,
+    userName: null,
+    colorConfig: "default"
   },
   getters: {
     isAuthenticated (state) {
@@ -30,15 +32,23 @@ export default new Vuex.Store({
       console.log("$$$ mutation:LOGIN ...store.js");
       state.accessToken = data.accessToken;
       state.userKey = userKey;
+      state.userName = data.userName;
+      state.colorConfig = data.colorConfig;
       localStorage.accessToken = data.accessToken;
       localStorage.userKey = userKey;
+      localStorage.userName = data.userName;
+      localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
       console.log("$$$ mutation:LOGOUT ...store.js");
       state.accessToken = null;
-      state.userKey = "none"
+      state.userKey = null;
+      state.userName = null;
+      state.colorConfig = "default";
       delete localStorage.accessToken;
       delete localStorage.userKey;
+      delete localStorage.userName;
+      delete localStorage.colorConfig;
     }
   },
   actions: {

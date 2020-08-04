@@ -1,0 +1,131 @@
+/* commonStyle*/
+
+.rfgCont {
+    /* float: left; */
+    position: absolute;
+    left: 206px;
+    overflow: auto;
+
+    width: calc(100vw - 524px);
+    min-width: 530px;
+    height: calc(100% - 38px);
+    margin: 0px;
+
+    transition: 0.3s;
+    /* background-color: brown; */
+
+    padding-left: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+#midCell {
+    background-color: azure;
+}
+#midCell button {
+    margin: 4px;
+}
+
+
+
+
+
+
+
+
+
+/* 
+
+
+
+
+.unitAA div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: rgb(221, 104, 49);
+} .unitAA div:hover {
+    background-color: navajowhite;
+}
+.unitAB div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+} .unitAB div:hover {
+    background-color: navajowhite;
+}
+.unitBA div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+} .unitBA div:hover {
+    background-color: navajowhite;
+}
+.unitBB div {
+    padding: 3px;
+    padding-bottom: 5px;
+    background-color: bisque;
+} .unitBB div:hover {
+    background-color: navajowhite;
+}
+.refgName {
+    position: absolute;
+    left: 0;
+}
+
+.refgPack {
+    position: absolute;
+    left: 500px;
+
+    background-color: blue;
+}
+.refgPack img {
+    display: inline-flex;
+    
+    width: 24px;
+    height: 24px;
+    
+    background-color: aqua;
+}
+
+.refgBtn {
+    position: absolute;
+    left: 550px;
+}
+
+.refgSubmit {
+    position: absolute;
+    left: 600;
+} 
+
+
+
+*/
+
+
+
+
+/* --------RESPONSIVE width */
+@media ( max-width: 1160px ) {
+    .rfgCont {
+        width: calc(100% - 204px);
+    }   /* 냉장고 컨테이너 조정 */
+}
+@media ( max-width: 840px ) {
+    .rfgCont {
+        width: 100%;
+        left: 0px;
+    }   /* 냉장고 컨테이너 조정 */
+}
+
+/* --------RESPONSIVE height */
+@media ( max-height: 445px ) {
+}
+@media ( max-height: 360px ) {
+}

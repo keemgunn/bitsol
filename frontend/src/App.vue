@@ -1,7 +1,7 @@
 <template>
 <div
   id="app"
-  v-bind:style="themeColor"
+  :style="themeColor"
 >
 
   <div id="loginBox">
@@ -30,20 +30,21 @@
     class="btn"
     v-on:click="heimdall"
   />
-  <input 
-    type="button" 
-    value="logout"
-    class="btn"
-    v-on:click="logout"
-  />
 
   <br><br><br>
-  userKey: {{ userKey }}
+  online.key: {{ online.key }}
   <br>
   access-level: {{ guard.accessLevel }}
   <br>
   message: <br>
   {{ msg }}
+
+  <Online
+    v-if="guard.accessLevel"
+    :userKey="online.key"
+
+    key="online"
+  />
 
 <router-view></router-view>
 </div>
@@ -52,10 +53,13 @@
 <script>
 import axios from 'axios'
 
+import Online from '@/components/Online'
+
 
 export default {
   name: 'App',
   components: {
+    Online
   },
   data() { return {
     themeColor: {
@@ -74,11 +78,13 @@ export default {
     },
     guard: {
       key: '',
-      accessLevel: 0,
-      expiresIn_3h: 60*60*3, // 3h
-      expiresIn_5s: 5, // 5s
+      accessLevel: 0
     },
-    userKey: '',
+    online: {
+      key: '',
+      userName: '',
+      colorConfig: ''
+    },
     msg: "Hello",
     testArr: [],
     test00: null
@@ -87,14 +93,14 @@ export default {
     // LOGIN METHOD: login -> getToken -> heimdall
     async login(e) {
       e.preventDefault();
-      this.getToken(this.guard.key, this.guard.expiresIn_3h);
+      this.getToken(this.guard.key, 10800);
     },
     getToken( key, expiresIn ) {
       this.$store.dispatch('LOGIN', { key, expiresIn })
       .then(() => this.heimdall())
       .catch(({message}) => {
         this.guard.accessLevel = 0;
-        this.userKey = ""
+        this.online.key = ""
         this.msg = message
         // *** LOGIN ALERT: NO USER
       }) 
@@ -103,61 +109,33 @@ export default {
       axios.get('auth/verify')
         .then( res => {
           this.guard.accessLevel = res.data.accessLevel;
-          this.userKey = this.$store.state.userKey;
+          this.online.key = this.$store.state.userKey;
+          // userName, colorConfig
           this.msg = res.data.msg;
         })
         .catch( err => {
           console.log(err);
           this.guard.accessLevel = 0;
-          this.userKey = ""
+          this.online.key = ""
           this.msg = "Request failed with status code 401"
           // *** AUTH ALART: FAILD
           // *** REDIRECTION TO LOGIN PAGE
       });
     },
-    logout(){
-      this.$store.dispatch('LOGOUT')
+    destroyView(){
+      console.log("something ####################");
     }
   },
   created() {
     // ----- INITIATING USER CONFIGS -----
-
-
+    
     // 기존에 발급 받았던 토큰으로 인증 __heimdall()
         // 통과하면 students.vue 랜더링,
         // 인증 실패하면 로그인 페이지 렌더링
-
-    // students.vue에 진입하게 되면
-    // 같은 정보를 이용해서 3시간 짜리 토큰 override
-
-
-
-
-    window.addEventListener("beforeunload", function(e) {
-      e.preventDefault();
-      console.log("beforeunload");
-
-      // 5초짜리 인증 토큰 override __getToken()
-
-
-
-
-      // var confirmationMessage = "before unload";
-      // (e || window.event).returnValue = confirmationMessage;
-      // return confirmationMessage;
-    })
-
-
-
-  },
-  destroyed() {
-    console.log("des");
-    axios.get('/destroy')
-      .then ( res => {
-        console.log(res);
-      })
-      .catch( err => {
-        console.log(err);
+    
+    window.addEventListener("beforeunload", () => {
+      // destroy Online.vue
+      this.guard.accessLevel = 0;
     })
   }
 }

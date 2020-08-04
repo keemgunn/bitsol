@@ -17,7 +17,11 @@ router.post('/login', async (req, res) => {
   if(user.hasOwnProperty(key)) {
       console.log("### userID confirmed .../api/login");
       accessToken = auth.signToken(user[key]["id"], user[key]["access-level"], expiresIn);
-      res.json({accessToken});
+      res.json({
+        accessToken,
+        colorConfig: user[key]["color-config"],
+        userName: user[key]["username"]
+      });
   }else {
       console.log("### no userID .../api/login");
       return res.status(401).json({error: 'Login failure'})
