@@ -91,30 +91,22 @@ export default {
     async login(e) {
       e.preventDefault();
       await this.getToken(this.guard.key, 10800);
-      this.setModal("display", "refg");
+      await this.loadConfig(this.guard.key);
       this.heimdall();
     },
-    async getToken( key, expiresIn ) {
-      const {data} = await axios.post('/auth/issue', {key, expiresIn});
-      // 창을 닫아버리면 이 이상으로 진행되질 않아
-      // 새로고침하면 계속 살아있어서 작동하는데,
-      // 닫아버리면 App.vue 자체가 소멸해버려서
-      // 생기는 문제 같다.
-      // 새로고침 인증 토큰을 모두 서버에서 진행하면 해결될듯.
-      axios.defaults.headers.common['Authorization'] = data.accessToken;
-      await this.saveToLocal(data, "accessToken", "expiresIn", "userKey", "userName", "colorConfig");
+    getToken(key, expiresIn) {
+      this.$store.dispatch('ISSUE', {key, expiresIn});
     },
-    saveToLocal(data, ...args){
-      let arr = args;
-      for(var i=0; i<arr.length; i++){
-        localStorage[arr[i]] = data[arr[i]];
-        this["state"][arr[i]] = localStorage[arr[i]];
-      }
+    loadConfig(key) {
+      this.$store.dispatch('LOAD_CONFIG', {key});
+    },
+    logout(){
+      this.$store.dispatch('LOGOUT');
     },
     setModal(property, state){
-      localStorage.display = state;
-      this["modal"][property] = state;
+      this.$store.dispatch('SET_MODAL', {property, state})
     },
+
     loadFromLocal(){
       this.state.userKey = localStorage.userKey || "";
       this.state.userName = localStorage.userName || "";
@@ -137,19 +129,7 @@ export default {
           // *** REDIRECTION TO LOGIN PAGE
       });
     },
-    logout(){
-      this.guard.accessLevel = 0;
-      axios.defaults.headers.common['Authorization'] = undefined;
-      this.state.userKey = '';
-      this.state.userName = '';
-      this.state.colorConfig = '';
-      delete localStorage.accessToken;
-      delete localStorage.expiresIn;
-      delete localStorage.userKey;
-      delete localStorage.userName;
-      delete localStorage.colorConfig;
-      delete localStorage.display;
-    },
+
     initiating(){
       console.log("initiating...");
       console.log("localstorage.expiresIn: ", localStorage.expiresIn);

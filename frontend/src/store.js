@@ -17,9 +17,13 @@ enhanceTokens()
 export default new Vuex.Store({
   state: {
     accessToken: null,
+    expiresIn: 0,
     userKey: null,
     userName: null,
-    colorConfig: "default"
+    colorConfig: "default",
+    modal: {
+      display: 'refg'
+    }
   },
   getters: {
     isAuthenticated (state) {
@@ -28,45 +32,60 @@ export default new Vuex.Store({
     } // 현재 무쓸모
   },
   mutations: {
-    LOGIN (state, {data, userKey} ) {
-      console.log("$$$ mutation:LOGIN ...store.js");
+    ISSUE (state, {data}) {
+      console.log("$$$ mutation:ISSUE ...$store");
       state.accessToken = data.accessToken;
-      state.userKey = userKey;
+        localStorage.accessToken = data.accessToken;
+      state.expiresIn = data.expiresIn;
+        localStorage.expiresIn = data.expiresIn;
+      state.userKey = data.userKey;
+        localStorage.userKey = data.userKey;
+    },
+    LOAD_CONFIG (state, {data}) {
+      console.log("$$$ mutation:LOAD_CONFIG ...$store");
       state.userName = data.userName;
+        localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
-      localStorage.accessToken = data.accessToken;
-      localStorage.userKey = userKey;
-      localStorage.userName = data.userName;
-      localStorage.colorConfig = data.colorConfig;
+        localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
-      console.log("$$$ mutation:LOGOUT ...store.js");
       state.accessToken = null;
+      state.expiresIn = 0;
       state.userKey = null;
       state.userName = null;
       state.colorConfig = "default";
       delete localStorage.accessToken;
+      delete localStorage.expiresIn;
       delete localStorage.userKey;
       delete localStorage.userName;
       delete localStorage.colorConfig;
+    },
+    SET_MODAL (state, {data}) {
+      console.log("$$$ mutation:LOAD_CONFIG ...$store");
+      state["modal"][data.property] = data.state;
     }
   },
   actions: {
-    async LOGIN ({commit}, {key, expiresIn}) {
-      console.log("$$$ action:LOGIN ...store.js");
-      const { data } = await axios.post('/auth/issue', { key, expiresIn });
-      const userKey = key;
-      // LOGIN mutation
-      commit('LOGIN', {data, userKey}) ;
-      // header set
+    async ISSUE ({commit}, {key, expiresIn}) {
+      console.log("$$$ action:ISSUE ...$store");
+      const { data } = await axios.post('auth/issue', { key, expiresIn });
+      commit('ISSUE', {data});
       axios.defaults.headers.common['Authorization'] = data.accessToken;
     },
-    LOGOUT ({commit}) {
-      console.log("$$$ action:LOGOUT ...store.js");
-      // LOGOUT mutation
-      commit('LOGOUT');
-      // header set
-      axios.defaults.headers.common['Authorization'] = undefined;
+    async LOAD_CONFIG ({commit}, {key}) {
+      console.log("$$$ action:GET_CONFIG ...$store");
+      const { data } = await axios.post('auth/load-config', { key });
+      commit('LOAD_CONFIG', {data});
     },
+    LOGOUT ({commit}) {
+      console.log("$$$ action:LOGOUT $store");
+      axios.defaults.headers.common['Authorization'] = undefined;
+      commit('LOGOUT');
+    },
+    SET_MODAL ({commit}, {property, state}) {
+      console.log("$$$ action:SET_MODAL ...$store");
+      let data = {property, state};
+      commit('SET_MODAL', {data});
+    }
   }
 })
