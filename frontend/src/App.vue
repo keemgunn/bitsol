@@ -19,13 +19,6 @@
       />
       <label class="id_label" for="id">id:</label>
     </form>
-    <input 
-      type="button" 
-      value="heimdall"
-      class="btn"
-      @click="heimdall"
-    />
-    <h1>{{key}}</h1>
   </div>
 
 
@@ -87,7 +80,7 @@ export default {
       this.heimdall();
     },
     async getToken(key, expiresIn, accessTime, requestPoint) {
-      const { data } = await axios.post('auth/issue', {key, expiresIn, accessTime, requestPoint}); 
+      const { data } = await axios.post('/auth/issue', {key, expiresIn, accessTime, requestPoint}); 
       this.$store.dispatch('ISSUED', data)
       return data.accessToken;
     },
@@ -104,7 +97,7 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      axios.post('auth/reissue', 
+      axios.post('/auth/reissue', 
         {key: localStorage.userKey , requestPoint} );
     },
     async reIssueToken(){ // 적합한 인증 상태
