@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 let hotKey = {"userKey":"requestPoint"};
+// 다중로그인 방지... 마지막 로그인한 컴퓨터에서만 인증 가능
 
 function signToken(auth, requestPoint, expiresIn) {
   hotKey[auth.key] = requestPoint;
   let result = jwt.sign(auth, requestPoint, {expiresIn});
-  console.log("~~~ Token Issued ~~~");
   return result
 }
 
