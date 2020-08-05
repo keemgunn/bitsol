@@ -48,6 +48,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Manager from '@/components/Manager'
 
+let accessTime, requestPoint;
 
 export default {
   name: 'App',
@@ -77,16 +78,14 @@ export default {
   methods: {
     // LOGIN METHOD: login -> getToken -> heimdall
     async login(e) { e.preventDefault();
-      axios.defaults.headers.common['Authorization'] = await this.getToken(this.key, 10800);
-      console.log("A");
+      accessTime = new Date();
+      requestPoint = uuidv4();
+      localStorage.requestPoint = requestPoint;
+      axios.defaults.headers.common['Authorization'] = await this.getToken(this.key, 10800, accessTime, requestPoint);
       this.loadConfig(this.key);
-      console.log("B");
       this.heimdall();
     },
-    async getToken(key, expiresIn) {
-      let accessTime = new Date();
-      let requestPoint = uuidv4();
-      localStorage.requestPoint = requestPoint;
+    async getToken(key, expiresIn, accessTime, requestPoint) {
       const { data } = await axios.post('auth/issue', {key, expiresIn, accessTime, requestPoint}); 
       this.$store.dispatch('ISSUED', data)
       return data.accessToken;
@@ -100,24 +99,20 @@ export default {
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
     },
-    heimdall(){
+    heimdall(){ // 헤더에 토큰이 있어야대
       this.$store.dispatch('VERIFY');
     },
-
-    initiating(){
-
-    },
-    destroy(){
-
+    sessionOut(){
+      axios.post('auth/reissue', {key:this.key, requestPoint} );
     },
     async reIssueToken(){
-
+      
     }
   },
   created() {
-    // this.initiating();
+    this.heimdall();
     window.addEventListener("beforeunload", async () => {
-      // this.destroy();
+      this.sessionOut();
     })
   },
 }

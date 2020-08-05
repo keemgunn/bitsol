@@ -9,10 +9,9 @@
       "colorConfig": "default"
     },
     "state": {
-      "requestPoint": "50ad6c11-f3b6-449f-a009-438263d3ebe5",
-      "isOnline": true,
-      "platform": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
-      "last-access": "2020-08-05T11:12:26.177Z"
+      "isOnline": false,
+      "platform": "",
+      "last-access": "2020-08-05T13:02:54.464Z"
     }
   },
   "2018317025": {
@@ -25,7 +24,6 @@
       "colorConfig": "default"
     },
     "state": {
-      "requestPoint": "",
       "isOnline": false,
       "platform": "",
       "last-access": ""
@@ -41,7 +39,6 @@
       "colorConfig": "default"
     },
     "state": {
-      "requestPoint": "",
       "isOnline": false,
       "platform": "",
       "last-access": ""

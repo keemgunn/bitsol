@@ -10,8 +10,8 @@ export default new Vuex.Store({
   state: {
     accessToken: null,
     expiresIn: 0,
-    accessLevel: 0,
     userKey: null,
+    accessLevel: 0, // @VERIFIED
     userName: null,
     colorConfig: "default",
     modal: {
@@ -87,6 +87,15 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
+    // SESSION_OUT ({commit}, key){
+    //   console.log("$$$ action:SESSION_OUT $store");
+    //   axios.post('auth/session-out', key);
+    // },
+
+
+
+
+    
     SET_MODAL ({commit}, {property, state}) {
       console.log("$$$ action:SET_MODAL ...$store");
       let data = {property, state};
