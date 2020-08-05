@@ -29,11 +29,11 @@ export default new Vuex.Store({
       console.log("$$$ mutation:ISSUED ...$store");
       console.log(data);
       state.accessToken = data.accessToken;
-        localStorage.accessToken = data.accessToken;
+          localStorage.accessToken = data.accessToken;
       state.expiresIn = data.expiresIn;
-        localStorage.expiresIn = data.expiresIn;
+          localStorage.expiresIn = data.expiresIn;
       state.userKey = data.userKey;
-        localStorage.userKey = data.userKey;
+          localStorage.userKey = data.userKey;
     },
     VERIFIED (state, {data}) {
       console.log("$$$ mutation:VERIFIED ...$store");
@@ -44,9 +44,9 @@ export default new Vuex.Store({
       console.log("$$$ mutation:LOAD_CONFIG ...$store");
       console.log(data);
       state.userName = data.userName;
-        localStorage.userName = data.userName;
+          localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
-        localStorage.colorConfig = data.colorConfig;
+          localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
       state.accessToken = null;
@@ -87,15 +87,6 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
-    // SESSION_OUT ({commit}, key){
-    //   console.log("$$$ action:SESSION_OUT $store");
-    //   axios.post('auth/session-out', key);
-    // },
-
-
-
-
-    
     SET_MODAL ({commit}, {property, state}) {
       console.log("$$$ action:SET_MODAL ...$store");
       let data = {property, state};

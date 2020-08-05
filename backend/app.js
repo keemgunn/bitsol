@@ -125,4 +125,4 @@ app.post('/api/db/search', (req, res) => {
 
 
 const port = process.env.PORT || 5500;
-app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js \n\n\n\n`));
+app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js`));

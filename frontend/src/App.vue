@@ -25,6 +25,7 @@
       class="btn"
       @click="heimdall"
     />
+    <h1>{{key}}</h1>
   </div>
 
 
@@ -70,7 +71,7 @@ export default {
     "--accent02": "#FF7955",
     "--accent01": "#FF9470"
     },
-    key: '',
+    key: null,
     msg: "Hello",
     testArr: [],
     test00: null
@@ -103,10 +104,13 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      axios.post('auth/reissue', {key:this.key, requestPoint} );
+      axios.post('auth/reissue', 
+        {key: localStorage.userKey , requestPoint} );
     },
-    async reIssueToken(){
-      
+    async reIssueToken(){ // 적합한 인증 상태
+      requestPoint = localStorage.requestPoint;
+      accessTime = new Date();
+      axios.defaults.headers.common['Authorization'] = await this.getToken(localStorage.userKey, 10800, accessTime, requestPoint);
     }
   },
   created() {

@@ -27,13 +27,12 @@ router.post('/issue', (req, res) => {
     console.log("### userID confirmed .../auth/issue");
     
     const accessToken = auth.signToken(user[key]["auth"], requestPoint, expiresIn);
-
-    user[key]["state"]["isOnline"] = true;
-    user[key]["state"]["platform"] = userAgent;
-    user[key]["state"]["last-access"] = accessTime;
+      user[key]["state"]["isOnline"] = true;
+      user[key]["state"]["platform"] = userAgent;
+      user[key]["state"]["last-access"] = accessTime;
 
     // access_log 기록
-    
+
     version.update(users_json, user);
 
     res.json({
@@ -59,7 +58,7 @@ router.post('/verify', (req, res) => {
     console.log("### accessToken-Detected ... /auth/verify");
     const { requestPoint } = req.body;
     let result = auth.verify(req.headers.authorization, requestPoint);
-    console.log(result, "\n\n\n");
+    console.log(result, "\n\n");
     if(result) {
         res.json(result);
     }else {
@@ -76,25 +75,25 @@ router.post('/verify', (req, res) => {
       if(deposit.hasOwnProperty(requestPoint)){
         console.log("### access-history-found ... /auth/verify");
         let result = auth.verify(deposit[requestPoint], requestPoint);
-        console.log(result, "\n\n\n");
+        console.log(result, "\n\n");
         if(result) {
             res.json(result);
         }else {
-          console.log("authorization-failed ... /auth/verify");
+          console.log("authorization-failed ... /auth/verify\n\n");
           res.json({
             "key": "",
             "accessLevel": 0
           });
         }
       }else {
-        console.log("### no-access-history ... /auth/verify");
+        console.log("### no-access-history ... /auth/verify\n\n");
         res.json({
           "key": "",
           "accessLevel": 0
         });
       }
     }else {
-      console.log("no-request-data ... /auth/verify");
+      console.log("no-request-data ... /auth/verify\n\n");
       res.json({
         "key": "",
         "accessLevel": 0
@@ -108,7 +107,6 @@ router.post('/verify', (req, res) => {
 // $store/LOAD_CONFIG
 router.post('/load-config', (req, res) => {
   const data = req.body;
-  console.log(user);
   console.log(data);
   if(user.hasOwnProperty(data.key)) {
       res.json(user[data.key]["config"]);
@@ -123,19 +121,27 @@ router.post('/load-config', (req, res) => {
 
 router.post('/reissue', (req, res) => {
   const {key, requestPoint} = req.body;
-  if(user.hasOwnProperty(key)) {
-    console.log("### reissueing .../auth/session-out");
-    const newToken = auth.signToken(user[key]["auth"], requestPoint, 3);
 
-    deposit[requestPoint] = newToken;
+  if(requestPoint){ // no RP without login
+    if(user.hasOwnProperty(key)) {
+      console.log("### reissueing .../auth/session-out");
+      const newToken = auth.signToken(user[key]["auth"], requestPoint, 3);
+  
+      deposit[requestPoint] = newToken;
+  
+      user[key]["state"]["isOnline"] = false;
+      user[key]["state"]["platform"] = "";
+  
+      version.update(users_json, user);
 
-    user[key]["state"]["isOnline"] = false;
-    user[key]["state"]["platform"] = "";
-
-    version.update(users_json, user);
-
+      console.log("token reissued, expiresIn: ", 3, "\n\n");
+  
+    }else {
+      console.log("### no userID .../api/session-out");
+      return res.status(404).json({error: 'No user id'});
+    }
   }else {
-    console.log("### no userID .../api/session-out");
+    console.log("### no requestPoint .../api/session-out");
     return res.status(404).json({error: 'No user id'})
   }
 })
