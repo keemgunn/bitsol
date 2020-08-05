@@ -44,7 +44,7 @@ router.post('/issue', (req, res) => {
     console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
 
   }else {
-      console.log("### no userID .../api/issue");
+      console.log("### no userID .../auth/issue");
       return res.status(401).json({error: 'Authorization failure - No user id'})
   }
 })
@@ -112,13 +112,14 @@ router.post('/load-config', (req, res) => {
       res.json(user[data.key]["config"]);
       console.log("### config loaded .../auth/load-config");
   }else {
-      console.log("### no userID .../api/load-config");
+      console.log("### no userID .../auth/load-config");
       return res.status(404).json({error: 'No user id'})
   }
 })
 
 
 
+// reIssueToken()
 router.post('/reissue', (req, res) => {
   const {key, requestPoint} = req.body;
 
@@ -137,13 +138,26 @@ router.post('/reissue', (req, res) => {
       console.log("token reissued, expiresIn: ", 3, "\n\n");
   
     }else {
-      console.log("### no userID .../api/session-out");
+      console.log("### no userID .../auth/session-out");
       return res.status(404).json({error: 'No user id'});
     }
   }else {
-    console.log("### no requestPoint .../api/session-out");
+    console.log("### no requestPoint .../auth/session-out");
     return res.status(404).json({error: 'No user id'})
   }
+})
+
+
+
+router.post('/logout', (req, res) => {
+  const {userKey} = req.body;
+
+  user[userKey]["state"]["isOnline"] = false;
+  user[userKey]["state"]["platform"] = "";
+
+  // access_log 기록
+
+  console.log("### LOGGED OUT .../auth/logout");
 })
 
 

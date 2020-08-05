@@ -55,6 +55,7 @@ export default new Vuex.Store({
       state.userKey = null;
       state.userName = null;
       state.colorConfig = "default";
+      delete localStorage.requestPoint;
       delete localStorage.accessToken;
       delete localStorage.expiresIn;
       delete localStorage.userKey;
@@ -84,6 +85,7 @@ export default new Vuex.Store({
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT $store");
+      axios.post('/auth/logout', {userKey: localStorage.userKey});
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
