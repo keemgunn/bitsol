@@ -19,13 +19,6 @@
       />
       <label class="id_label" for="id">id:</label>
     </form>
-    <input 
-      type="button" 
-      value="heimdall"
-      class="btn"
-      @click="heimdall"
-    />
-    <h1>{{key}}</h1>
   </div>
 
 
@@ -79,7 +72,7 @@ export default {
   methods: {
     // LOGIN METHOD: login -> getToken -> heimdall
     async login(e) { e.preventDefault();
-      accessTime = new Date();
+      accessTime = "doesn't matter";
       requestPoint = uuidv4();
       localStorage.requestPoint = requestPoint;
       axios.defaults.headers.common['Authorization'] = await this.getToken(this.key, 10800, accessTime, requestPoint);
@@ -87,7 +80,7 @@ export default {
       this.heimdall();
     },
     async getToken(key, expiresIn, accessTime, requestPoint) {
-      const { data } = await axios.post('auth/issue', {key, expiresIn, accessTime, requestPoint}); 
+      const { data } = await axios.post('/auth/issue', {key, expiresIn, accessTime, requestPoint}); 
       this.$store.dispatch('ISSUED', data)
       return data.accessToken;
     },
@@ -104,8 +97,13 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      axios.post('auth/reissue', 
-        {key: localStorage.userKey , requestPoint} );
+      // 이미 인증이 되어있다면 authenticate/deposit에 임시토큰 발행
+      if(this.$store.state.accessLevel) {
+        axios.post('/auth/reissue', 
+          {key: localStorage.userKey , requestPoint} );
+      }else {
+        console.log('no-authorized-history');
+      }
     },
     async reIssueToken(){ // 적합한 인증 상태
       requestPoint = localStorage.requestPoint;

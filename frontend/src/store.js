@@ -55,6 +55,7 @@ export default new Vuex.Store({
       state.userKey = null;
       state.userName = null;
       state.colorConfig = "default";
+      delete localStorage.requestPoint;
       delete localStorage.accessToken;
       delete localStorage.expiresIn;
       delete localStorage.userKey;
@@ -73,17 +74,18 @@ export default new Vuex.Store({
     },
     async VERIFY ({commit}) {
       console.log("$$$ action:VERIFY ...$store");
-      let requestPoint = localStorage.requestPoint;
-      const { data } = await axios.post('auth/verify', { requestPoint });
+      let userKey = localStorage.userKey;
+      const { data } = await axios.post('/auth/verify', { userKey });
       commit('VERIFIED', {data});
     },
     async LOAD_CONFIG ({commit}, key) {
       console.log("$$$ action:GET_CONFIG ...$store");
-      const data = await axios.post('auth/load-config', key);
+      const data = await axios.post('/auth/load-config', key);
       commit('LOAD_CONFIG', data);
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT $store");
+      axios.post('/auth/logout', {userKey: localStorage.userKey});
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },

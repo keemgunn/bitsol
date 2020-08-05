@@ -14,7 +14,7 @@ console.log('AUTHORIZED USERS: ', user);
 
 // keeping accessKey for 3 seconds
 let deposit = {
-  "requestPointName" : "accessToken"
+  "userKey" : "accessToken"
 };
 
 
@@ -44,7 +44,7 @@ router.post('/issue', (req, res) => {
     console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
 
   }else {
-      console.log("### no userID .../api/issue");
+      console.log("### no userID .../auth/issue\n\n");
       return res.status(401).json({error: 'Authorization failure - No user id'})
   }
 })
@@ -56,11 +56,12 @@ router.post('/verify', (req, res) => {
   console.log("### initiating-verification ... /auth/verify");
   if(req.headers.authorization) {
     console.log("### accessToken-Detected ... /auth/verify");
-    const { requestPoint } = req.body;
-    let result = auth.verify(req.headers.authorization, requestPoint);
+    const { userKey } = req.body;
+    let result = auth.verify(req.headers.authorization, userKey);
     console.log(result, "\n\n");
-    if(result) {
-        res.json(result);
+    if(result.accessLevel) {
+      res.json(result);
+      console.log("### VERIFIED! ... /auth/verify\n\n");
     }else {
       console.log("authorization-failed ... /auth/verify");
       res.json({
@@ -71,13 +72,14 @@ router.post('/verify', (req, res) => {
   }else {
     console.log("### no-access-token ... /auth/verify");
     if(req.body) {
-      const { requestPoint } = req.body;
-      if(deposit.hasOwnProperty(requestPoint)){
+      const { userKey } = req.body;
+      if(deposit.hasOwnProperty(userKey)){
         console.log("### access-history-found ... /auth/verify");
-        let result = auth.verify(deposit[requestPoint], requestPoint);
-        console.log(result, "\n\n");
-        if(result) {
-            res.json(result);
+        let result = auth.verify(deposit[userKey], userKey);
+        if(result.accessLevel) {
+          console.log(result);
+          console.log("### VERIFIED! ... /auth/verify\n\n");
+          res.json(result);
         }else {
           console.log("authorization-failed ... /auth/verify\n\n");
           res.json({
@@ -112,38 +114,46 @@ router.post('/load-config', (req, res) => {
       res.json(user[data.key]["config"]);
       console.log("### config loaded .../auth/load-config");
   }else {
-      console.log("### no userID .../api/load-config");
+      console.log("### no userID .../auth/load-config");
       return res.status(404).json({error: 'No user id'})
   }
 })
 
 
 
+// reIssueToken()
 router.post('/reissue', (req, res) => {
   const {key, requestPoint} = req.body;
+  if(user.hasOwnProperty(key)) {
+    console.log("### reissueing .../auth/session-out");
+    const temporaryToken = auth.signToken(user[key]["auth"], requestPoint, 3);
 
-  if(requestPoint){ // no RP without login
-    if(user.hasOwnProperty(key)) {
-      console.log("### reissueing .../auth/session-out");
-      const newToken = auth.signToken(user[key]["auth"], requestPoint, 3);
-  
-      deposit[requestPoint] = newToken;
-  
-      user[key]["state"]["isOnline"] = false;
-      user[key]["state"]["platform"] = "";
-  
-      version.update(users_json, user);
+    deposit[key] = temporaryToken;
 
-      console.log("token reissued, expiresIn: ", 3, "\n\n");
-  
-    }else {
-      console.log("### no userID .../api/session-out");
-      return res.status(404).json({error: 'No user id'});
-    }
+    user[key]["state"]["isOnline"] = false;
+    user[key]["state"]["platform"] = "";
+
+    version.update(users_json, user);
+
+    console.log("token reissued, expiresIn: ", 3, "\n\n");
+
   }else {
-    console.log("### no requestPoint .../api/session-out");
-    return res.status(404).json({error: 'No user id'})
+    console.log("### no userID .../auth/session-out");
+    return res.status(404).json({error: 'No user id'});
   }
+})
+
+
+
+router.post('/logout', (req, res) => {
+  const {userKey} = req.body;
+
+  user[userKey]["state"]["isOnline"] = false;
+  user[userKey]["state"]["platform"] = "";
+
+  // access_log 기록
+
+  console.log("### LOGGED OUT .../auth/logout");
 })
 
 

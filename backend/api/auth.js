@@ -1,20 +1,15 @@
 const jwt = require('jsonwebtoken');
-const { func } = require('joi');
-const accessKey = {
-  1: "access-level-1",
-  2: "access-level-2",
-  3: "access-level-3"
-}
+let hotKey = {"userKey":"requestPoint"};
+// 다중로그인 방지... 마지막 로그인한 컴퓨터에서만 인증 가능
 
-function signToken(user, clientKey, expiresIn) {
-  let result = jwt.sign(user, clientKey, {expiresIn});
-  console.log("~~~ Token Issued ~~~");
+function signToken(auth, requestPoint, expiresIn) {
+  hotKey[auth.key] = requestPoint;
+  let result = jwt.sign(auth, requestPoint, {expiresIn});
   return result
-  
 }
 
-
-function verify (token, clientKey) {
+function verify (token, userKey) {
+  let clientKey = hotKey[userKey];
   let result = jwt.verify(token, clientKey, (err, decoded) => {
     if(err) {
       return { "key": "", "accessLevel": 0 }
