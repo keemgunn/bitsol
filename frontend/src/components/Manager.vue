@@ -7,10 +7,13 @@
   class="btn"
   v-on:click="logout"
   />
-  <h1>{{ userKey }}</h1>
-    
+  <h1>{{ state.userKey }}</h1>
+  <h2>accessLevel: {{ accessLevel }}</h2>
+  <h3>modal.display: {{ modal.display }}</h3>
+  
 
 
+  
 </div>
 </template>
 
@@ -22,32 +25,23 @@ export default {
   components: {
     
   },
-  props: ["userKey"],
+  props: ["accessLevel", "state", "modal"],
   data() { return {
 
   }},
   methods: {
     logout(){
-      this.$store.dispatch('LOGOUT');
-      // $emit('del-todo', units.id);
-    },
-
+      this.$emit('logout');
+    }
   },
   created() {
-    console.log("created Online.vue");
-  },
+    },
   mounted() {
-    // students.vue에 진입하게 되면
-    // 같은 정보를 이용해서 3시간 짜리 토큰 override
+    console.log("mounted");
+    this.$emit('manager-created')
   },
   beforeDestroy() {
-    console.log("### before Destroy Online.vue ###");
-
-    // 5초짜리 인증 토큰 override __getToken()
-    // this.getToken(this.$store.state.userKey, 5);
-
-
-
+    // this.$emit('close-session')
   },
 
 }

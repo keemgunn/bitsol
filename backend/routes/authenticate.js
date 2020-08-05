@@ -5,23 +5,26 @@ const version = require('../api/config');
 const auth = require('../api/auth');
 
 
-// USER CONFIG
-let user = version.readSync(path.join(__dirname, '../data/users.json'));  //users.json
+// users.json
+let user = version.readSync(path.join(__dirname, '../data/users.json'));  
 console.log('AUTHORIZED USERS: ', user);
 
 
-// GET TOKEN
-router.post('/login', async (req, res) => {
+// @/App.vue/ getToken(key,expiresIn)
+router.post('/issue', async (req, res) => {
   let accessToken;
   const {key, expiresIn} = req.body;
   if(user.hasOwnProperty(key)) {
-      console.log("### userID confirmed .../api/login");
+      console.log("### userID confirmed .../auth/issue");
       accessToken = auth.signToken(user[key]["id"], user[key]["access-level"], expiresIn);
       res.json({
         accessToken,
+        expiresIn,
+        userKey: user[key]["key"],
         colorConfig: user[key]["color-config"],
         userName: user[key]["username"]
       });
+      console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
   }else {
       console.log("### no userID .../api/login");
       return res.status(401).json({error: 'Login failure'})
@@ -29,13 +32,13 @@ router.post('/login', async (req, res) => {
 })
 
 
-// VERIFY TOKEN
+// @/App.vue/ heimdall()
 router.get('/verify', (req, res) => {
   console.log("### USER VERIFIED ... /auth/verify");
   console.log(req.headers);
   if(req.headers.authorization) {
     let result = auth.verify(req.headers.authorization);
-    console.log(result);
+    console.log(result, "\n\n\n");
     if(result) {
         res.json({
             "accessLevel": result.accessLevel,
