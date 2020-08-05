@@ -1,23 +1,47 @@
 {
   "2018317024": {
-    "id": 1,
-    "key": "2018317024",
-    "username" : "김건",
-    "access-level" : 3,
-    "color-config" : "default"
+    "auth": {
+      "key": "2018317024",
+      "accessLevel": 3
+    },
+    "config": {
+      "userName": "김건1",
+      "colorConfig": "default"
+    },
+    "state": {
+      "isOnline": true,
+      "platform": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
+      "last-access": "2020-08-05T14:04:48.134Z"
+    }
   },
   "2018317025": {
-    "id": 2,
-    "key": "2018317025",
-    "username" : "김건",
-    "access-level" : 2,
-    "color-config" : "default"
+    "auth": {
+      "key": "2018317025",
+      "accessLevel": 2
+    },
+    "config": {
+      "userName": "김건2",
+      "colorConfig": "default"
+    },
+    "state": {
+      "isOnline": false,
+      "platform": "",
+      "last-access": ""
+    }
   },
   "2018317026": {
-    "id": 3,
-    "key": "2018317026",
-    "username" : "김건",
-    "access-level" : 1,
-    "color-config" : "default"
+    "auth": {
+      "key": "2018317026",
+      "accessLevel": 1
+    },
+    "config": {
+      "userName": "김건3",
+      "colorConfig": "default"
+    },
+    "state": {
+      "isOnline": false,
+      "platform": "",
+      "last-access": ""
+    }
   }
 }
