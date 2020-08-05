@@ -7,9 +7,9 @@
   class="btn"
   v-on:click="logout"
   />
-  <h1>{{ state.userKey }}</h1>
-  <h2>accessLevel: {{ accessLevel }}</h2>
-  <h3>modal.display: {{ modal.display }}</h3>
+  <h1>{{ this.$store.state.userKey }}</h1>
+  <h2>accessLevel: {{ this.$store.state.accessLevel }}</h2>
+  <h3>modal.display: {{ this.$store.state.modal.display }}</h3>
   
 
 
@@ -25,7 +25,7 @@ export default {
   components: {
     
   },
-  props: ["accessLevel", "state", "modal"],
+  props: [],
   data() { return {
 
   }},

@@ -1,35 +1,26 @@
 const jwt = require('jsonwebtoken');
-const { callbackify } = require('util');
-const secret = 'token secret';
-const secretKey = {
+const { func } = require('joi');
+const accessKey = {
   1: "access-level-1",
   2: "access-level-2",
   3: "access-level-3"
 }
 
-function signToken(id, accessLevel, expiresIn) {
-  return jwt.sign({id}, secretKey[accessLevel], {expiresIn})
+function signToken(user, clientKey, expiresIn) {
+  let result = jwt.sign(user, clientKey, {expiresIn});
+  console.log("~~~ Token Issued ~~~");
+  return result
+  
 }
 
 
-function verify (token) {
-  let result;
-
-  result = jwt.verify(token, secretKey[1], (err, decoded)=>{
-    if (err){
-      return jwt.verify(token, secretKey[2], (err,decoded)=>{
-        if (err){
-          return jwt.verify(token, secretKey[3], (err,decoded)=>{
-            if (err){
-              return { "accessLevel": 0 , "msg": "Invalid Token" }
-            }
-            return { "accessLevel": 3 , "msg": "Authorized" }
-          })
-        }
-        return { "accessLevel": 2 , "msg": "Authorized" }
-      })
+function verify (token, clientKey) {
+  let result = jwt.verify(token, clientKey, (err, decoded) => {
+    if(err) {
+      return { "key": "", "accessLevel": 0 }
+    }else {
+      return decoded
     }
-    return { "accessLevel": 1 , "msg": "Authorized" }
   });
 
   return result;

@@ -1,12 +1,12 @@
 <template>
 <div id="app" :style="themeColor">
 
-  <div id="loginBox" v-if="!guard.accessLevel">
+  <div id="loginBox" v-if="this.$store.state.accessLevel === 0">
     <form @submit="login" autocomplete="off">
       <input
         type="text" 
         class = "id_field"
-        v-model="guard.key"
+        v-model="key"
         placeholder="id:"
         name="id" 
         id = "id_field"
@@ -29,10 +29,8 @@
 
 
   <Manager
-    v-if="guard.accessLevel"
-    :accessLevel="guard.accessLevel"
-    :state="state"
-    :modal="modal"
+    v-if="this.$store.state.accessLevel !== 0"
+    :accessLevel="this.$store.accessLevel"
     @manager-created="reIssueToken"
     @logout="logout"
 
@@ -46,6 +44,7 @@
 
 <script>
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid';
 
 import Manager from '@/components/Manager'
 
@@ -70,32 +69,27 @@ export default {
     "--accent02": "#FF7955",
     "--accent01": "#FF9470"
     },
-    guard: {
-      key: '',
-      accessLevel: 0
-    },
-    state: {
-      userKey: '',
-      userName: '',
-      colorConfig: ''
-    },
-    modal: {
-      display: 'refg'
-    },
+    key: '',
     msg: "Hello",
     testArr: [],
     test00: null
   }},
   methods: {
     // LOGIN METHOD: login -> getToken -> heimdall
-    async login(e) {
-      e.preventDefault();
-      await this.getToken(this.guard.key, 10800);
-      await this.loadConfig(this.guard.key);
+    async login(e) { e.preventDefault();
+      axios.defaults.headers.common['Authorization'] = await this.getToken(this.key, 10800);
+      console.log("A");
+      this.loadConfig(this.key);
+      console.log("B");
       this.heimdall();
     },
-    getToken(key, expiresIn) {
-      this.$store.dispatch('ISSUE', {key, expiresIn});
+    async getToken(key, expiresIn) {
+      let accessTime = new Date();
+      let requestPoint = uuidv4();
+      localStorage.requestPoint = requestPoint;
+      const { data } = await axios.post('auth/issue', {key, expiresIn, accessTime, requestPoint}); 
+      this.$store.dispatch('ISSUED', data)
+      return data.accessToken;
     },
     loadConfig(key) {
       this.$store.dispatch('LOAD_CONFIG', {key});
@@ -106,52 +100,24 @@ export default {
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
     },
-
-    loadFromLocal(){
-      this.state.userKey = localStorage.userKey || "";
-      this.state.userName = localStorage.userName || "";
-      this.state.colorConfig = localStorage.colorConfig || "";
-      this.modal.display = localStorage.display || "refg";
-    },
-    deleteLocalState(){
-      delete localStorage.userName;
-      delete localStorage.colorConfig;
-    },
     heimdall(){
-      axios.get('auth/verify')
-        .then( res => {
-          this.guard.accessLevel = res.data.accessLevel;
-        })
-        .catch( err => {
-          console.log(err);
-          this.guard.accessLevel = 0;
-          // *** AUTH ALART: FAILD
-          // *** REDIRECTION TO LOGIN PAGE
-      });
+      this.$store.dispatch('VERIFY');
     },
 
     initiating(){
-      console.log("initiating...");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
-      axios.defaults.headers.common['Authorization'] = localStorage.accessToken;
-      this.heimdall();
+
     },
-    async destroy(){
-      await this.getToken(this.state.userKey, 3);
+    destroy(){
+
     },
     async reIssueToken(){
-      console.log("reissueing...");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
-      await this.getToken(localStorage.userKey, 10800);
-      console.log("TOKEN REISSUED");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
+
     }
   },
   created() {
-    this.initiating();
+    // this.initiating();
     window.addEventListener("beforeunload", async () => {
-      // await this.destroy();
-      await this.getToken(this.state.userKey, 3);
+      // this.destroy();
     })
   },
 }

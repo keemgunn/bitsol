@@ -6,18 +6,11 @@ Vue.use(Vuex)
 
 // const resourceHost = 'http://localhost:3000'
 
-const enhanceTokens = () => {
-  const {accessToken} = localStorage
-  if (!accessToken) {
-  axios.defaults.headers.common['Authorization'] = accessToken;
-  }
-}
-enhanceTokens()
-
 export default new Vuex.Store({
   state: {
     accessToken: null,
     expiresIn: 0,
+    accessLevel: 0,
     userKey: null,
     userName: null,
     colorConfig: "default",
@@ -32,8 +25,9 @@ export default new Vuex.Store({
     } // 현재 무쓸모
   },
   mutations: {
-    ISSUE (state, {data}) {
-      console.log("$$$ mutation:ISSUE ...$store");
+    ISSUED (state, {data}) {
+      console.log("$$$ mutation:ISSUED ...$store");
+      console.log(data);
       state.accessToken = data.accessToken;
         localStorage.accessToken = data.accessToken;
       state.expiresIn = data.expiresIn;
@@ -41,8 +35,14 @@ export default new Vuex.Store({
       state.userKey = data.userKey;
         localStorage.userKey = data.userKey;
     },
+    VERIFIED (state, {data}) {
+      console.log("$$$ mutation:VERIFIED ...$store");
+      console.log(data);
+      state.accessLevel = data.accessLevel;
+    },
     LOAD_CONFIG (state, {data}) {
       console.log("$$$ mutation:LOAD_CONFIG ...$store");
+      console.log(data);
       state.userName = data.userName;
         localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
@@ -51,6 +51,7 @@ export default new Vuex.Store({
     LOGOUT (state) {
       state.accessToken = null;
       state.expiresIn = 0;
+      state.accessLevel = 0;
       state.userKey = null;
       state.userName = null;
       state.colorConfig = "default";
@@ -66,16 +67,20 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async ISSUE ({commit}, {key, expiresIn}) {
-      console.log("$$$ action:ISSUE ...$store");
-      const { data } = await axios.post('auth/issue', { key, expiresIn });
-      commit('ISSUE', {data});
-      axios.defaults.headers.common['Authorization'] = data.accessToken;
+    async ISSUED ({commit}, data) {
+      console.log("$$$ action:ISSUED ...$store");
+      commit('ISSUED', {data});
     },
-    async LOAD_CONFIG ({commit}, {key}) {
+    async VERIFY ({commit}) {
+      console.log("$$$ action:VERIFY ...$store");
+      let requestPoint = localStorage.requestPoint;
+      const { data } = await axios.post('auth/verify', { requestPoint });
+      commit('VERIFIED', {data});
+    },
+    async LOAD_CONFIG ({commit}, key) {
       console.log("$$$ action:GET_CONFIG ...$store");
-      const { data } = await axios.post('auth/load-config', { key });
-      commit('LOAD_CONFIG', {data});
+      const data = await axios.post('auth/load-config', key);
+      commit('LOAD_CONFIG', data);
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT $store");
