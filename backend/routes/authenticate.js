@@ -19,10 +19,12 @@ router.post('/issue', async (req, res) => {
       accessToken = auth.signToken(user[key]["id"], user[key]["access-level"], expiresIn);
       res.json({
         accessToken,
+        expiresIn,
         userKey: user[key]["key"],
         colorConfig: user[key]["color-config"],
         userName: user[key]["username"]
       });
+      console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
   }else {
       console.log("### no userID .../api/login");
       return res.status(401).json({error: 'Login failure'})
@@ -36,7 +38,7 @@ router.get('/verify', (req, res) => {
   console.log(req.headers);
   if(req.headers.authorization) {
     let result = auth.verify(req.headers.authorization);
-    console.log(result);
+    console.log(result, "\n\n\n");
     if(result) {
         res.json({
             "accessLevel": result.accessLevel,

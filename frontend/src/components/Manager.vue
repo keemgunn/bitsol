@@ -35,13 +35,13 @@ export default {
     }
   },
   created() {
+    },
+  mounted() {
+    console.log("mounted");
     this.$emit('manager-created')
   },
-  mounted() {
-
-  },
   beforeDestroy() {
-
+    // this.$emit('close-session')
   },
 
 }

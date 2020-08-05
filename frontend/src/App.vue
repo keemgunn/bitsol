@@ -1,7 +1,6 @@
 <template>
 <div id="app" :style="themeColor">
 
-
   <div id="loginBox" v-if="!guard.accessLevel">
     <form @submit="login" autocomplete="off">
       <input
@@ -24,7 +23,7 @@
       type="button" 
       value="heimdall"
       class="btn"
-      v-on:click="heimdall"
+      @click="heimdall"
     />
   </div>
 
@@ -36,6 +35,7 @@
     :modal="modal"
     @manager-created="reIssueToken"
     @logout="logout"
+
 
     key="manager"
   />
@@ -96,8 +96,13 @@ export default {
     },
     async getToken( key, expiresIn ) {
       const {data} = await axios.post('/auth/issue', {key, expiresIn});
+      // 창을 닫아버리면 이 이상으로 진행되질 않아
+      // 새로고침하면 계속 살아있어서 작동하는데,
+      // 닫아버리면 App.vue 자체가 소멸해버려서
+      // 생기는 문제 같다.
+      // 새로고침 인증 토큰을 모두 서버에서 진행하면 해결될듯.
       axios.defaults.headers.common['Authorization'] = data.accessToken;
-      this.saveToLocal(data, "accessToken", "userKey", "colorConfig", "userName");
+      await this.saveToLocal(data, "accessToken", "expiresIn", "userKey", "userName", "colorConfig");
     },
     saveToLocal(data, ...args){
       let arr = args;
@@ -115,6 +120,10 @@ export default {
       this.state.userName = localStorage.userName || "";
       this.state.colorConfig = localStorage.colorConfig || "";
       this.modal.display = localStorage.display || "refg";
+    },
+    deleteLocalState(){
+      delete localStorage.userName;
+      delete localStorage.colorConfig;
     },
     heimdall(){
       axios.get('auth/verify')
@@ -135,28 +144,34 @@ export default {
       this.state.userName = '';
       this.state.colorConfig = '';
       delete localStorage.accessToken;
+      delete localStorage.expiresIn;
       delete localStorage.userKey;
       delete localStorage.userName;
       delete localStorage.colorConfig;
+      delete localStorage.display;
     },
     initiating(){
-      this.loadFromLocal();
+      console.log("initiating...");
+      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
       axios.defaults.headers.common['Authorization'] = localStorage.accessToken;
       this.heimdall();
     },
     async destroy(){
-      await this.getToken(this.state.userKey, 5);
+      await this.getToken(this.state.userKey, 3);
     },
     async reIssueToken(){
-      await this.getToken(this.state.userKey, 10800);
+      console.log("reissueing...");
+      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
+      await this.getToken(localStorage.userKey, 10800);
       console.log("TOKEN REISSUED");
+      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
     }
   },
   created() {
     this.initiating();
-    window.addEventListener("beforeunload", () => {
-      // this.destroy();
-      this.getToken(this.state.userKey, 5);
+    window.addEventListener("beforeunload", async () => {
+      // await this.destroy();
+      await this.getToken(this.state.userKey, 3);
     })
   },
 }
