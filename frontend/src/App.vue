@@ -1,12 +1,12 @@
 <template>
 <div id="app" :style="themeColor">
 
-  <div id="loginBox" v-if="!guard.accessLevel">
+  <div id="loginBox" v-if="this.$store.state.accessLevel === 0">
     <form @submit="login" autocomplete="off">
       <input
         type="text" 
         class = "id_field"
-        v-model="guard.key"
+        v-model="key"
         placeholder="id:"
         name="id" 
         id = "id_field"
@@ -25,14 +25,13 @@
       class="btn"
       @click="heimdall"
     />
+    <h1>{{key}}</h1>
   </div>
 
 
   <Manager
-    v-if="guard.accessLevel"
-    :accessLevel="guard.accessLevel"
-    :state="state"
-    :modal="modal"
+    v-if="this.$store.state.accessLevel !== 0"
+    :accessLevel="this.$store.accessLevel"
     @manager-created="reIssueToken"
     @logout="logout"
 
@@ -46,9 +45,11 @@
 
 <script>
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid';
 
 import Manager from '@/components/Manager'
 
+let accessTime, requestPoint;
 
 export default {
   name: 'App',
@@ -70,108 +71,52 @@ export default {
     "--accent02": "#FF7955",
     "--accent01": "#FF9470"
     },
-    guard: {
-      key: '',
-      accessLevel: 0
-    },
-    state: {
-      userKey: '',
-      userName: '',
-      colorConfig: ''
-    },
-    modal: {
-      display: 'refg'
-    },
+    key: null,
     msg: "Hello",
     testArr: [],
     test00: null
   }},
   methods: {
     // LOGIN METHOD: login -> getToken -> heimdall
-    async login(e) {
-      e.preventDefault();
-      await this.getToken(this.guard.key, 10800);
-      this.setModal("display", "refg");
+    async login(e) { e.preventDefault();
+      accessTime = new Date();
+      requestPoint = uuidv4();
+      localStorage.requestPoint = requestPoint;
+      axios.defaults.headers.common['Authorization'] = await this.getToken(this.key, 10800, accessTime, requestPoint);
+      this.loadConfig(this.key);
       this.heimdall();
     },
-    async getToken( key, expiresIn ) {
-      const {data} = await axios.post('/auth/issue', {key, expiresIn});
-      // 창을 닫아버리면 이 이상으로 진행되질 않아
-      // 새로고침하면 계속 살아있어서 작동하는데,
-      // 닫아버리면 App.vue 자체가 소멸해버려서
-      // 생기는 문제 같다.
-      // 새로고침 인증 토큰을 모두 서버에서 진행하면 해결될듯.
-      axios.defaults.headers.common['Authorization'] = data.accessToken;
-      await this.saveToLocal(data, "accessToken", "expiresIn", "userKey", "userName", "colorConfig");
+    async getToken(key, expiresIn, accessTime, requestPoint) {
+      const { data } = await axios.post('auth/issue', {key, expiresIn, accessTime, requestPoint}); 
+      this.$store.dispatch('ISSUED', data)
+      return data.accessToken;
     },
-    saveToLocal(data, ...args){
-      let arr = args;
-      for(var i=0; i<arr.length; i++){
-        localStorage[arr[i]] = data[arr[i]];
-        this["state"][arr[i]] = localStorage[arr[i]];
-      }
-    },
-    setModal(property, state){
-      localStorage.display = state;
-      this["modal"][property] = state;
-    },
-    loadFromLocal(){
-      this.state.userKey = localStorage.userKey || "";
-      this.state.userName = localStorage.userName || "";
-      this.state.colorConfig = localStorage.colorConfig || "";
-      this.modal.display = localStorage.display || "refg";
-    },
-    deleteLocalState(){
-      delete localStorage.userName;
-      delete localStorage.colorConfig;
-    },
-    heimdall(){
-      axios.get('auth/verify')
-        .then( res => {
-          this.guard.accessLevel = res.data.accessLevel;
-        })
-        .catch( err => {
-          console.log(err);
-          this.guard.accessLevel = 0;
-          // *** AUTH ALART: FAILD
-          // *** REDIRECTION TO LOGIN PAGE
-      });
+    loadConfig(key) {
+      this.$store.dispatch('LOAD_CONFIG', {key});
     },
     logout(){
-      this.guard.accessLevel = 0;
-      axios.defaults.headers.common['Authorization'] = undefined;
-      this.state.userKey = '';
-      this.state.userName = '';
-      this.state.colorConfig = '';
-      delete localStorage.accessToken;
-      delete localStorage.expiresIn;
-      delete localStorage.userKey;
-      delete localStorage.userName;
-      delete localStorage.colorConfig;
-      delete localStorage.display;
+      this.$store.dispatch('LOGOUT');
     },
-    initiating(){
-      console.log("initiating...");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
-      axios.defaults.headers.common['Authorization'] = localStorage.accessToken;
-      this.heimdall();
+    setModal(property, state){
+      this.$store.dispatch('SET_MODAL', {property, state})
     },
-    async destroy(){
-      await this.getToken(this.state.userKey, 3);
+    heimdall(){ // 헤더에 토큰이 있어야대
+      this.$store.dispatch('VERIFY');
     },
-    async reIssueToken(){
-      console.log("reissueing...");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
-      await this.getToken(localStorage.userKey, 10800);
-      console.log("TOKEN REISSUED");
-      console.log("localstorage.expiresIn: ", localStorage.expiresIn);
+    sessionOut(){
+      axios.post('auth/reissue', 
+        {key: localStorage.userKey , requestPoint} );
+    },
+    async reIssueToken(){ // 적합한 인증 상태
+      requestPoint = localStorage.requestPoint;
+      accessTime = new Date();
+      axios.defaults.headers.common['Authorization'] = await this.getToken(localStorage.userKey, 10800, accessTime, requestPoint);
     }
   },
   created() {
-    this.initiating();
+    this.heimdall();
     window.addEventListener("beforeunload", async () => {
-      // await this.destroy();
-      await this.getToken(this.state.userKey, 3);
+      this.sessionOut();
     })
   },
 }

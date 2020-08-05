@@ -390,7 +390,7 @@ function newConnection(){
       } else {
         console.error('$$$ CONNECTION ERROR ... @mysql.js/connection :\n' + err.stack);
       }
-    } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection');
+    } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection\n==========================');
   });
 }
 function endConnection(){
