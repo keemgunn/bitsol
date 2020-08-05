@@ -89,6 +89,7 @@ export default {
     },
     logout(){
       this.$store.dispatch('LOGOUT');
+      this.key = '';
     },
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
