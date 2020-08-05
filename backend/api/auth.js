@@ -1,20 +1,15 @@
 const jwt = require('jsonwebtoken');
-const { func } = require('joi');
-const accessKey = {
-  1: "access-level-1",
-  2: "access-level-2",
-  3: "access-level-3"
-}
+let hotKey = {"userKey":"requestPoint"};
 
-function signToken(user, clientKey, expiresIn) {
-  let result = jwt.sign(user, clientKey, {expiresIn});
+function signToken(auth, requestPoint, expiresIn) {
+  hotKey[auth.key] = requestPoint;
+  let result = jwt.sign(auth, requestPoint, {expiresIn});
   console.log("~~~ Token Issued ~~~");
   return result
-  
 }
 
-
-function verify (token, clientKey) {
+function verify (token, userKey) {
+  let clientKey = hotKey[userKey];
   let result = jwt.verify(token, clientKey, (err, decoded) => {
     if(err) {
       return { "key": "", "accessLevel": 0 }

@@ -74,8 +74,8 @@ export default new Vuex.Store({
     },
     async VERIFY ({commit}) {
       console.log("$$$ action:VERIFY ...$store");
-      let requestPoint = localStorage.requestPoint;
-      const { data } = await axios.post('/auth/verify', { requestPoint });
+      let userKey = localStorage.userKey;
+      const { data } = await axios.post('/auth/verify', { userKey });
       commit('VERIFIED', {data});
     },
     async LOAD_CONFIG ({commit}, key) {

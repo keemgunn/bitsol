@@ -14,7 +14,7 @@ console.log('AUTHORIZED USERS: ', user);
 
 // keeping accessKey for 3 seconds
 let deposit = {
-  "requestPointName" : "accessToken"
+  "userKey" : "accessToken"
 };
 
 
@@ -44,7 +44,7 @@ router.post('/issue', (req, res) => {
     console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
 
   }else {
-      console.log("### no userID .../auth/issue");
+      console.log("### no userID .../auth/issue\n\n");
       return res.status(401).json({error: 'Authorization failure - No user id'})
   }
 })
@@ -56,8 +56,8 @@ router.post('/verify', (req, res) => {
   console.log("### initiating-verification ... /auth/verify");
   if(req.headers.authorization) {
     console.log("### accessToken-Detected ... /auth/verify");
-    const { requestPoint } = req.body;
-    let result = auth.verify(req.headers.authorization, requestPoint);
+    const { userKey } = req.body;
+    let result = auth.verify(req.headers.authorization, userKey);
     console.log(result, "\n\n");
     if(result) {
         res.json(result);
@@ -71,10 +71,10 @@ router.post('/verify', (req, res) => {
   }else {
     console.log("### no-access-token ... /auth/verify");
     if(req.body) {
-      const { requestPoint } = req.body;
-      if(deposit.hasOwnProperty(requestPoint)){
+      const { userKey } = req.body;
+      if(deposit.hasOwnProperty(userKey)){
         console.log("### access-history-found ... /auth/verify");
-        let result = auth.verify(deposit[requestPoint], requestPoint);
+        let result = auth.verify(deposit[userKey], userKey);
         console.log(result, "\n\n");
         if(result) {
             res.json(result);
@@ -128,7 +128,7 @@ router.post('/reissue', (req, res) => {
       console.log("### reissueing .../auth/session-out");
       const newToken = auth.signToken(user[key]["auth"], requestPoint, 3);
   
-      deposit[requestPoint] = newToken;
+      deposit[key] = newToken;
   
       user[key]["state"]["isOnline"] = false;
       user[key]["state"]["platform"] = "";
