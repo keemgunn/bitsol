@@ -80,7 +80,7 @@ export default {
       this.$store.dispatch('ISSUED', data)
       return data.accessToken;
     },
-    loadConfig(id) { this.$store.dispatch('LOAD_CONFIG', {id});
+    loadConfig(id){ this.$store.dispatch('LOAD_CONFIG', {id});
     },
     verify(){ this.$store.dispatch('VERIFY'); 
     },

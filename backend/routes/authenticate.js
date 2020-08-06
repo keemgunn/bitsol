@@ -13,14 +13,13 @@ console.log('AUTHORIZED USERS: ', user);
 // access-log
 let access_log_json = path.join(__dirname, '../data/access_log.json');
 
-// temporary-accessToken
-let deposit = {
-  "id" : "accessToken"
-};
+// for refresh methods
+let deposit = { "id" : "accessToken" };
 
 
 
-// @issueToken() => $store/ISSUE
+// ============= @issueToken() => $store/ISSUE
+
 router.post('/issue', (req, res) => {
   const device = req["headers"]["user-agent"];
   const {id, expiresIn, accessTime, requestPoint} = req.body;
@@ -30,17 +29,15 @@ router.post('/issue', (req, res) => {
     res.json({ accessToken, id:user[id]["auth"]["id"] });
     console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
     //_____user-info update_____
-    user[id]["state"]["isOnline"] = true;
-    user[id]["state"]["device"] = device;
-    user[id]["state"]["last-access"] = accessTime;
-    version.update(users_json, user);
+      user[id]["state"]["isOnline"] = true;
+      user[id]["state"]["device"] = device;
+      user[id]["state"]["last-access"] = accessTime;
+        version.update(users_json, user);
     //_____user-info update_____
-    let newlog ={ accessTime, id, "userName": user[id]["config"]["userName"], device };
-    let log = version.readSync(access_log_json);
-    log.push(newlog);
-    version.update(access_log_json, log);
-
-
+      let newlog ={ accessTime, id, "userName": user[id]["config"]["userName"], device };
+      let log = version.readSync(access_log_json);
+      log.push(newlog);
+        version.update(access_log_json, log);
   }else {
       console.log("### no userID .../auth/issue\n\n");
       return res.status(401).json({error: 'Authorization failure - No user id'})
@@ -49,7 +46,8 @@ router.post('/issue', (req, res) => {
 
 
 
-// @verify() => $store/VERIFY
+// ============= @verify() => $store/VERIFY 
+
 router.post('/verify', (req, res) => {
 console.log("### initiating-verification ... /auth/verify");
 const {id} = req.body || {id: "none"};
@@ -81,7 +79,8 @@ function VERIFY(token, id){
 
 
 
-// $store/LOAD_CONFIG
+// ============= $store/LOAD_CONFIG
+
 router.post('/load-config', (req, res) => {
   const data = req.body;
   console.log(data);
@@ -96,34 +95,37 @@ router.post('/load-config', (req, res) => {
 
 
 
-// REFRESH METHODS
+// ============= REFRESH METHODS
+
 router.post('/deposit', (req, res) => {
   const {id} = req.body;
   deposit[id] = req.headers.authorization;
+    user[id]["state"]["isOnline"] = false;
+    user[id]["state"]["device"] = "";
   setTimeout(clearDeposit, 5000, id);
   console.log("### token depositted .../auth/depoist\n");
 })
-function clearDeposit(id){
-  delete deposit[id];
-  console.log("### token deleted .../auth/depoist\n");
-}
 router.post('/recover', (req, res) => {
   const {id} = req.body;
   const accessToken = deposit[id];
   res.json({accessToken});
+    user[id]["state"]["isOnline"] = true;
+    user[id]["state"]["device"] = req["headers"]["user-agent"];
 })
+function clearDeposit(id){
+  delete deposit[id];
+  version.update(users_json, user);
+  console.log("### token deleted .../auth/depoist\n");
+}
 
 
 
-// LOGOUT
+// ============= LOGOUT
 router.post('/logout', (req, res) => {
   const {id} = req.body;
-
   user[id]["state"]["isOnline"] = false;
-  user[id]["state"]["platform"] = "";
-
-  // access_log 기록
-
+  user[id]["state"]["device"] = "";
+  version.update(users_json, user);
   console.log("### LOGGED OUT .../auth/logout");
 })
 

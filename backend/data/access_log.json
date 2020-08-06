@@ -34,5 +34,23 @@
     "id": "2018317024",
     "userName": "김건1",
     "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
+  },
+  {
+    "accessTime": "2020-08-06T08:37:36.446Z",
+    "id": "2018317025",
+    "userName": "김건2",
+    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
+  },
+  {
+    "accessTime": "2020-08-06T08:37:41.243Z",
+    "id": "2018317026",
+    "userName": "김건3",
+    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
+  },
+  {
+    "accessTime": "2020-08-06T08:54:05.124Z",
+    "id": "2018317024",
+    "userName": "김건1",
+    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
   }
 ]
