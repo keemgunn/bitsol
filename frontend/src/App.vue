@@ -70,14 +70,14 @@ export default {
     test00: null
   }},
   methods: {
-    // LOGIN METHOD: login -> getToken -> heimdall
+    // LOGIN METHOD: login -> issueToken -> verify
     async login(e) { e.preventDefault();
       accessTime = "doesn't matter";
       requestPoint = uuidv4();
       localStorage.requestPoint = requestPoint;
       axios.defaults.headers.common['Authorization'] = await this.issueToken(this.id, 10800, accessTime, requestPoint);
       this.loadConfig(this.id);
-      this.heimdall();
+      this.verify();
     },
     async issueToken(id, expiresIn, accessTime, requestPoint) {
       const { data } = await axios.post('/auth/issue', {id, expiresIn, accessTime, requestPoint}); 
@@ -94,7 +94,7 @@ export default {
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
     },
-    heimdall(){ // 헤더에 토큰이 있어야대
+    verify(){ // 헤더에 토큰이 있어야대
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
@@ -114,7 +114,7 @@ export default {
   },
   created() {
     // 진입하자마자 바로 인증 -> (로그인화면 or 어플리케이션)
-    this.heimdall(); 
+    this.verify(); 
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
     })

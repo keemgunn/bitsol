@@ -1,42 +1,51 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+
 const version = require('../api/config');
-const auth = require('../api/auth');
+const heimdall = require('../api/heimdall');
 
-
-// users.json
+// user-info
 let users_json = path.join(__dirname, '../data/users.json');
 let user = version.readSync(users_json);  
 console.log('AUTHORIZED USERS: ', user);
 
-// temporary accessToken
+// access-log
+let access_log_json = path.join(__dirname, '../data/access_log.json');
+
+// temporary-accessToken
 let deposit = {
   "id" : "accessToken"
 };
 
 
-// $store/ISSUE
+
+// @issueToken() => $store/ISSUE
 router.post('/issue', (req, res) => {
-  const userAgent = req["headers"]["user-agent"];
+  const device = req["headers"]["user-agent"];
   const {id, expiresIn, accessTime, requestPoint} = req.body;
   if(user.hasOwnProperty(id)) {
     console.log("### userID confirmed .../auth/issue");
-    const accessToken = auth.signToken(user[id]["auth"], requestPoint, expiresIn);
-      user[id]["state"]["isOnline"] = true;
-      user[id]["state"]["platform"] = userAgent;
-      user[id]["state"]["last-access"] = accessTime;
-
-    // access_log 기록
-
-    version.update(users_json, user);
-
-    res.json({
-      accessToken,
-      id: user[id]["auth"]["id"]
-    });
-    
+    const accessToken = heimdall.generate(user[id]["auth"], requestPoint, expiresIn);
+    res.json({ accessToken, id:user[id]["auth"]["id"] });
     console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
+    //_____user-info update_____
+    user[id]["state"]["isOnline"] = true;
+    user[id]["state"]["device"] = device;
+    user[id]["state"]["last-access"] = accessTime;
+    version.update(users_json, user);
+    //_____user-info update_____
+    let newlog ={ accessTime, id, "userName": user[id]["config"]["userName"], device };
+    let log = version.readSync(access_log_json);
+    log.push(newlog);
+    version.update(access_log_json, log);
+    // 로깅이 연속 두 번 되네... reIssueToken 때문에..
+    // 리이슈잉이 정말 필요한가? 
+    // 다시 한 번 생각해보기
+    
+
+
+
 
   }else {
       console.log("### no userID .../auth/issue\n\n");
@@ -45,7 +54,8 @@ router.post('/issue', (req, res) => {
 })
 
 
-// @heimdall() => $store/VERIFY
+
+// @verify() => $store/VERIFY
 router.post('/verify', (req, res) => {
 console.log("### initiating-verification ... /auth/verify");
 const {id} = req.body || {id: "none"};
@@ -64,7 +74,7 @@ const {id} = req.body || {id: "none"};
   }
 });
 function VERIFY(token, id){
-  let result = auth.verify(token, id);
+  let result = heimdall.verify(token, id);
   if(result.accessLevel) {
     console.log(result);
     console.log("### VERIFIED! ... /auth/verify\n\n");
@@ -74,6 +84,7 @@ function VERIFY(token, id){
     return {"accessLevel": 0}
   }
 }
+
 
 
 // $store/LOAD_CONFIG
@@ -96,7 +107,7 @@ router.post('/reissue', (req, res) => {
   const {id, requestPoint} = req.body;
   if(user.hasOwnProperty(id)) {
     console.log("### reissueing .../auth/session-out");
-    const temporaryToken = auth.signToken(user[id]["auth"], requestPoint, 3);
+    const temporaryToken = heimdall.generate(user[id]["auth"], requestPoint, 3);
 
     deposit[id] = temporaryToken;
 
@@ -125,7 +136,6 @@ router.post('/logout', (req, res) => {
 
   console.log("### LOGGED OUT .../auth/logout");
 })
-
 
 
 

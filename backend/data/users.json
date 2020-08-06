@@ -10,8 +10,9 @@
     },
     "state": {
       "isOnline": true,
-      "platform": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
-      "last-access": "2020-08-06T04:14:55.061Z"
+      "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
+      "last-access": "2020-08-06T05:01:43.568Z",
+      "platform": ""
     }
   },
   "2018317025": {
@@ -25,7 +26,7 @@
     },
     "state": {
       "isOnline": false,
-      "platform": "",
+      "device": "",
       "last-access": ""
     }
   },
@@ -40,7 +41,7 @@
     },
     "state": {
       "isOnline": false,
-      "platform": "",
+      "device": "",
       "last-access": ""
     }
   },
@@ -55,7 +56,7 @@
     },
     "state": {
       "isOnline": false,
-      "platform": "",
+      "device": "",
       "last-access": ""
     }
   }
