@@ -1,54 +1,18 @@
 [
   {
-    "accessTime": "2020-08-06T04:50:03.834Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:24:49.074Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:25:08.148Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:26:08.229Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:30:59.930Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:34:22.639Z",
-    "id": "2018317024",
-    "userName": "김건1",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:37:36.446Z",
-    "id": "2018317025",
-    "userName": "김건2",
-    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
-  },
-  {
-    "accessTime": "2020-08-06T08:37:41.243Z",
+    "accessTime": "2020-08-06T08:59:38.648Z",
     "id": "2018317026",
     "userName": "김건3",
     "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
   },
   {
-    "accessTime": "2020-08-06T08:54:05.124Z",
+    "accessTime": "2020-08-06T08:59:23.426Z",
+    "id": "2018317024",
+    "userName": "김건1",
+    "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"
+  },
+  {
+    "accessTime": "2020-08-06T04:50:03.834Z",
     "id": "2018317024",
     "userName": "김건1",
     "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"

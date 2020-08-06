@@ -36,7 +36,7 @@ router.post('/issue', (req, res) => {
     //_____user-info update_____
       let newlog ={ accessTime, id, "userName": user[id]["config"]["userName"], device };
       let log = version.readSync(access_log_json);
-      log.push(newlog);
+      log.unshift(newlog);
         version.update(access_log_json, log);
   }else {
       console.log("### no userID .../auth/issue\n\n");

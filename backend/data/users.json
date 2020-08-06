@@ -11,7 +11,7 @@
     "state": {
       "isOnline": false,
       "device": "",
-      "last-access": "2020-08-06T08:54:05.124Z"
+      "last-access": "2020-08-06T08:59:23.426Z"
     }
   },
   "2018317025": {
@@ -25,7 +25,7 @@
     },
     "state": {
       "isOnline": false,
-      "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
+      "device": "",
       "last-access": "2020-08-06T08:37:36.446Z"
     }
   },
@@ -39,9 +39,9 @@
       "colorConfig": "default"
     },
     "state": {
-      "isOnline": true,
-      "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
-      "last-access": "2020-08-06T08:37:41.243Z"
+      "isOnline": false,
+      "device": "",
+      "last-access": "2020-08-06T08:59:38.648Z"
     }
   },
   "2018317027": {
