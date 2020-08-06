@@ -6,6 +6,11 @@ Vue.use(Vuex)
 
 // const resourceHost = 'http://localhost:3000'
 
+// // syncing state ~ localStorage
+// function syncState(){
+
+// }
+
 export default new Vuex.Store({
   state: {
     id: null,

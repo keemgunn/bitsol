@@ -39,12 +39,6 @@ router.post('/issue', (req, res) => {
     let log = version.readSync(access_log_json);
     log.push(newlog);
     version.update(access_log_json, log);
-    // 로깅이 연속 두 번 되네... reIssueToken 때문에..
-    // 리이슈잉이 정말 필요한가? 
-    // 다시 한 번 생각해보기
-    
-
-
 
 
   }else {
@@ -66,7 +60,7 @@ const {id} = req.body || {id: "none"};
   console.log("### no-access-token ... /auth/verify");
     if(deposit.hasOwnProperty(id)){
       console.log("### access-history-found ... /auth/verify");
-      res.json(VERIFY(deposit[id], id, res))
+      res.json(VERIFY(deposit[id], id))
     }else {
       console.log("### no-access-history ... /auth/verify\n\n");
       res.json({"accessLevel": 0});
@@ -102,30 +96,26 @@ router.post('/load-config', (req, res) => {
 
 
 
-// reIssueToken()
-router.post('/reissue', (req, res) => {
-  const {id, requestPoint} = req.body;
-  if(user.hasOwnProperty(id)) {
-    console.log("### reissueing .../auth/session-out");
-    const temporaryToken = heimdall.generate(user[id]["auth"], requestPoint, 3);
-
-    deposit[id] = temporaryToken;
-
-    user[id]["state"]["isOnline"] = false;
-    user[id]["state"]["platform"] = "";
-
-    version.update(users_json, user);
-
-    console.log("token reissued, expiresIn: ", 3, "\n\n");
-
-  }else {
-    console.log("### no userID .../auth/session-out");
-    return res.status(404).json({error: 'No user id'});
-  }
+// REFRESH METHODS
+router.post('/deposit', (req, res) => {
+  const {id} = req.body;
+  deposit[id] = req.headers.authorization;
+  setTimeout(clearDeposit, 5000, id);
+  console.log("### token depositted .../auth/depoist\n");
+})
+function clearDeposit(id){
+  delete deposit[id];
+  console.log("### token deleted .../auth/depoist\n");
+}
+router.post('/recover', (req, res) => {
+  const {id} = req.body;
+  const accessToken = deposit[id];
+  res.json({accessToken});
 })
 
 
 
+// LOGOUT
 router.post('/logout', (req, res) => {
   const {id} = req.body;
 
