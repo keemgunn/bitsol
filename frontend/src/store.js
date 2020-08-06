@@ -8,9 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    accessToken: null,
-    expiresIn: 0,
-    userKey: null,
+    id: null,
     accessLevel: 0, // @VERIFIED
     userName: null,
     colorConfig: "default",
@@ -19,21 +17,14 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAuthenticated (state) {
-      state.accessToken = state.accessToken || localStorage.accessToken
-      return state.accessToken
-    } // 현재 무쓸모
+
   },
   mutations: {
     ISSUED (state, {data}) {
       console.log("$$$ mutation:ISSUED ...$store");
       console.log(data);
-      state.accessToken = data.accessToken;
-          localStorage.accessToken = data.accessToken;
-      state.expiresIn = data.expiresIn;
-          localStorage.expiresIn = data.expiresIn;
-      state.userKey = data.userKey;
-          localStorage.userKey = data.userKey;
+      state.id = data.id;
+        localStorage.id = data.id;
     },
     VERIFIED (state, {data}) {
       console.log("$$$ mutation:VERIFIED ...$store");
@@ -44,21 +35,17 @@ export default new Vuex.Store({
       console.log("$$$ mutation:LOAD_CONFIG ...$store");
       console.log(data);
       state.userName = data.userName;
-          localStorage.userName = data.userName;
+        localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
-          localStorage.colorConfig = data.colorConfig;
+        localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
-      state.accessToken = null;
-      state.expiresIn = 0;
       state.accessLevel = 0;
-      state.userKey = null;
+      state.id = null;
       state.userName = null;
       state.colorConfig = "default";
       delete localStorage.requestPoint;
-      delete localStorage.accessToken;
-      delete localStorage.expiresIn;
-      delete localStorage.userKey;
+      delete localStorage.id;
       delete localStorage.userName;
       delete localStorage.colorConfig;
     },
@@ -74,18 +61,18 @@ export default new Vuex.Store({
     },
     async VERIFY ({commit}) {
       console.log("$$$ action:VERIFY ...$store");
-      let userKey = localStorage.userKey;
-      const { data } = await axios.post('/auth/verify', { userKey });
+      let id = localStorage.id;
+      const {data} = await axios.post('/auth/verify', {id});
       commit('VERIFIED', {data});
     },
-    async LOAD_CONFIG ({commit}, key) {
+    async LOAD_CONFIG ({commit}, id) {
       console.log("$$$ action:GET_CONFIG ...$store");
-      const data = await axios.post('/auth/load-config', key);
+      const data = await axios.post('/auth/load-config', id);
       commit('LOAD_CONFIG', data);
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT $store");
-      axios.post('/auth/logout', {userKey: localStorage.userKey});
+      axios.post('/auth/logout', {id: localStorage.id});
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
