@@ -25,7 +25,7 @@
   <Manager
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
-    @manager-created="reIssueToken"
+    @manager-created="appMounted"
     @logout="logout"
 
 
@@ -42,7 +42,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Manager from '@/components/Manager'
 
-let accessTime, requestPoint;
 
 export default {
   name: 'App',
@@ -64,57 +63,55 @@ export default {
     "--accent02": "#FF7955",
     "--accent01": "#FF9470"
     },
-    id: null,
-    msg: "Hello",
-    testArr: [],
-    test00: null
+    id: null
   }},
   methods: {
-    // LOGIN METHOD: login -> getToken -> heimdall
+    //___________AUTHORIZATION METHODS__________
     async login(e) { e.preventDefault();
-      accessTime = "doesn't matter";
-      requestPoint = uuidv4();
-      localStorage.requestPoint = requestPoint;
-      axios.defaults.headers.common['Authorization'] = await this.issueToken(this.id, 10800, accessTime, requestPoint);
+      let accessTime = new Date();
+      localStorage.requestPoint = uuidv4();
+      axios.defaults.headers.common['Authorization'] =
+        await this.issueToken(this.id, 10800, accessTime, localStorage.requestPoint);
       this.loadConfig(this.id);
-      this.heimdall();
+      this.verify();
     },
     async issueToken(id, expiresIn, accessTime, requestPoint) {
       const { data } = await axios.post('/auth/issue', {id, expiresIn, accessTime, requestPoint}); 
       this.$store.dispatch('ISSUED', data)
       return data.accessToken;
     },
-    loadConfig(id) {
-      this.$store.dispatch('LOAD_CONFIG', {id});
+    loadConfig(id){ this.$store.dispatch('LOAD_CONFIG', {id});
     },
-    logout(){
-      this.$store.dispatch('LOGOUT');
-      this.id = '';
+    verify(){ this.$store.dispatch('VERIFY'); 
     },
-    setModal(property, state){
-      this.$store.dispatch('SET_MODAL', {property, state})
-    },
-    heimdall(){ // 헤더에 토큰이 있어야대
-      this.$store.dispatch('VERIFY');
+    logout(){ this.$store.dispatch('LOGOUT'); this.id = null;
     },
     sessionOut(){
-      // 이미 인증이 되어있다면 authenticate/deposit에 임시토큰 발행
-      if(this.$store.state.accessLevel) {
-        axios.post('/auth/reissue', 
-          {id: localStorage.id , requestPoint} );
+      if(this.$store.state.accessLevel) { // 이미 인증이 되어있다면 
+        axios.post('/auth/deposit', {id: localStorage.id})
       }else {
         console.log('no-authorized-history');
       }
     },
-    async reIssueToken(){ // 적합한 인증 상태
-      requestPoint = localStorage.requestPoint;
-      accessTime = new Date();
-      axios.defaults.headers.common['Authorization'] = await this.issueToken(localStorage.id, 10800, accessTime, requestPoint);
+    async appMounted(){
+      if(this.id === null){
+        const {data} = await axios.post('/auth/recover', {id: localStorage.id});
+        axios.defaults.headers.common['Authorization'] = data.accessToken;
+        this.$store.state.id = localStorage.id;
+        this.$store.state.userName = localStorage.userName;
+        this.$store.state.colorConfig = localStorage.colorConfig;
+        this.$store.state.userName = localStorage.userName;
+      }
+    },
+
+    //___________OTHER METHODS__________
+    setModal(property, state){
+      this.$store.dispatch('SET_MODAL', {property, state})
     }
+
   },
   created() {
-    // 진입하자마자 바로 인증 -> (로그인화면 or 어플리케이션)
-    this.heimdall(); 
+    this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
     })
