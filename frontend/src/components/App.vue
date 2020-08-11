@@ -1,5 +1,5 @@
 <template>
-<div class="online">
+<div class="app">
   <h1>Online.vue</h1>
   <input 
   type="button" 
@@ -21,7 +21,7 @@
 // import axios from 'axios';
 
 export default {
-  name: 'Online',
+  name: 'App',
   components: {
     
   },
@@ -36,7 +36,7 @@ export default {
   },
   created() {
     console.log("created");
-    this.$emit('manager-created')
+    this.$emit('app-created')
     },
   mounted() {
   },

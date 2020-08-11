@@ -1,5 +1,5 @@
 <template>
-<div id="app" :style="themeColor">
+<div id="index" :style="themeColor">
 
   <div id="loginBox" v-if="this.$store.state.accessLevel === 0">
     <form @submit="login" autocomplete="off">
@@ -22,14 +22,14 @@
   </div>
 
 
-  <Manager
+  <App
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
-    @manager-created="appCreated"
+    @app-created="appCreated"
     @logout="logout"
 
 
-    key="manager"
+    key="app"
   />
 
 <router-view></router-view>
@@ -40,13 +40,13 @@
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
 
-import Manager from '@/components/Manager'
+import App from '@/components/App'
 
 
 export default {
-  name: 'App',
+  name: 'Index',
   components: {
-    Manager
+    App
   },
   data() { return {
     themeColor: {},
@@ -110,7 +110,7 @@ export default {
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 
-#app {
+#index {
   display: flex;
   width: 100vw;
   height: 100vh;
