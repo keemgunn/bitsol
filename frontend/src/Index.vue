@@ -10,7 +10,8 @@
         class = "id_field"
         v-model="id"
         placeholder="id:"
-        name="id" 
+        name="id_field" 
+        ref="id_field"
         id = "id_field"
         required
       />
@@ -19,7 +20,7 @@
         value="login" 
         class="btn"
       />
-      <label class="id_label" for="id">id:</label>
+      <label class="id_label" for="id_field">id:</label>
     </form>
   </div>
 
@@ -84,9 +85,11 @@ export default {
       if(this.id === null){
         const {data} = await axios.post('/auth/recover', {id: localStorage.id});
         axios.defaults.headers.common['Authorization'] = data.accessToken;
-        this.$store.state.id = localStorage.id;
-        this.$store.state.userName = localStorage.userName;
-        this.$store.state.colorConfig = localStorage.colorConfig;
+        this.$store.state.id = await localStorage.id;
+        this.$store.state.userName = await localStorage.userName;
+        this.$store.state.colorConfig = await localStorage.colorConfig;
+        this.setColor();
+      } else {
         this.setColor();
       }
     },
@@ -95,8 +98,8 @@ export default {
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
     },
-    setColor(){
-      this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
+    async setColor(){
+      this.themeColor = await this["$store"]["state"]["colors"][this.$store.state.colorConfig];
     }
   }, 
   
@@ -107,6 +110,9 @@ export default {
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
     });
+  },
+  mounted() {
+    this.$refs.id_field.focus();
   },
 }
 </script>

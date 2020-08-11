@@ -73,16 +73,13 @@ export default {
       console.log(arg);
       return false;
     },
-    setFocus() {
-      this.$refs.searchField.focus();
-    }
   },
   created() {
     console.log("created");
     this.$emit('app-created')
     },
   mounted() {
-    this.setFocus();
+    this.$refs.searchField.focus();
   },
   beforeDestroy() {
     // this.$emit('close-session')
