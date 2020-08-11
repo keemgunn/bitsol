@@ -10,11 +10,12 @@ import styles from './assets/styles.json';
 export default new Vuex.Store({
   state: {
     id: null,
-    accessLevel: 0, // @VERIFIED
-    userName: null,
+accessLevel: 1, // @VERIFIED
+userName: "홍길동",
     colorConfig: "default",
     modal: {
-      display: 'refg'
+      display: 'App',
+      scopeTab: 'refg'
     },
     colors: styles.colors
   },

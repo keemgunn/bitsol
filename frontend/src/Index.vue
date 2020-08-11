@@ -1,7 +1,9 @@
 <template>
 <div id="index" :style="themeColor">
 
-  <div id="loginBox" v-if="this.$store.state.accessLevel === 0">
+  <div 
+  id="loginBox" 
+  v-if="this.$store.state.accessLevel === 0">
     <form @submit="login" autocomplete="off">
       <input
         type="text" 
@@ -21,7 +23,6 @@
     </form>
   </div>
 
-
   <App
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
@@ -31,7 +32,6 @@
 
     key="app"
   />
-
 
 <router-view></router-view>
 </div>
@@ -44,19 +44,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import App from '@/components/App'
 
-
 export default {
   name: 'Index',
-  components: {
-    App
-
-
-  },
+  components: { App },
   data() { return {
     themeColor: {},
     id: null
-
-
   }},
   methods: {
     //___________AUTHORIZATION METHODS__________
@@ -98,7 +91,6 @@ export default {
       }
     },
 
-
     //___________OTHER METHODS__________
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
@@ -106,17 +98,15 @@ export default {
     setColor(){
       this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
     }
-
-
-  }, //___________INITIATING__________
+  }, 
+  
+  //___________INITIATING__________
   created() {
     this.setColor();
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
     });
-
-
   },
 }
 </script>
@@ -136,7 +126,7 @@ export default {
 
   position: absolute;
 
-  font-family: 'Space Mono', 'Nanum Square', 'Core Gothic D', sans-serif;
+  font-family: 'Space Mono', 'Barlow', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -218,6 +208,7 @@ export default {
   cursor: pointer;
 
   border: 0px;
+  border-radius: 0px;
   outline: 0px;
   color: var(--i30);
   background-color: var(--accent01);
