@@ -25,16 +25,18 @@
   <App
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
-    @app-created="appCreated"
+    @app-created="recoverConfig"
     @logout="logout"
 
 
     key="app"
   />
 
+
 <router-view></router-view>
 </div>
 </template>
+
 
 <script>
 import axios from 'axios'
@@ -47,10 +49,14 @@ export default {
   name: 'Index',
   components: {
     App
+
+
   },
   data() { return {
     themeColor: {},
     id: null
+
+
   }},
   methods: {
     //___________AUTHORIZATION METHODS__________
@@ -60,6 +66,7 @@ export default {
       axios.defaults.headers.common['Authorization'] =
         await this.issueToken(this.id, 10800, accessTime, localStorage.requestPoint);
       this.loadConfig(this.id);
+      this.setColor();
       this.verify();
     },
     async issueToken(id, expiresIn, accessTime, requestPoint) {
@@ -80,31 +87,41 @@ export default {
         console.log('no-authorized-history');
       }
     },
-    async appCreated(){
+    async recoverConfig(){
       if(this.id === null){
         const {data} = await axios.post('/auth/recover', {id: localStorage.id});
         axios.defaults.headers.common['Authorization'] = data.accessToken;
         this.$store.state.id = localStorage.id;
         this.$store.state.userName = localStorage.userName;
         this.$store.state.colorConfig = localStorage.colorConfig;
+        this.setColor();
       }
     },
+
 
     //___________OTHER METHODS__________
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
+    },
+    setColor(){
+      this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
     }
 
-  },
+
+  }, //___________INITIATING__________
   created() {
+    this.setColor();
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
     });
 
+
   },
 }
 </script>
+
+
 
 <style lang="scss">
 @import "assets/fonts/NanumSquare/nanumsquare.css";
@@ -128,11 +145,11 @@ export default {
 }
 
 #loginBox {
-    width: 262px;
-    height: 38px;
-    color: inherit;
-    border: 0px;
-    border-bottom: 2px solid;
+  width: 262px;
+  height: 38px;
+  color: inherit;
+  border: 0px;
+  border-bottom: 2px solid;
 }
 
 .id_field{

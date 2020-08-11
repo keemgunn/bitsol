@@ -39,7 +39,6 @@ export default new Vuex.Store({
       state.userName = data.userName;
         localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
-        localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
       state.accessLevel = 0;
@@ -49,7 +48,6 @@ export default new Vuex.Store({
       delete localStorage.requestPoint;
       delete localStorage.id;
       delete localStorage.userName;
-      delete localStorage.colorConfig;
     },
     SET_MODAL (state, {data}) {
       console.log("$$$ mutation:LOAD_CONFIG ...$store");
