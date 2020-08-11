@@ -47,7 +47,6 @@ userName: null,
       state.id = null;
       state.userName = null;
       state.colorConfig = "default";
-      delete localStorage.requestPoint;
       delete localStorage.id;
       delete localStorage.userName;
       delete localStorage.colorConfig;

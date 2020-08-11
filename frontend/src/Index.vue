@@ -56,9 +56,9 @@ export default {
     //___________AUTHORIZATION METHODS__________
     async login(e) { e.preventDefault();
       let accessTime = new Date();
-      localStorage.requestPoint = uuidv4();
+      const requestPoint = uuidv4();
       axios.defaults.headers.common['Authorization'] =
-        await this.issueToken(this.id, 10800, accessTime, localStorage.requestPoint);
+        await this.issueToken(this.id, 10800, accessTime, requestPoint);
       this.loadConfig(this.id);
       this.setColor();
       this.verify();
