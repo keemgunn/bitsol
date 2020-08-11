@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios' // this.$http ?
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex)
-
 // const resourceHost = 'http://localhost:3000'
+
+import styles from './assets/styles.json';
 
 export default new Vuex.Store({
   state: {
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     colorConfig: "default",
     modal: {
       display: 'refg'
-    }
+    },
+    colors: styles.colors
   },
   getters: {
 

@@ -35,10 +35,10 @@ export default {
     }
   },
   created() {
+    console.log("created");
+    this.$emit('manager-created')
     },
   mounted() {
-    console.log("mounted");
-    this.$emit('manager-created')
   },
   beforeDestroy() {
     // this.$emit('close-session')

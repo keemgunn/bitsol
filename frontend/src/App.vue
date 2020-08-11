@@ -25,7 +25,7 @@
   <Manager
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
-    @manager-created="appMounted"
+    @manager-created="appCreated"
     @logout="logout"
 
 
@@ -49,20 +49,7 @@ export default {
     Manager
   },
   data() { return {
-    themeColor: {
-    "--i100": "#ffffff",
-    "--i98": "#FAFAFA",
-    "--i94": "#F0F0F0",
-    "--i90": "#E6E6E6",
-    "--i80": "#CCCCCC",
-    "--i70": "#B3B3B3",
-    "--i60": "#999999",
-    "--i45": "#737373",
-    "--i30": "#4D4D4D",
-    "--i0": "#000000",
-    "--accent02": "#FF7955",
-    "--accent01": "#FF9470"
-    },
+    themeColor: {},
     id: null
   }},
   methods: {
@@ -93,14 +80,13 @@ export default {
         console.log('no-authorized-history');
       }
     },
-    async appMounted(){
+    async appCreated(){
       if(this.id === null){
         const {data} = await axios.post('/auth/recover', {id: localStorage.id});
         axios.defaults.headers.common['Authorization'] = data.accessToken;
         this.$store.state.id = localStorage.id;
         this.$store.state.userName = localStorage.userName;
         this.$store.state.colorConfig = localStorage.colorConfig;
-        this.$store.state.userName = localStorage.userName;
       }
     },
 
@@ -114,7 +100,8 @@ export default {
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", async () => {
       this.sessionOut();
-    })
+    });
+
   },
 }
 </script>
