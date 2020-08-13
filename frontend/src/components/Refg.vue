@@ -1,5 +1,5 @@
 <template>
-<div id="stdtlist">
+<div id="refg">
 
 
 
@@ -8,13 +8,12 @@
 
 <script>
 export default {
-  name: 'StudentList',
+  name: 'Refg',
   data() { return {
 
   }},
   props: [
-    "searchArr", // from /db/search
-    "dbinfo"
+
   ],
   methods: {
 
@@ -25,7 +24,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> #stdtlist 
+<style lang="scss" scoped> #refg 
 {
   display: block;
   margin-top: 12px;

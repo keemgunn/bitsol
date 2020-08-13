@@ -44,6 +44,7 @@
   <StudentList
   v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
   :searchArr="searchArr"
+  :dbinfo="dbinfo"
   />
 
 </div>
@@ -63,8 +64,8 @@ export default {
   data() { return {
     keyword: '',
     refgTerm: null,
-    searchArr: []
-
+    searchArr: [],
+    dbinfo: {}
   }},
   computed: {
 
@@ -77,6 +78,13 @@ export default {
       console.log(arg);
       return false;
     },
+
+    //___________ LOAD/SEARCH DATABASE __________
+    async getDBinfo(){
+      let {data} = await axios.get('/db/info');
+      this.dbinfo = data;
+      console.log(this.dbinfo);
+    },
     async search(keyword){
       let {data} = await axios.post('/db/search', {keyword: keyword});
       this.searchArr = data.arg;
@@ -84,7 +92,8 @@ export default {
   },
   created() {
     console.log("created");
-    this.$emit('app-created')
+    this.$emit('app-created');
+    this.getDBinfo();
     },
   mounted() {
     this.$refs.searchField.focus();

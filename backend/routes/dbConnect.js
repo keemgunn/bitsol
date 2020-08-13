@@ -4,10 +4,24 @@ const router = express.Router();
 
 const mysql = require('../api/mysql');
 const version = require('../api/config');
+const { EWOULDBLOCK } = require('constants');
 
 // from XLSX module
 var worksheet;
 
+
+
+// LOAD DB INFO
+router.get('/info', (req, res) => {
+  const info = mysql.dbInfo();
+  res.json({
+    "schema": info.schema,
+    "build": info.build,
+    "date": info.date,
+    "refgTerm": info.refgTerm,
+    "studentCount": info["serial-list"].length
+  })
+})
 
 
 // ============= load from .xlsx
