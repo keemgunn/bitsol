@@ -24,9 +24,8 @@
     <div id="userName">user: {{this.$store.state.userName}}</div>
   </div>
 
-  <form 
+  <form id="searchBox"
   @submit.prevent
-  id="searchBox"
   v-if="this.$store.state.modal.scopeTap !== 'admin'"
   autocomplete="off">
     <input

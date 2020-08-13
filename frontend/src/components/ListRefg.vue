@@ -1,6 +1,6 @@
 <template>
-<div id="refg">
-
+<div id="listrefg">
+  {{record}}
 
 
 </div>
@@ -8,12 +8,12 @@
 
 <script>
 export default {
-  name: 'Refg',
+  name: 'ListRefg',
   data() { return {
 
   }},
   props: [
-
+    "record"
   ],
   methods: {
 
@@ -24,14 +24,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> #refg 
+<style lang="scss" scoped> #listrefg 
 {
   display: block;
-  margin-top: 12px;
   width: 100%;
-  height: calc(100% - 156px);
+  height: 100px;
 
-  background-color: burlywood;
+  overflow: auto;
+
+  background-color: greenyellow;
 }
 
 

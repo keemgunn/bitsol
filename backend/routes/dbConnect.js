@@ -19,6 +19,7 @@ router.get('/info', (req, res) => {
     "build": info.build,
     "date": info.date,
     "refgTerm": info.refgTerm,
+    "deadline": info.deadline,
     "studentCount": info["serial-list"].length
   })
 })
