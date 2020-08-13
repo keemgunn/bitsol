@@ -10,8 +10,6 @@ let versionFile = path.join(__dirname, '../data/db.json');
 let logFile = path.join(__dirname, '../data/db_log.json');
 let userFile = path.join(__dirname, '../data/users.json');
   let user = version.readSync(userFile);//users.json
-var currentSchema, currentBuild, currentVersion;
-var serials = [];
 
 const hostName = versionInfo.connection.host || 'localhost';
 const userName = versionInfo.connection.user || 'root';
@@ -23,30 +21,30 @@ const connection = mysql.createConnection({
   multipleStatements: true
 }); newConnection();
 
-if(versionInfo.hasOwnProperty('schema')){
-  currentSchema = versionInfo.schema;
-  use(versionInfo.schema);
-};
-if(versionInfo.hasOwnProperty('build')){
-  currentBuild = versionInfo.build;
-  console.log('### current build:', versionInfo.build, ' ... @mysql.js');
-};
-if(versionInfo.hasOwnProperty('version')){
-  currentVersion = versionInfo.version;
-  console.log('### current version:', versionInfo.version, ' ... @mysql.js');
-};
-if(versionInfo.hasOwnProperty('serial-list')){
-  serials = versionInfo["serial-list"];
-  console.log('### total', serials.length, 'records in students ... @mysql.js');
-};
+let currentSchema = versionCheck('schema');
+let currentBuild = versionCheck('build');
+let currentVersion = versionCheck('version');
+let refgTerm = versionCheck('refgTerm');
+let deadline = versionCheck('deadline');
 
-let log = [];
-let affected = 0;
-let monitor = new EventEmitter();
+function versionCheck(prop){
+  if(prop){
+    console.log('###versionCheck__', String(prop), ': ', versionInfo[prop]);
+    return versionInfo[prop]
+  }else {
+    console.log("###versionCheck__: NO PROPERTY NAMED:", String(prop));
+    return undefined
+  }
+}
 
 
 
 // ################# QUERIES ####################
+use(currentSchema);
+
+let log = [];
+let affected = 0;
+let monitor = new EventEmitter();
 
 function makeTables(year, res) {
   // resumeConnection();
@@ -167,7 +165,7 @@ function firstData(worksheet, res){
   close();
 }
 
-function updateRefg(student_id, refgTerm, update, res){
+function updateRefg(student_id, update, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
@@ -176,8 +174,7 @@ function updateRefg(student_id, refgTerm, update, res){
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
 
-  // versionUp();
-  // versionUp 말고, last-data-push 같은걸로
+  versionUp();
   close();
 }
 
@@ -243,6 +240,7 @@ const searchKeySchema = Joi.object({
     .required()
     .trim(true)
 });
+
 
 
 // ========================= MONITOR SETTING
@@ -411,11 +409,16 @@ function resumeConnection(){
 
 // ========================= EXPORT SETTING
 
+function dbInfo() {
+  return versionInfo
+}
+
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
 module.exports.use = use;
 module.exports.searchStudent = searchStudent;
 module.exports.updateRefg = updateRefg;
+module.exports.dbInfo = dbInfo;
 
 // pauseConnection();
 // reConnect();

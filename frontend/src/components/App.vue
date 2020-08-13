@@ -24,9 +24,8 @@
     <div id="userName">user: {{this.$store.state.userName}}</div>
   </div>
 
-  <form 
+  <form id="searchBox"
   @submit.prevent
-  id="searchBox"
   v-if="this.$store.state.modal.scopeTap !== 'admin'"
   autocomplete="off">
     <input
@@ -35,32 +34,38 @@
       placeholder="search..."
       type="text" 
       v-model="keyword"
-      @keyup="callback(keyword)"
+      @keyup="search(keyword)"
     />
     <div id="searchIndicator"></div>
     <div id="searchIcon"></div>
   </form>
     
-  <Refg
-  v-if="this.$store.state.modal.scopeTab === 'refg'"
+  <StudentList
+  v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
+  :keyword="keyword"
+  :searchArr="searchArr"
+  :dbinfo="dbinfo"
   />
 
 </div>
 </template>
 
 <script>
-import Refg from '@/components/Refg'
+import axios from 'axios'
+import StudentList from '@/components/StudentList'
 
 export default {
   name: 'App',
   components: {
-    Refg
+    StudentList
 
   },
   props: [],
   data() { return {
     keyword: '',
-
+    refgTerm: null,
+    searchArr: [],
+    dbinfo: {}
   }},
   computed: {
 
@@ -73,10 +78,22 @@ export default {
       console.log(arg);
       return false;
     },
+
+    //___________ LOAD/SEARCH DATABASE __________
+    async getDBinfo(){
+      let {data} = await axios.get('/db/info');
+      this.dbinfo = data;
+      console.log(this.dbinfo);
+    },
+    async search(keyword){
+      let {data} = await axios.post('/db/search', {keyword: keyword});
+      this.searchArr = data.arg;
+    }
   },
   created() {
     console.log("created");
-    this.$emit('app-created')
+    this.$emit('app-created');
+    this.getDBinfo();
     },
   mounted() {
     this.$refs.searchField.focus();
@@ -100,7 +117,6 @@ export default {
 
   background-color: transparent;
 }
-
 
 /* --------------- HEADER-------------- */
 #scopeTab {
