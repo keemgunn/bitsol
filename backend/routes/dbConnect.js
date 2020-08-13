@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 
+const mysql = require('../api/mysql');
 const version = require('../api/config');
 
 // from XLSX module
@@ -11,7 +12,7 @@ var worksheet;
 
 // ============= load from .xlsx
 
-app.post('/worksheet', (req, res) => {
+router.post('/worksheet', (req, res) => {
     worksheet = req.body;
     console.log(worksheet);
     console.log('###### WORKSHEET RECIEVED: total', worksheet.length, 'raws');
@@ -25,13 +26,13 @@ app.post('/worksheet', (req, res) => {
 
 // ============= INITIATING DATABASE
 
-app.post('/init', (req, res) => {
+router.post('/init', (req, res) => {
     const year = req.body.givenYear;
     console.log("givenYear:", year, " ... @api/db/init");
     mysql.makeTables(year, res);
 });
 
-app.post('/init/dataforming', (req, res) => {
+router.post('/init/dataforming', (req, res) => {
     console.log("initial data request ... @api/db/init/dataforming");
     mysql.firstData(worksheet, res);
 });
@@ -43,10 +44,9 @@ app.post('/init/dataforming', (req, res) => {
 let searchKey;
 let student_id, refgTerm, update;
 
-app.post('/search', (req, res) => {
-    console.log("search request for refg ... @api/db/search");
+router.post('/search', (req, res) => {
+    console.log("search request for refg .../db/search");
     searchKey = req.body.keyword;
-
     mysql.searchStudent(searchKey, res);
 })
 
@@ -62,7 +62,7 @@ app.post('/search', (req, res) => {
 
 // ============= UPDATE REFG DATA
 
-app.post('/update/refg', (req, res) => {
+router.post('/update/refg', (req, res) => {
   console.log("update request for refg ... @api/db/update/refg");
   console.log(req.body);
 

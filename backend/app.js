@@ -1,18 +1,13 @@
-    // CORE MODULES
+    // ---------- CORE MODULES
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
-const XLSX = require('xlsx');
 
-    // CUSTOM MODULES
-const mysql = require('./api/mysql');
-
-    // ROUTES
+    // ---------- ROUTES
 const authentic = require('./routes/authenticate');
 const dbConnect = require('./routes/dbConnect');
 const errorHandler = require('./routes/errorHandler');
 
-    // APP SETTING
+    // ---------- APP SETTING
 const app = express();
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json({
@@ -23,11 +18,11 @@ app.use(express.text({
     limit: "50mb"
 }));
 
-    // SERVE
+    // ---------- SERVE
 app.use('/auth', authentic);
 app.use('/db', dbConnect);
 
 
-    // PORT SETTING
+    // ---------- PORT SETTING
 const port = process.env.PORT || 5500;
 app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js`));

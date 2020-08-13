@@ -35,32 +35,35 @@
       placeholder="search..."
       type="text" 
       v-model="keyword"
-      @keyup="callback(keyword)"
+      @keyup="search(keyword)"
     />
     <div id="searchIndicator"></div>
     <div id="searchIcon"></div>
   </form>
     
-  <Refg
-  v-if="this.$store.state.modal.scopeTab === 'refg'"
+  <StudentList
+  v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
+  :searchArr="searchArr"
   />
 
 </div>
 </template>
 
 <script>
-import Refg from '@/components/Refg'
+import axios from 'axios'
+import StudentList from '@/components/StudentList'
 
 export default {
   name: 'App',
   components: {
-    Refg
+    StudentList
 
   },
   props: [],
   data() { return {
     keyword: '',
-    refgTerm: null
+    refgTerm: null,
+    searchArr: []
 
   }},
   computed: {
@@ -74,6 +77,10 @@ export default {
       console.log(arg);
       return false;
     },
+    async search(keyword){
+      let {data} = await axios.post('/db/search', {keyword: keyword});
+      this.searchArr = data.arg;
+    }
   },
   created() {
     console.log("created");
