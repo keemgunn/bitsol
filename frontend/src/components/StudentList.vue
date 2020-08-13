@@ -1,18 +1,38 @@
 <template>
 <div id="stdtlist">
 
-  <div class="refg"
-  :key="record.student_id"
-  v-for="record in searchArr">
-    <ListRefg 
-      :record="record" 
-    />
+  <div id="deadline"
+  v-if="this.$store.state.modal.scopeTab === 'refg'">
+    <div id="han">보관팩 기간: </div>
+    <div id="date">{{test}}</div>
   </div>
 
-  
-  <div class="no-result">
-
+  <div id="no-result"
+  v-if="searchArr.length === 0">
+  {{noResult}}
   </div>
+
+  <div class="scopeSelection"
+  v-if="this.$store.state.modal.scopeTab === 'refg'">
+    <div class="result"
+    :key="record.student_id"
+    v-for="record in searchArr">
+      <ListRefg 
+        :record="record" 
+      />
+    </div>
+  </div>
+
+  <div class="scopeSelection"
+  v-if="this.$store.state.modal.scopeTab === 'info'">
+    scopeTab === 'info'
+  </div>
+
+
+
+
+
+
 
 
 </div>
@@ -27,9 +47,21 @@ export default {
     ListRefg
   },
   data() { return {
-
+    test: "8/24"
   }},
+  computed: {
+    noResult : function() {
+      let msg
+      if(this.keyword === ''){
+        msg = "호실 또는 이름으로 검색 ..."
+      }else {
+        msg = "검색 결과가 없습니다 ..."
+      }
+      return msg
+    }
+  },
   props: [
+    "keyword",
     "searchArr", // from /db/search
     "dbinfo"
   ],
@@ -52,14 +84,56 @@ export default {
   background-color: burlywood;
 }
 
-.refg {
+/* --------------- REFG HEADER-------------- */
+#deadline { 
+  display: block;
+  height: 35px;
+  line-height: 35px;
+  background-color: aqua;
+}
+#han {
+  display: inline-block;
+  margin-top: 0px;
+  position: relative;
+  bottom: 2px;
+
+  font-family: 'Nanum Square';
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: 0.31px;
+}
+#date {
+  display: inline-block;
+  margin-top: 0px;
+  position: relative;
+  left: 4px;
+
+  font-family: 'Barlow';
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 1.44px;
+}
+
+
+/* --------------- SEARCH RESULTS -------------- */
+
+#no-result {
+  padding-top: 20px;
+  font-family: 'Nanum Square';
+  font-weight: 200;
+  font-size: 35px;
+  color: var(--i45);
+  font-style: italic;
+  letter-spacing: 0.31px;
+}
+
+.result {
   display: block;
   width: 100%;
   height: 120px;
 
   background-color: darkblue;
 }
-
 
 
 

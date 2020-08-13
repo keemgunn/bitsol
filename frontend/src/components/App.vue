@@ -42,6 +42,7 @@
     
   <StudentList
   v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
+  :keyword="keyword"
   :searchArr="searchArr"
   :dbinfo="dbinfo"
   />
