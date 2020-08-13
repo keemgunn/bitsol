@@ -10,8 +10,8 @@ import styles from './assets/styles.json';
 export default new Vuex.Store({
   state: {
     id: null,
-accessLevel: 0, // @VERIFIED
-userName: null,
+accessLevel: 1, // @VERIFIED
+userName: "null",
     colorConfig: "default",
     modal: {
       display: 'App',

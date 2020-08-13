@@ -14,6 +14,7 @@
     </div>
     <div class="scopeBox"
         :class="{scopeSelected: this.$store.state.modal.scopeTab === 'admin'}"
+        v-if="this.$store.state.accessLevel > 1"
         @click="callback('scopeBox_admin')">
       <div class="scopeText">학생관리</div>
     </div>
@@ -23,28 +24,27 @@
     <div id="userName">user: {{this.$store.state.userName}}</div>
   </div>
 
-    <form 
-    @submit.prevent
-    id="searchBox"
-    v-if="this.$store.state.modal.scopeTap !== 'admin'"
-    autocomplete="off">
-      <input
-        id = "searchField"
-        ref="searchField" 
-        placeholder="search..."
-        type="text" 
-        v-model="keyword"
-        @keyup="callback(keyword)"
-      />
-      <div id="searchIndicator"></div>
-      <div id="searchIcon"></div>
-    </form>
+  <form 
+  @submit.prevent
+  id="searchBox"
+  v-if="this.$store.state.modal.scopeTap !== 'admin'"
+  autocomplete="off">
+    <input
+      id = "searchField"
+      ref="searchField" 
+      placeholder="search..."
+      type="text" 
+      v-model="keyword"
+      @keyup="callback(keyword)"
+    />
+    <div id="searchIndicator"></div>
+    <div id="searchIcon"></div>
+  </form>
     
   <Refg
   v-if="this.$store.state.modal.scopeTab === 'refg'"
   />
 
-  
 </div>
 </template>
 
