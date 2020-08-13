@@ -1,0 +1,94 @@
+const path = require('path');
+const express = require('express');
+const router = express.Router();
+
+const version = require('../api/config');
+
+// from XLSX module
+var worksheet;
+
+
+
+// ============= load from .xlsx
+
+app.post('/worksheet', (req, res) => {
+    worksheet = req.body;
+    console.log(worksheet);
+    console.log('###### WORKSHEET RECIEVED: total', worksheet.length, 'raws');
+    res.json({
+        "status": 200,
+        "data": worksheet
+    });
+});
+
+
+
+// ============= INITIATING DATABASE
+
+app.post('/init', (req, res) => {
+    const year = req.body.givenYear;
+    console.log("givenYear:", year, " ... @api/db/init");
+    mysql.makeTables(year, res);
+});
+
+app.post('/init/dataforming', (req, res) => {
+    console.log("initial data request ... @api/db/init/dataforming");
+    mysql.firstData(worksheet, res);
+});
+
+
+
+// ============= SEARCH API
+
+let searchKey;
+let student_id, refgTerm, update;
+
+app.post('/search', (req, res) => {
+    console.log("search request for refg ... @api/db/search");
+    searchKey = req.body.keyword;
+
+    mysql.searchStudent(searchKey, res);
+})
+
+
+
+
+
+
+
+
+
+
+
+// ============= UPDATE REFG DATA
+
+app.post('/update/refg', (req, res) => {
+  console.log("update request for refg ... @api/db/update/refg");
+  console.log(req.body);
+
+  student_id = req.body.student_id;
+  refgTerm = req.body.refgTerm;
+  update = req.body.update;
+
+  mysql.updateRefg(student_id, refgTerm, update, res);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = router;

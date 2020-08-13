@@ -60,6 +60,7 @@ export default {
   props: [],
   data() { return {
     keyword: '',
+    refgTerm: null
 
   }},
   computed: {
@@ -100,7 +101,6 @@ export default {
 
   background-color: transparent;
 }
-
 
 /* --------------- HEADER-------------- */
 #scopeTab {

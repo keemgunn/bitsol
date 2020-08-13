@@ -81,7 +81,7 @@ export default {
         console.log('no-authorized-history');
       }
     },
-    async recoverConfig(){
+    async recoverConfig(){ // from App/$emit(app-created)
       if(this.id === null){
         const {data} = await axios.post('/auth/recover', {id: localStorage.id});
         axios.defaults.headers.common['Authorization'] = data.accessToken;
