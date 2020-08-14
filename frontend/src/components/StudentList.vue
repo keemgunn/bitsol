@@ -9,7 +9,14 @@
 
   <div id="no-result"
   v-if="searchArr.length === 0">
-  {{noResult}}
+    <div id="no-result"
+    v-if="this.keyword == ''">
+      호실 또는 이름으로 검색 ...
+    </div>
+    <div id="no-result"
+    v-if="this.keyword !== ''">
+      검색 결과가 없습니다 ...
+    </div>
   </div>
 
   <div class="scopeSelection"
@@ -125,12 +132,27 @@ export default {
   color: var(--i45);
   font-style: italic;
   letter-spacing: 0.31px;
+
+  opacity: 0;
+  animation: fade-in 300ms;
+  animation-timing-function: ease-in-out;
+  animation-delay: 500ms;
+  animation-fill-mode: forwards;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .result {
   display: block;
   width: 100%;
   height: 120px;
+  
 
   background-color: darkblue;
 }

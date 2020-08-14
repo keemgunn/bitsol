@@ -55,6 +55,7 @@ export default {
   methods: {
     //___________AUTHORIZATION METHODS__________
     async login(e) { e.preventDefault();
+                              this.id = '2018317024'
       let accessTime = new Date();
       const requestPoint = uuidv4();
       axios.defaults.headers.common['Authorization'] =
