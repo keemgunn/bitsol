@@ -33,8 +33,8 @@
       ref="searchField" 
       placeholder="search..."
       type="text" 
-      v-model="keyword"
-      @keyup="search(keyword)"
+      @input="keyword = $event.target.value"
+      @keyup="search()"
     />
     <div id="searchIndicator"></div>
     <div id="searchIcon"></div>
@@ -74,6 +74,9 @@ export default {
     logout(){
       this.$emit('logout');
     },
+    typing(e) {
+      this.keyword = e.target.value
+    },
     callback(arg){
       console.log(arg);
       return false;
@@ -85,8 +88,9 @@ export default {
       this.dbinfo = data;
       console.log(this.dbinfo);
     },
-    async search(keyword){
-      let {data} = await axios.post('/db/search', {keyword: keyword});
+    async search(){
+      console.log(this.keyword);
+      let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
     }
   },
@@ -110,7 +114,7 @@ export default {
 <style lang="scss" scoped> #app 
 {
   margin-top: 40px;
-  width: calc(100vw - 250px);
+  width: calc(100vw - 150px);
   height: calc(100vh - 40px);
   min-width: 470px;
   max-width: 710px;
