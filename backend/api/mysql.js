@@ -26,6 +26,7 @@ let currentBuild = versionCheck('build');
 let currentVersion = versionCheck('version');
 let refgTerm = versionCheck('refgTerm');
 let deadline = versionCheck('deadline');
+let refgLimit = versionCheck('refgLimit');
 
 function versionCheck(prop){
   if(prop){

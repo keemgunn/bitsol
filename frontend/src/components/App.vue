@@ -1,50 +1,54 @@
 <template>
 <div id="app">
 
-  <div id="scopeTab">
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'refg'}"
-        @click="callback('scopeBox_refg')">
-      <div class="scopeText">냉장고팩지급</div>
+  <div id="wrapper-header">
+
+    <div id="scopeTab">
+      <div class="scopeBox"
+          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'refg'}"
+          @click="callback('scopeBox_refg')">
+        <div class="scopeText">냉장고팩지급</div>
+      </div>
+      <div class="scopeBox"
+          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'info'}"
+          @click="callback('scopeBox_info')">
+        <div class="scopeText">상세정보</div>
+      </div>
+      <div class="scopeBox"
+          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'admin'}"
+          v-if="this.$store.state.accessLevel > 1"
+          @click="callback('scopeBox_admin')">
+        <div class="scopeText">학생관리</div>
+      </div>
     </div>
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'info'}"
-        @click="callback('scopeBox_info')">
-      <div class="scopeText">상세정보</div>
+
+    <div id="accountBox" @click="callback('accountBox')">
+      <div id="userName">user: {{this.$store.state.userName}}</div>
     </div>
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'admin'}"
-        v-if="this.$store.state.accessLevel > 1"
-        @click="callback('scopeBox_admin')">
-      <div class="scopeText">학생관리</div>
-    </div>
+
+    <form id="searchBox"
+    @submit.prevent
+    v-if="this.$store.state.modal.scopeTap !== 'admin'"
+    autocomplete="off">
+      <input
+        id = "searchField"
+        ref="searchField" 
+        placeholder="search..."
+        type="text" 
+        @input="keyword = $event.target.value"
+        @keyup="search()"
+      />
+      <div id="searchIndicator"></div>
+      <div id="searchIcon"></div>
+    </form>
   </div>
 
-  <div id="accountBox" @click="callback('accountBox')">
-    <div id="userName">user: {{this.$store.state.userName}}</div>
-  </div>
 
-  <form id="searchBox"
-  @submit.prevent
-  v-if="this.$store.state.modal.scopeTap !== 'admin'"
-  autocomplete="off">
-    <input
-      id = "searchField"
-      ref="searchField" 
-      placeholder="search..."
-      type="text" 
-      @input="keyword = $event.target.value"
-      @keyup="search()"
-    />
-    <div id="searchIndicator"></div>
-    <div id="searchIcon"></div>
-  </form>
-    
   <StudentList
-  v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
-  :keyword="keyword"
-  :searchArr="searchArr"
-  :dbinfo="dbinfo"
+    v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
+    :keyword="keyword"
+    :searchArr="searchArr"
+    :dbinfo="dbinfo"
   />
 
 </div>
@@ -111,25 +115,32 @@ export default {
 
 
 
-<style lang="scss" scoped> #app 
-{
-  margin-top: 40px;
-  width: calc(100vw - 150px);
-  height: calc(100vh - 40px);
-  min-width: 470px;
-  max-width: 710px;
 
-  background-color: transparent;
+<style lang="scss" scoped> #app {
+  float: left;
+  z-index: 10;
+  width: calc(100vw - 120px);
+  height: 100vh;
+  min-width: 490px;
+  max-width: 710px;
+  // background-color: aqua;
 }
 
 /* --------------- HEADER-------------- */
+#wrapper-header {
+  width: calc(100% - 40px);
+  height: 157px;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: var(--i94);
+  // background-color: rgb(86, 139, 255);
+}
 #scopeTab {
   display: block;
   float: left;
-  height: 31px;
   width: fit-content; 
-
-  background-color: transparent;
+  height: 31px;
 }
 .scopeBox { //--------------------------
   display: inline-block;
@@ -147,7 +158,7 @@ export default {
   font-weight: 400;
   color: var(--i45);
 }
-.scopeBox :hover {
+.scopeBox:hover {
   cursor: pointer;
   color: var(--i30);
 }
@@ -171,7 +182,7 @@ export default {
   margin-top: 4px;
   color: var(--i45);
 }
-#accountBox :hover {
+#accountBox:hover {
   border-bottom: 1px solid var(--accent02);
   cursor: pointer;
   color: var(--accent02);
@@ -185,15 +196,16 @@ export default {
   text-align: right;
 }
 
-
-/* --------------- SEARCH BOX -------------- */
-#searchBox {
+#searchBox { //------------------------
   display: block;
-  margin-top: 62px;
+  position: relative;
+  top: 31px;
+  padding-top: 30px;
+
   width: 100%;
   height: 80px;
+
   border-bottom: 2px solid var(--i30);
-  background-color: transparent;
 }
 #searchBox :hover, :focus {
   ~ #searchIndicator {
@@ -205,7 +217,7 @@ export default {
     transition: 200ms;
   }
 }
-#searchField { //------------------
+#searchField { //------
   display: block;
   float: left;
 
