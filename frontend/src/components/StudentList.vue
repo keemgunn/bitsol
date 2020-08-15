@@ -25,7 +25,7 @@
       
       <div class="result"
       :key="record.student_id"
-      v-for="record in testArr">
+      v-for="record in searchArr">
 
         <div class="gap-result"></div>
         <div class="cover-result-side"></div>
@@ -37,12 +37,16 @@
         <div class="cover-result-side"></div>
       </div>
 
-      <div class="cover-result-bottom"></div>
+      <div id="cover-bottom" :style="coverBottom"></div>
+
     </div>
 
     <div class="cover-scroll-bottom"></div>
   </div>
 
+  <div id="wrapper-no-result"
+  v-if="searchArr.length !== 0">
+  </div>
 
 
 
@@ -799,7 +803,8 @@ export default {
   props: [
     "keyword",
     "searchArr", // from /db/search
-    "dbinfo"
+    "dbinfo",
+    "coverBottom"
   ],
   methods: {
 
@@ -853,6 +858,8 @@ export default {
 #wrapper-no-result {
   padding-top: 10px;
   padding-left: 20px;
+  width: calc(100% - 20px);
+  height: 50px;
   font-family: 'Nanum Square';
   font-weight: 200;
   font-size: 35px;
@@ -877,7 +884,7 @@ export default {
 
 .wrpper-result {
   width: 100%;
-  height: calc(100% - 126px);
+  height: calc(100% - 132px);
 }
   .content-overflow {
     width: 100%;
@@ -907,11 +914,12 @@ export default {
       }
       // <RECORD HERE> 
   // }
-  .cover-result-bottom {
+  #cover-bottom {
     float: left;
     width: 100%;
-    height: 200px;
+    height: 20px;
     background-color: var(--i94);
+    // background-color: darkgreen;
   }
 
 /* --------------- SCROLL -------------- */

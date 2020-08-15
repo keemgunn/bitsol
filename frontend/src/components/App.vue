@@ -49,6 +49,7 @@
     :keyword="keyword"
     :searchArr="searchArr"
     :dbinfo="dbinfo"
+    :coverBottom="coverBottom"
   />
 
 </div>
@@ -62,14 +63,16 @@ export default {
   name: 'App',
   components: {
     StudentList
-
   },
   props: [],
   data() { return {
     keyword: '',
     refgTerm: null,
     searchArr: [],
-    dbinfo: {}
+    dbinfo: {},
+    coverBottom: {
+      "height": "100%"
+    }
   }},
   computed: {
 
@@ -96,6 +99,10 @@ export default {
       console.log(this.keyword);
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
+      this.listFit(this.searchArr.length);
+    },
+    listFit(count){
+      this.coverBottom.height = "calc(100% - " + String(count * 66) + "px)"
     }
   },
   created() {

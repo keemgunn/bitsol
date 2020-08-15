@@ -64,8 +64,8 @@ export default {
   data() { return {
     update: 0,
     submitCheck: false,
-    refgLimit00: 2,
-    refgTerm00: '19_1',
+    // refgLimit00: 2,
+    // refgTerm00: '19_1',
     
   }},
   props: [
@@ -86,14 +86,14 @@ export default {
       }
     },
     askAvail(i){
-      if ( this.updateLimit00 - i > 0 && !this.submitCheck){
+      if ( this.updateLimit - i > 0 && !this.submitCheck){
         return true;
       }else {
         return false;
       }
     },
     plus(){
-      if(this.update < this.updateLimit00) {
+      if(this.update < this.updateLimit) {
         this.update ++
       }else {
         this.alert("~~ exceeded");
@@ -126,8 +126,6 @@ export default {
 
   }
 }
-
-
 </script>
 
 
@@ -142,7 +140,7 @@ export default {
   height: 50px;
   padding: 3px;
   transition: 300ms;
-  background-color: transparent;
+  // background-color: darksalmon;
 } 
 .listrefg:hover {
   background-color: rgba(255, 255, 255, 1);
