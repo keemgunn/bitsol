@@ -147,6 +147,8 @@ export default {
 
 
 <style lang="scss">
+//-----------------------------------------------------
+//-----------------------------------------------------
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 #index {
@@ -169,7 +171,10 @@ export default {
   background-color: var(--i94);
   // background-color: lightblue;
 }
-
+::selection {
+  color: var(--i30);
+  background: var(--accent01);
+}
 
 
 // -------------------------LOGIN BOX

@@ -826,6 +826,8 @@ export default {
   padding-bottom: 40px;
   height: 35px;
   line-height: 35px;
+  user-select: none;
+  -webkit-user-select: none;
   background-color: var(--i94);
   // background-color: rgb(145, 199, 145);
 }
@@ -857,6 +859,8 @@ export default {
   color: var(--i45);
   font-style: italic;
   letter-spacing: 0.31px;
+  user-select: none;
+  -webkit-user-select: none;
   background-color: var(--i94);
   // background-color: gold
 }

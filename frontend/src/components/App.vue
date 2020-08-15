@@ -133,6 +133,8 @@ export default {
   padding-top: 30px;
   padding-left: 20px;
   padding-right: 20px;
+  user-select: none;
+  -webkit-user-select: none;
   background-color: var(--i94);
   // background-color: rgb(86, 139, 255);
 }
