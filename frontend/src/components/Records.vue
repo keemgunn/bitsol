@@ -125,8 +125,13 @@ export default {
       this[obj] ++ ;
     },
     submit(){
-      this.submitCheck = true
-      console.log("~~~ submitted");
+      if(this.submitCheck === false){
+        this.submitCheck = true
+        //submit method
+        console.log("~~~ submitted");
+      }else{
+        this.alert("already submitted")
+      }
     }
   },
   computed: {
@@ -163,18 +168,17 @@ export default {
   background-color: var(--i100);
   transition: 150ms;
 }
+    .cover-back {
+      pointer-events: none;
 
-.cover-back {
-  pointer-events: none;
-
-  position: relative;
-  right: 3px;
-  bottom: 53px;
-  height: calc(100% + 6px);
-  width: calc(100% + 6px);
-  background-color: var(--i100);
-}
-
+      position: relative;
+      // right: 3px;
+      bottom: 100%;
+      height: calc(100%);
+      width: calc(100%);
+      background-color: var(--i100);
+      opacity: 0.8;
+    }
 .content {
   width: 100%;
   height: 50px;
@@ -318,14 +322,10 @@ export default {
     background-color: var(--accent03);
   }
 .submitted {
-  transition: 200ms;
-  cursor: default;
   color: var(--i80);
   background-color: var(--i90);
 }
 .submitted:hover {
-  transition: 200ms;
-  cursor: default;
   color: var(--i80);
   background-color: var(--i90);
 }
@@ -370,7 +370,7 @@ export default {
   transition: opacity 100ms;
 }
 .alert-leave {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 .alert-leave-to  {
   opacity: 0;
