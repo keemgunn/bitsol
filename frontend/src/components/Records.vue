@@ -30,14 +30,14 @@
   </svg>
 
   <div class="wrapper-adjust">
-    <div class="icon" @click="minus">
+    <div :class="{icon:1, disabled:submitCheck}" @click="minus">
       <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>remove_circle</title>
         <polygon
         points="7 11 7 13 17 13 17 11"></polygon>
       </svg>
     </div>
-    <div class="icon" @click="plus">
+    <div :class="{icon:1, disabled:submitCheck}" @click="plus">
       <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>add_circle</title>
         <polygon 
@@ -54,7 +54,15 @@
   >{{update}}개 지급</div>
 
 
+
+
+
+
+
 </div>
+<transition name="alert">
+  <div class="cover-back" v-if="cf0 === cf1"></div>
+</transition>
 </div>
 </template>
 
@@ -66,6 +74,8 @@ export default {
     submitCheck: false,
     refgLimit00: 2,
     refgTerm00: '19_1',
+    cf0: 0,
+    cf1: 1
     
   }},
   props: [
@@ -93,14 +103,14 @@ export default {
       }
     },
     plus(){
-      if(this.update < this.updateLimit00) {
+      if(this.update < this.updateLimit00 && !this.submitCheck) {
         this.update ++
       }else {
         this.alert("~~ exceeded");
       }
     },
     minus(){
-      if(this.update > 0) {
+      if(this.update > 0 && !this.submitCheck) {
         this.update --
       }else {
         this.alert("~~ less than 0");
@@ -108,6 +118,11 @@ export default {
     },
     alert(msg){
       console.log(msg);
+      this.coverFlow("cf0");
+      setTimeout(this.coverFlow, 200, "cf1");
+    },
+    coverFlow(obj){
+      this[obj] ++ ;
     },
     submit(){
       this.submitCheck = true
@@ -124,7 +139,10 @@ export default {
   },
   created() {
 
-  }
+  },
+  mounted() {
+    this.alert("~~ mounted ~~")
+  },
 }
 </script>
 
@@ -133,7 +151,6 @@ export default {
 <style lang="scss" scoped> 
 // ------------------------------------------------------
 // ------------------------------------------------------
-
 .records {
   float: left;
   width: calc(100% - 46px);
@@ -146,16 +163,30 @@ export default {
   background-color: var(--i100);
   transition: 150ms;
 }
+
+.cover-back {
+  pointer-events: none;
+
+  position: relative;
+  right: 3px;
+  bottom: 53px;
+  height: calc(100% + 6px);
+  width: calc(100% + 6px);
+  background-color: var(--i100);
+}
+
 .content {
   width: 100%;
   height: 50px;
   user-select: none;
   -webkit-user-select: none;
   transition: 300ms;
+  color: var(--i45);
   background-color: var(--i94);
 } 
 .content:hover {
   transition: 150ms;
+  color: var(--i30);
   background-color: var(--i98);
 }
 
@@ -234,17 +265,26 @@ export default {
   fill: var(--i30);
   background-color: var(--i94);
 }
-.icon:hover {
-  transition: 200ms;
-  cursor: pointer;
-  background-color: var(--i90);
+  .icon:hover {
+    transition: 200ms;
+    cursor: pointer;
+    background-color: var(--i90);
+  }
+  .icon:active {
+    transition: 200ms;
+    cursor: pointer;
+    background-color: var(--i80);
+  }
+.disabled {
+  fill: var(--i60);
+  background-color: transparent;
 }
-.icon:active {
-  transition: 200ms;
-  cursor: pointer;
-  background-color: var(--i80);
-}
-
+  .disabled:hover {
+    background-color: transparent;
+  }
+  .disabled:active {
+    background-color: transparent;
+  }
 
 
 
@@ -292,4 +332,50 @@ export default {
 
 
 
+
+// ----------------------------------- ANIMATION
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+@keyframes blink-out {
+  0%{opacity: 1;}
+  30%{opacity: .2;}
+  60%{opacity: .9;}
+  90%{opacity: .1;}
+  100%{display: none;}
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+.alert-enter {
+  opacity: 0.4;
+}
+.alert-enter-to {
+  opacity: 0;
+}
+.alert-enter-active{
+  transition: opacity 100ms;
+}
+.alert-leave {
+  opacity: 0.8;
+}
+.alert-leave-to  {
+  opacity: 0;
+}
+.alert-leave-active {
+  transition: opacity 100ms;
+}
 </style>

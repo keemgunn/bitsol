@@ -2,9 +2,9 @@
 <div id="stdtlist">
 
   <div id="optionBox"
-  v-if="this.$store.state.modal.scopeTab === 'refg'">
-    <div id="han">보관팩 기간: </div>
-    <div id="date">{{dbinfo.deadline}}</div>
+  v-if="this.$store.state.modal.scopeTab === 'refg' || 'info'">
+    <div id="han" v-if="this.$store.state.modal.scopeTab === 'refg'">보관팩 기간: </div>
+    <div id="date" v-if="this.$store.state.modal.scopeTab === 'refg'">{{dbinfo.deadline}}</div>
   </div>
 
   <div id="wrapper-no-result"
@@ -20,8 +20,9 @@
   </div>
 
   <div class="wrapper-result"
-  v-if="this.$store.state.modal.scopeTab === 'refg'">
+  v-if="this.$store.state.modal.scopeTab === 'refg' || 'info'">
     <div class="content-overflow">
+      
       
       <div class="result"
       :key="record.student_id"
@@ -35,7 +36,9 @@
             :refgLimit="dbinfo.refgLimit"
           />
         <div class="cover-result-side"></div>
+
       </div>
+
 
       <div id="cover-bottom" :style="coverBottom"></div>
 
@@ -877,9 +880,6 @@ export default {
     animation-timing-function: ease-in-out;
     animation-delay: 500ms;
     animation-fill-mode: forwards;
-  } @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
   }
 
 .wrapper-result {
@@ -960,5 +960,24 @@ export default {
   background-color: var(--i94);
 }
 
+
+
+// ----------------------------------- ANIMATION
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 300ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 </style>

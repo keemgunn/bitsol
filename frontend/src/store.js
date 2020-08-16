@@ -11,8 +11,8 @@ export default new Vuex.Store({
   state: {
     id: null,
 accessLevel: 1, // 0
-userName: "한글로", // null
-    colorConfig: "purple",
+userName: "null", // null
+    colorConfig: "purple", // default
     modal: {
       display: 'App',
       scopeTab: 'refg'
@@ -47,9 +47,9 @@ userName: "한글로", // null
       state.id = null;
       state.userName = null;
       state.colorConfig = "default";
-      delete localStorage.id;
-      delete localStorage.userName;
-      delete localStorage.colorConfig;
+      delete localStorage.id ;
+      delete localStorage.userName ;
+      localStorage.colorConfig = 'default';
     },
     SET_MODAL (state, {data}) {
       console.log("$$$ mutation:LOAD_CONFIG ...$store");

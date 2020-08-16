@@ -98,7 +98,7 @@ export default {
       }
     },
     async recoverConfig(){ // from App/$emit(app-created)
-      if(this.id === null){
+      if(this.id === null && localStorage.id){
         const {data} = await axios.post('/auth/recover', {id: localStorage.id});
         axios.defaults.headers.common['Authorization'] = data.accessToken;
         this.$store.state.id = await localStorage.id;
@@ -255,11 +255,11 @@ export default {
   border: 0px;
   border-radius: 0px;
   outline: 0px;
-  color: var(--i30);
+  color: var(--accent00);
   background-color: var(--accent01);
 }
 .btn:hover {
-  color: var(--i100);
+  color: var(--accent00);
   background-color: var(--accent02);
 }
 
