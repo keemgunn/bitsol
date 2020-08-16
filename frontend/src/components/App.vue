@@ -2,10 +2,50 @@
 <div id="app">
 
   <div id="wrapper-header">
+    <div class="user-box" 
+      :class="{plus: userBoxExtend}"
+      @mouseenter="expandUserBox"
+      @mouseleave="expandUserBox">
 
-    <div id="accountBox" @click="callback('accountBox')">
-      user:<div id="userName">{{this.$store.state.userName}}</div>
-      <div id="border"></div>
+      <div id="account">
+        user:<div id="user-name">{{this.$store.state.userName}}</div>
+      </div>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}" v-if="userBoxExtend">
+          <div class="menu-text">
+            테마 변경
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>arrow_drop_down</title>
+              <g> 
+                <polygon points="7 10 12 15 17 10"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}"
+        v-if="userBoxExtend"
+        @click="logout()">
+          <div class="menu-text">
+            로그아웃
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Shape Copy</title>
+              <g transform="translate(7,0)">
+                <polygon transform="translate(5,-5) rotate(45)" points="17.8925565 12.8417938 12.8417938 12.8417938 12.8417938 17.8925565 11.1582062 17.8925565 11.1582062 12.8417938 6.10744349 12.8417938 6.10744349 11.1582062 11.1582062 11.1582062 11.1582062 6.10744349 12.8417938 6.10744349 12.8417938 11.1582062 17.8925565 11.1582062"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <div class="border" :class="{'border-extended': userBoxExtend}"></div>
     </div>
 
     <form id="searchBox"
@@ -23,8 +63,8 @@
       <div id="searchIndicator"></div>
       <div id="searchIcon"></div>
     </form>
-  </div>
 
+  </div>
 
   <StudentList
     v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
@@ -49,12 +89,13 @@ export default {
   props: [],
   data() { return {
     keyword: '',
-    refgTerm: null,
     searchArr: [],
     dbinfo: {},
     coverBottom: {
       "height": "100%"
-    }
+    },
+    userBoxExtend: false
+
   }},
   computed: {
 
@@ -63,12 +104,15 @@ export default {
     logout(){
       this.$emit('logout');
     },
-    typing(e) {
-      this.keyword = e.target.value
-    },
     callback(arg){
       console.log(arg);
       return false;
+    },
+    listFit(count){
+      this.coverBottom.height = "calc(100% - " + String(count * 66) + "px)"
+    },
+    expandUserBox(){
+      this.userBoxExtend = !this.userBoxExtend;
     },
 
     //___________ LOAD/SEARCH DATABASE __________
@@ -82,9 +126,6 @@ export default {
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.listFit(this.searchArr.length);
-    },
-    listFit(count){
-      this.coverBottom.height = "calc(100% - " + String(count * 66) + "px)"
     }
   },
   created() {
@@ -130,50 +171,91 @@ export default {
   // background-color: rgb(86, 139, 255);
 }
 
-#accountBox { //------------------------
-  display: block;
+.user-box { //------------------------
   float: left;
-  width: 250px;
+  width: fit-content;
   height: 30px;
+  margin-top: 4px;
+  transition: 200ms;
+  font-weight: 400;
+  color: var(--i45);
+  // background-color: rgb(8, 5, 29);
+}
+  .plus {
+    transition: 200ms;
+    font-weight: 800;
+  }
+
+#account {
+  float: left;
+  width: fit-content;
+  height: 18px;
+  margin-right: 12px;
 
   font-family: 'Space Mono';
-  font-weight: 400;
   font-size: 16px;
   letter-spacing: 0.24px;
-
-  
-  margin-top: 4px;
-  color: var(--i45);
-  background-color: rgb(8, 5, 29);
 }
-#userName {
-  display: inline-block;
-  margin-left: 1px;
+  #user-name {
+    display: inline-block;
+    margin-left: 1px;
 
+    font-family: 'Nanum Square';
+    font-size: 16px;
+    letter-spacing: 0.24px;
+    text-align: left;
+
+    // background-color: rgb(14, 34, 88);
+  }
+
+.user-menu { // -----------------------
+  float: left;
+  bottom: 18px;
+  width: fit-content;
+  height: 25px;
+  margin-right: 1px;
   font-family: 'Nanum Square';
-  font-size: 16px;
-  letter-spacing: 0.24px;
-  text-align: left;
-
-  background-color: rgb(14, 34, 88);
+  font-size: 14px;
+  letter-spacing: 0.21px;
+  text-align: right;
+  font-weight: 400;
+  color: var(--i30);
+  fill: var(--i30);
 }
-#border {
+  .user-menu:hover {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--accent01);
+    fill: var(--accent01);
+    transition: 300ms;
+  }
+    .menu-text {
+      float: left;
+      margin-top: 5px;
+    }
+    .icon {
+      float: left;
+      margin-top: 1px;
+      width: 24px;
+      height: 24px;
+    }
+
+.border { // ------------------------
   display: block;
-  width: 20px;
+  width: 0%;
   height: 2px;
-
-  transition: 200ms;
-  
-
   position: relative;
   left: 0;
-  top: 4px;
-
-  background-color: aquamarine;
+  top: 28px;
+  transition: 300ms;
+  animation-timing-function: ease-in-out;
+  background-color: var(--i30);
 }
-
-
-
+  .border-extended {
+    transition: 400ms;
+    animation-timing-function: ease-out;
+    width: 100%;
+  }
 
 
 #searchBox { //------------------------
@@ -244,5 +326,25 @@ export default {
   mask-image: url(../assets/images/searchIcon.svg) no-repeat;
   background-color: var(--i30);
 }
+
+
+// ----------------------------------- ANIMATION
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 300ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 
 </style>

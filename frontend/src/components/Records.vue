@@ -143,7 +143,7 @@ export default {
   // background-color: darksalmon;
 } 
 .records:hover {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: var(--i100);
   transition: 150ms;
 }
 .content {
@@ -269,10 +269,12 @@ export default {
   .submit:hover {
     transition: 200ms;
     cursor: pointer;
+    color: var(--accent00);
     background-color: var(--accent01);
   }
   .submit:active {
     transition: 200ms;
+    color: var(--accent00);
     background-color: var(--accent03);
   }
 .submitted {
