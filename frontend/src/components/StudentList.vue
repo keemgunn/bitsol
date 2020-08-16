@@ -1,7 +1,7 @@
 <template>
 <div id="stdtlist">
 
-  <div id="deadline"
+  <div id="optionBox"
   v-if="this.$store.state.modal.scopeTab === 'refg'">
     <div id="han">보관팩 기간: </div>
     <div id="date">{{dbinfo.deadline}}</div>
@@ -25,11 +25,11 @@
       
       <div class="result"
       :key="record.student_id"
-      v-for="record in searchArr">
+      v-for="record in testArr">
 
         <div class="gap-result"></div>
         <div class="cover-result-side"></div>
-          <ListRefg 
+          <Records 
             :record="record"
             :refgTerm="dbinfo.refgTerm"
             :refgLimit="dbinfo.refgLimit"
@@ -58,12 +58,12 @@
 </template>
 
 <script>
-import ListRefg from '@/components/ListRefg'
+import Records from '@/components/Records'
 
 export default {
   name: 'StudentList',
   components: {
-    ListRefg
+    Records
   },
   data() { return {
     testArr: [
@@ -825,8 +825,8 @@ export default {
 }
 
 /* --------------- REFG HEADER-------------- */
-#deadline { 
-  margin-top: 0px;
+#optionBox { 
+  padding-top: 10px;
   padding-left: 20px;
   padding-bottom: 40px;
   height: 35px;

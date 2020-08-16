@@ -1,5 +1,5 @@
 <template>
-<div class="listrefg">
+<div class="records">
 <div class="content">
 
   <div class="room-name">{{record.room_name}}</div>
@@ -60,12 +60,12 @@
 
 <script>
 export default {
-  name: 'ListRefg',
+  name: 'Records',
   data() { return {
     update: 0,
     submitCheck: false,
-    // refgLimit00: 2,
-    // refgTerm00: '19_1',
+    refgLimit00: 2,
+    refgTerm00: '19_1',
     
   }},
   props: [
@@ -86,14 +86,14 @@ export default {
       }
     },
     askAvail(i){
-      if ( this.updateLimit - i > 0 && !this.submitCheck){
+      if ( this.updateLimit00 - i > 0 && !this.submitCheck){
         return true;
       }else {
         return false;
       }
     },
     plus(){
-      if(this.update < this.updateLimit) {
+      if(this.update < this.updateLimit00) {
         this.update ++
       }else {
         this.alert("~~ exceeded");
@@ -134,7 +134,7 @@ export default {
 // ------------------------------------------------------
 // ------------------------------------------------------
 
-.listrefg {
+.records {
   float: left;
   width: calc(100% - 46px);
   height: 50px;
@@ -142,7 +142,7 @@ export default {
   transition: 300ms;
   // background-color: darksalmon;
 } 
-.listrefg:hover {
+.records:hover {
   background-color: rgba(255, 255, 255, 1);
   transition: 150ms;
 }

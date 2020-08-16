@@ -3,27 +3,9 @@
 
   <div id="wrapper-header">
 
-    <div id="scopeTab">
-      <div class="scopeBox"
-          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'refg'}"
-          @click="callback('scopeBox_refg')">
-        <div class="scopeText">냉장고팩지급</div>
-      </div>
-      <div class="scopeBox"
-          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'info'}"
-          @click="callback('scopeBox_info')">
-        <div class="scopeText">상세정보</div>
-      </div>
-      <div class="scopeBox"
-          :class="{scopeSelected: this.$store.state.modal.scopeTab === 'admin'}"
-          v-if="this.$store.state.accessLevel > 1"
-          @click="callback('scopeBox_admin')">
-        <div class="scopeText">학생관리</div>
-      </div>
-    </div>
-
     <div id="accountBox" @click="callback('accountBox')">
-      <div id="userName">user: {{this.$store.state.userName}}</div>
+      user:<div id="userName">{{this.$store.state.userName}}</div>
+      <div id="border"></div>
     </div>
 
     <form id="searchBox"
@@ -139,7 +121,7 @@ export default {
 #wrapper-header {
   width: calc(100% - 40px);
   height: 157px;
-  padding-top: 30px;
+  padding-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
   user-select: none;
@@ -147,76 +129,64 @@ export default {
   background-color: var(--i94);
   // background-color: rgb(86, 139, 255);
 }
-#scopeTab {
-  display: block;
-  float: left;
-  width: fit-content; 
-  height: 31px;
-}
-.scopeBox { //--------------------------
-  display: inline-block;
-  height: 31p;
-  width: fit-content;
-  margin-right: 10px; 
-
-  font-family: 'Nanum Square', sans-serif;
-  font-size: 20px;   
-  text-align: center;
-  letter-spacing: 0.3px;
-  line-height: 30px;
-
-  border-bottom: 2px solid var(--i94);
-  font-weight: 400;
-  color: var(--i45);
-}
-.scopeBox:hover {
-  cursor: pointer;
-  color: var(--i30);
-}
-.scopeText {
-  display: inline-block;
-  margin-left: 3px;
-  margin-right: 3px;
-}
-.scopeSelected {
-  border-bottom: 2px solid var(--accent02);
-  font-weight: 700;
-  color: var(--accent02);
-}
-.scopeSelected :hover {
-  color: var(--accent02);
-}
 
 #accountBox { //------------------------
   display: block;
-  float: right;
-  margin-top: 4px;
-  color: var(--i45);
-}
-#accountBox:hover {
-  border-bottom: 1px solid var(--accent02);
-  cursor: pointer;
-  color: var(--accent02);
-}
-#userName {
-  display: inline;
-  font-family: 'Barlow','Nanum Square';
+  float: left;
+  width: 250px;
+  height: 30px;
+
+  font-family: 'Space Mono';
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 0.24px;
-  text-align: right;
+
+  
+  margin-top: 4px;
+  color: var(--i45);
+  background-color: rgb(8, 5, 29);
 }
+#userName {
+  display: inline-block;
+  margin-left: 1px;
+
+  font-family: 'Nanum Square';
+  font-size: 16px;
+  letter-spacing: 0.24px;
+  text-align: left;
+
+  background-color: rgb(14, 34, 88);
+}
+#border {
+  display: block;
+  width: 20px;
+  height: 2px;
+
+  transition: 200ms;
+  
+
+  position: relative;
+  left: 0;
+  top: 4px;
+
+  background-color: aquamarine;
+}
+
+
+
+
 
 #searchBox { //------------------------
   display: block;
   position: relative;
   top: 31px;
-  padding-top: 30px;
+  padding-top: 40px;
 
   width: 100%;
   height: 80px;
 
   border-bottom: 2px solid var(--i30);
+  // background-color: darkkhaki;
 }
 #searchBox :hover, :focus {
   ~ #searchIndicator {
