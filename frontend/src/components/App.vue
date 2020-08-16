@@ -124,6 +124,8 @@ export default {
 
 
 <style lang="scss" scoped> #app {
+  // ------------------------------------------------
+  // ------------------------------------------------
   float: left;
   z-index: 10;
   width: calc(100vw - 120px);

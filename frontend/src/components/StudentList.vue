@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <div class="wrpper-result"
+  <div class="wrapper-result"
   v-if="this.$store.state.modal.scopeTab === 'refg'">
     <div class="content-overflow">
       
@@ -882,7 +882,7 @@ export default {
     to { opacity: 1; }
   }
 
-.wrpper-result {
+.wrapper-result {
   width: 100%;
   height: calc(100% - 132px);
 }
