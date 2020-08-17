@@ -22,7 +22,6 @@ app.use(express.text({
 app.use('/auth', authentic);
 app.use('/db', dbConnect);
 
-
     // ---------- PORT SETTING
 const port = process.env.PORT || 5500;
 app.listen(port, () => console.log(`### Listening on port ${port} ... @app.js`));
