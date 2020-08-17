@@ -10,12 +10,14 @@ import styles from './assets/styles.json';
 export default new Vuex.Store({
   state: {
     id: null,
-    accessLevel: 0, // @VERIFIED
-    userName: null,
-    colorConfig: "default",
+    accessLevel: 0, // 0
+    userName: null, // null
+    colorConfig: "default", // default
     modal: {
-      display: 'refg'
+      display: 'App',
+      scopeTab: 'refg'
     },
+    colorKeys: Object.keys(styles.colors),
     colors: styles.colors
   },
   getters: {
@@ -39,15 +41,16 @@ export default new Vuex.Store({
       state.userName = data.userName;
         localStorage.userName = data.userName;
       state.colorConfig = data.colorConfig;
+        localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
       state.accessLevel = 0;
       state.id = null;
       state.userName = null;
       state.colorConfig = "default";
-      delete localStorage.requestPoint;
-      delete localStorage.id;
-      delete localStorage.userName;
+      delete localStorage.id ;
+      delete localStorage.userName ;
+      localStorage.colorConfig = 'default';
     },
     SET_MODAL (state, {data}) {
       console.log("$$$ mutation:LOAD_CONFIG ...$store");

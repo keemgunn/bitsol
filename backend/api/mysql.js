@@ -10,8 +10,6 @@ let versionFile = path.join(__dirname, '../data/db.json');
 let logFile = path.join(__dirname, '../data/db_log.json');
 let userFile = path.join(__dirname, '../data/users.json');
   let user = version.readSync(userFile);//users.json
-var currentSchema, currentBuild, currentVersion;
-var serials = [];
 
 const hostName = versionInfo.connection.host || 'localhost';
 const userName = versionInfo.connection.user || 'root';
@@ -23,30 +21,31 @@ const connection = mysql.createConnection({
   multipleStatements: true
 }); newConnection();
 
-if(versionInfo.hasOwnProperty('schema')){
-  currentSchema = versionInfo.schema;
-  use(versionInfo.schema);
-};
-if(versionInfo.hasOwnProperty('build')){
-  currentBuild = versionInfo.build;
-  console.log('### current build:', versionInfo.build, ' ... @mysql.js');
-};
-if(versionInfo.hasOwnProperty('version')){
-  currentVersion = versionInfo.version;
-  console.log('### current version:', versionInfo.version, ' ... @mysql.js');
-};
-if(versionInfo.hasOwnProperty('serial-list')){
-  serials = versionInfo["serial-list"];
-  console.log('### total', serials.length, 'records in students ... @mysql.js');
-};
+let currentSchema = versionCheck('schema');
+let currentBuild = versionCheck('build');
+let currentVersion = versionCheck('version');
+let refgTerm = versionCheck('refgTerm');
+let deadline = versionCheck('deadline');
+let refgLimit = versionCheck('refgLimit');
+
+function versionCheck(prop){
+  if(prop){
+    console.log('###versionCheck__', String(prop), ': ', versionInfo[prop]);
+    return versionInfo[prop]
+  }else {
+    console.log("###versionCheck__: NO PROPERTY NAMED:", String(prop));
+    return undefined
+  }
+}
+
+let processing = 0;
+
+// ################# QUERIES ####################
+use(currentSchema);
 
 let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
-
-
-
-// ################# QUERIES ####################
 
 function makeTables(year, res) {
   // resumeConnection();
@@ -167,7 +166,7 @@ function firstData(worksheet, res){
   close();
 }
 
-function updateRefg(student_id, refgTerm, update, res){
+function updateRefg(student_id, update, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
@@ -176,31 +175,40 @@ function updateRefg(student_id, refgTerm, update, res){
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
 
-  // versionUp();
-  // versionUp 말고, last-data-push 같은걸로
+  versionUp();
   close();
 }
 
 function searchStudent(keyword, res){
-  // resumeConnection();
-  logRefresh();
-  addMonitor(monitor, res);
-  
-  use(currentSchema);
+  console.log('@@@@@@ processing:', processing);
+  if(processing > 0){
+    console.log("### request-jam-error .../mysql.js/searchStudent");
+    processing = 0;
+  }else{
+    processing += 1;
 
-  let joiResult = searchKeySchema.validate({keyword});
-  if (joiResult.error){
-    res.json({
-      arg: []
-    });
-  }else {
-    let key = quote(joiResult.value.keyword);
-
-    let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
-    query = query.concat("r.room_name REGEXP ", key, " || ");
-    query = query.concat("s.student_name REGEXP ", key, ");")
+    // resumeConnection();
+    logRefresh();
+    addMonitor(monitor, res);
+    
+    use(currentSchema);
   
-    select(query);
+    let joiResult = searchKeySchema.validate({keyword});
+    if(joiResult.error){
+      console.log('joiResult.error');
+      res.json({
+        arg: []
+      });
+      processing = 0;
+    }else{
+      let key = quote(joiResult.value.keyword);
+  
+      let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+      query = query.concat("r.room_name REGEXP ", key, " || ");
+      query = query.concat("s.student_name REGEXP ", key, ");");
+    
+      select(query);
+    }
   }
 }
 
@@ -239,10 +247,11 @@ function versionUp(){
 const searchKeySchema = Joi.object({
   keyword: Joi.string()
     .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
-    .min(1)
+    .min(2)
     .required()
     .trim(true)
 });
+
 
 
 // ========================= MONITOR SETTING
@@ -261,7 +270,8 @@ function addMonitor(monitor, res){
     console.log('$$$ SEARCH REQUEST ... @mysql.js/monitor');
     res.json({
       arg
-    })
+    });
+    processing = 0;
   });
   monitor.on('query end', (arg) => {
     // ----------- response methods
@@ -411,11 +421,16 @@ function resumeConnection(){
 
 // ========================= EXPORT SETTING
 
+function dbInfo() {
+  return versionInfo
+}
+
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
 module.exports.use = use;
 module.exports.searchStudent = searchStudent;
 module.exports.updateRefg = updateRefg;
+module.exports.dbInfo = dbInfo;
 
 // pauseConnection();
 // reConnect();

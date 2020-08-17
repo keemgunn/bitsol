@@ -102,7 +102,7 @@ router.post('/deposit', (req, res) => {
   deposit[id] = req.headers.authorization;
     user[id]["state"]["isOnline"] = false;
     user[id]["state"]["device"] = "";
-  setTimeout(clearDeposit, 5000, id);
+  setTimeout(clearDeposit, 1000, id);
   console.log("### token depositted .../auth/depoist\n");
 })
 router.post('/recover', (req, res) => {
@@ -127,6 +127,16 @@ router.post('/logout', (req, res) => {
   user[id]["state"]["device"] = "";
   version.update(users_json, user);
   console.log("### LOGGED OUT .../auth/logout");
+})
+
+
+
+// ============= THEME CHANGER
+router.post('/theme/change', (req, res) => {
+  const {id, color} = req.body;
+  user[id]["config"]["colorConfig"] = color;
+  version.update(users_json, user);
+  res.json({color});
 })
 
 
