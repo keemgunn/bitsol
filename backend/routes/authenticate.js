@@ -131,4 +131,14 @@ router.post('/logout', (req, res) => {
 
 
 
+// ============= THEME CHANGER
+router.post('/theme/change', (req, res) => {
+  const {id, color} = req.body;
+  user[id]["config"]["colorConfig"] = color;
+  version.update(users_json, user);
+  res.json({color});
+})
+
+
+
 module.exports = router;

@@ -17,6 +17,7 @@ export default new Vuex.Store({
       display: 'App',
       scopeTab: 'refg'
     },
+    colorKeys: Object.keys(styles.colors),
     colors: styles.colors
   },
   getters: {

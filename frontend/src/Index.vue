@@ -35,6 +35,7 @@
     :accessLevel="this.$store.accessLevel"
     @app-created="recoverConfig"
     @logout="logout"
+    @change-theme="changeTheme"
     key="app"
   />
   <div class="cover-app-side" :style="right0"></div>
@@ -113,6 +114,13 @@ export default {
     //___________OTHER METHODS__________
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state})
+    },
+    async changeTheme(color){
+      this.$store.state.colorConfig = color;
+      const {data} = await axios.post('/auth/theme/change', {
+        "id": this.$store.state.id ,"color": color})
+      console.log("theme set: ", data.color);
+      this.setColor();
     },
     async setColor(){
       this.themeColor = await this["$store"]["state"]["colors"][this.$store.state.colorConfig];

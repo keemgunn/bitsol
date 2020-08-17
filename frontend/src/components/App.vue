@@ -1,52 +1,8 @@
 <template>
 <div id="app">
 
-  <div id="wrapper-header">
-    <div class="user-box" 
-      :class="{plus: userBoxExtend}"
-      @mouseenter="expandUserBox"
-      @mouseleave="expandUserBox">
+  <div id="wrapper-header" @mouseleave="toggleThemeList(0)">
 
-      <div id="account">
-        user:<div id="user-name">{{this.$store.state.userName}}</div>
-      </div>
-
-      <transition name="fade">
-        <div :class="{'user-menu':1}" v-if="userBoxExtend">
-          <div class="menu-text">
-            테마 변경
-          </div>
-          <div class="icon">
-            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>arrow_drop_down</title>
-              <g> 
-                <polygon points="7 10 12 15 17 10"></polygon>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </transition>
-
-      <transition name="fade">
-        <div :class="{'user-menu':1}"
-        v-if="userBoxExtend"
-        @click="logout()">
-          <div class="menu-text">
-            로그아웃
-          </div>
-          <div class="icon">
-            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>Shape Copy</title>
-              <g transform="translate(7,0)">
-                <polygon transform="translate(5,-5) rotate(45)" points="17.8925565 12.8417938 12.8417938 12.8417938 12.8417938 17.8925565 11.1582062 17.8925565 11.1582062 12.8417938 6.10744349 12.8417938 6.10744349 11.1582062 11.1582062 11.1582062 11.1582062 6.10744349 12.8417938 6.10744349 12.8417938 11.1582062 17.8925565 11.1582062"></polygon>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </transition>
-
-      <div class="border" :class="{'border-extended': userBoxExtend}"></div>
-    </div>
 
     <form id="searchBox"
     @submit.prevent
@@ -66,6 +22,70 @@
       <div id="searchIcon"></div>
     </form>
 
+
+    <div class="user-box"
+    :class="{'user-box-bold':(userBoxExtend || showThemeList)}"
+    @mouseenter="expandUserBox"
+    @mouseleave="expandUserBox">
+
+      <div id="account">
+        user:<div id="user-name">{{this.$store.state.userName}}</div>
+      </div>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}"
+        v-if="userBoxExtend || showThemeList"
+        @click="toggleThemeList(1)">
+          <div class="menu-text">
+            테마 변경
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>arrow_drop_down</title>
+              <g> 
+                <polygon points="7 10 12 15 17 10"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}"
+        v-if="userBoxExtend || showThemeList"
+        @click="logout()">
+          <div class="menu-text">
+            로그아웃
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Shape Copy</title>
+              <g transform="translate(7,0)">
+                <polygon transform="translate(5,-5) rotate(45)" points="17.8925565 12.8417938 12.8417938 12.8417938 12.8417938 17.8925565 11.1582062 17.8925565 11.1582062 12.8417938 6.10744349 12.8417938 6.10744349 11.1582062 11.1582062 11.1582062 11.1582062 6.10744349 12.8417938 6.10744349 12.8417938 11.1582062 17.8925565 11.1582062"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <div class="border" :class="{'border-extended': userBoxExtend || showThemeList}"></div>
+
+      <transition name="orb-fade">
+        <div class="theme-list" v-if="showThemeList">
+          <div
+          class="orb"
+          :key="color" 
+          v-for="color in this.$store.state.colorKeys">
+            <Theme
+              :color="color"
+              @change-theme="changeTheme"
+            />
+          </div>
+        </div>
+      </transition>
+
+    </div>
+
   </div>
 
   <StudentList
@@ -84,22 +104,26 @@
 <script>
 import axios from 'axios'
 import StudentList from '@/components/StudentList'
+import Theme from '@/components/Theme'
 
 export default {
   name: 'App',
   components: {
-    StudentList
+    StudentList,
+    Theme
   },
   props: [],
   data() { return {
     keyword: '',
     searchArr: [],
     dbinfo: {},
+
     recordHeight: 66,
     coverBottom: {
       "height": "100%"
     },
     userBoxExtend: false,
+    showThemeList: 0,
     loadingState: 0
 
   }},
@@ -130,6 +154,12 @@ export default {
     },
     expandUserBox(){
       this.userBoxExtend = !this.userBoxExtend;
+    },
+    toggleThemeList(i){
+      this.showThemeList = i;
+    },
+    changeTheme(color){
+      this.$emit('change-theme', color);
     },
     loading(bool){
       this.loadingState = bool;
@@ -192,18 +222,20 @@ export default {
 
 .user-box { //------------------------
   float: left;
+  position: relative;
+  bottom: 86px;
   width: fit-content;
   height: 30px;
   margin-top: 4px;
   transition: 200ms;
   font-weight: 400;
   color: var(--i45);
-  // background-color: rgb(8, 5, 29);
+  // background-color: rgb(220, 214, 255);
 }
-  .plus {
-    transition: 200ms;
-    font-weight: 800;
-  }
+.user-box-bold {
+  font-weight: 800;
+  position: default;
+}
 
 #account {
   float: left;
@@ -225,6 +257,9 @@ export default {
     text-align: left;
 
     // background-color: rgb(14, 34, 88);
+  }
+  #user-name:hover{
+    cursor: pointer;
   }
 
 .user-menu { // -----------------------
@@ -259,8 +294,45 @@ export default {
       height: 24px;
     }
 
+.theme-list{
+  float: left;
+  display: relative;
+  padding-top: 14px;
+
+  width: fit-content;
+  height: 28px;
+}
+  .orb {
+    float: left;
+    margin-right: 7px;
+  }
+    .orb-border {
+      width: 28px;
+      height: 28px;
+      fill: var(--i30);
+    }
+    .orb-bg {
+      position: relative;
+      top: 2px;
+      margin-left: 2px;
+      width: 24px;
+      height: 24px;
+      fill: var(--i94);
+    }
+    .orb-accent {
+      position: relative;
+      top: 2px;
+      margin-left: 2px;
+      width: 20px;
+      height: 20px;
+      fill: var(--accent02);
+    }
+      .orb-border-selected {
+        fill: var(--i30);
+      }
+
+
 .border { // ------------------------
-  display: block;
   width: 0%;
   height: 2px;
   position: relative;
@@ -271,21 +343,18 @@ export default {
   background-color: var(--i30);
 }
   .border-extended {
+    width: 100%;
     transition: 400ms;
     animation-timing-function: ease-out;
-    width: 100%;
   }
 
 
 #searchBox { //------------------------
   display: block;
   position: relative;
-  top: 31px;
-  padding-top: 40px;
-
+  top: 75px;
   width: 100%;
   height: 80px;
-
   border-bottom: 2px solid var(--i30);
   // background-color: darkkhaki;
 }
@@ -352,14 +421,7 @@ export default {
   left: 0;
   height: 100%;
   width: 100%;
-
-  // width: 120px;
-  // -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
-  // mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
-
-
   animation: blink 300ms cubic-bezier(.37,.06,.67,.94) infinite;
-
   background-color: var(--accent01);
 }
 
@@ -410,6 +472,27 @@ export default {
   100% {
     opacity: 0;
   }
+}
+
+.orb-fade-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.orb-fade-enter-to {
+  opacity: 1;
+}
+.orb-fade-enter-active{
+  transition: all 200ms;
+}
+.orb-fade-leave {
+  opacity: 1;
+}
+.orb-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.orb-fade-leave-active {
+  transition: all 200ms;
 }
 
 
