@@ -60,7 +60,9 @@
         @input="keyword = $event.target.value"
         @keyup="search()"
       />
-      <div id="searchIndicator"></div>
+      <div id="searchIndicator">
+        <div class="load-bar" v-if="loadingState"></div>
+      </div>
       <div id="searchIcon"></div>
     </form>
 
@@ -73,6 +75,7 @@
     :dbinfo="dbinfo"
     :coverBottom="coverBottom"
     @moreinfo="changeCoverBottom"
+    @loading="loading"
   />
 
 </div>
@@ -96,7 +99,8 @@ export default {
     coverBottom: {
       "height": "100%"
     },
-    userBoxExtend: false
+    userBoxExtend: false,
+    loadingState: 0
 
   }},
   computed: {
@@ -110,6 +114,8 @@ export default {
       console.log(arg);
       return false;
     },
+
+    //_____________ USER INTERFACE ACTIONS _________
     fitCoverBottom(count, height){
       this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
     },
@@ -125,7 +131,9 @@ export default {
     expandUserBox(){
       this.userBoxExtend = !this.userBoxExtend;
     },
-
+    loading(bool){
+      this.loadingState = bool;
+    },
     //___________ LOAD/SEARCH DATABASE __________
     async getDBinfo(){
       let {data} = await axios.get('/db/info');
@@ -133,7 +141,7 @@ export default {
       console.log(this.dbinfo);
     },
     async search(){
-      console.log(this.keyword);
+      this.loadingState = 1;
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
@@ -338,6 +346,23 @@ export default {
   background-color: var(--i30);
 }
 
+.load-bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  // width: 120px;
+  // -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+  // mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+
+
+  animation: blink 300ms cubic-bezier(.37,.06,.67,.94) infinite;
+
+  background-color: var(--accent01);
+}
+
 
 // ----------------------------------- ANIMATION
 
@@ -355,6 +380,36 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+@keyframes shuttle {
+  0% {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    left: 0%;
+  }
+  50% {
+    -webkit-mask-image: linear-gradient(to right, transparent 19%,  black 20%, black 50%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 19%,  black 20%, black 50%, transparent 100%);
+    left: 75%;
+  }
+  100% {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    left: 0%;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 

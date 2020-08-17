@@ -112,7 +112,6 @@ export default {
     refgTerm00: '19_1',
     cf0: 0,
     cf1: 1
-    
   }},
   props: [
     "record",
@@ -179,10 +178,20 @@ export default {
     },
   },
   created() {
-
+    // console.log("created /Records");
+    // this.$emit('loading', 1);
   },
   mounted() {
-    this.alert("~~ mounted ~~")
+    this.alert("~~ record mounted ~~");
+    // this.$emit('loading', 0);
+  },
+  beforeUpdate() {
+    // console.log("beforeUpdate /Records");
+    // this.$emit('loading', 1);
+  },
+  updated() {
+    // console.log("updated /Records");
+    // this.$emit('loading', 0);
   },
 }
 </script>
@@ -540,13 +549,13 @@ export default {
 
 
 .alert-enter {
-  opacity: 0.4;
+  opacity: 0.5;
 }.alert-enter-to {
   opacity: 0;
 }.alert-enter-active{
   transition: opacity 100ms;
 }.alert-leave {
-  opacity: 0.7;
+  opacity: 0.5;
 }.alert-leave-to  {
   opacity: 0;
 }.alert-leave-active {

@@ -247,7 +247,7 @@ function versionUp(){
 const searchKeySchema = Joi.object({
   keyword: Joi.string()
     .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
-    .min(1)
+    .min(2)
     .required()
     .trim(true)
 });
