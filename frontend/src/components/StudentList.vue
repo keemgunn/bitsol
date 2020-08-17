@@ -42,16 +42,16 @@
     <div class="content-overflow">
       <div class="result"
       :key="record.student_id"
-      v-for="record in testArr">
-        <div class="gap-result"></div>
-        <div class="cover-result-side"></div>
+      v-for="record in searchArr">
+        <div :class="{'gap-result':1, 'gap-result-expand':moreinfo}"></div>
+        <div :class="{'cover-result-side':1, 'cover-result-side-expand':moreinfo}"></div>
           <Records 
             :record="record"
             :refgTerm="dbinfo.refgTerm"
             :refgLimit="dbinfo.refgLimit"
             :moreinfo="moreinfo"
           />
-        <div class="cover-result-side"></div>
+        <div :class="{'cover-result-side':1, 'cover-result-side-expand':moreinfo}"></div>
       </div>
       <div id="cover-bottom" :style="coverBottom"></div>
     </div>
@@ -61,14 +61,11 @@
   <div id="wrapper-no-result" v-if="searchArr.length !== 0 && this.$store.state.modal.scopeTab === 'refg'">
   </div>
 
-
-
-
-
-
-
 </div>
 </template>
+
+
+
 
 <script>
 import Records from '@/components/Records'
@@ -987,15 +984,26 @@ export default {
         width: 100%;
         height: 10px;
         background-color: var(--i94);
+        transition: 300ms;
         // background-color: dodgerblue;
-      }
+      } 
+        .gap-result-expand {
+          transition: 300ms;
+          height: 20px;
+        }
       .cover-result-side {
         float: left;
         width: 20px;
         height: 56px;
         background-color: var(--i94);
+        transition: 300ms;
         // background-color: indianred;
       }
+        .cover-result-side-expand {
+          transition: 300ms;
+          height: 126px;
+        }
+
       // <RECORD HERE> 
   // }
   #cover-bottom {
@@ -1009,6 +1017,7 @@ export default {
 /* --------------- SCROLL -------------- */
 /* width */
 ::-webkit-scrollbar {
+  transition: 100ms;
   width: 5px;
   max-height: 70%;
   height: 70%;

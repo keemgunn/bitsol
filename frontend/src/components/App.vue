@@ -115,7 +115,7 @@ export default {
     },
     changeCoverBottom(state){
       if(state){
-        this.recordHeight = 80;
+        this.recordHeight = 146;
         this.fitCoverBottom(this.searchArr.length, this.recordHeight);
       }else{
         this.recordHeight = 66;
@@ -203,7 +203,7 @@ export default {
   height: 18px;
   margin-right: 12px;
 
-  font-family: 'Space Mono';
+  font-family: 'Space Mono', sans-serif;
   font-size: 16px;
   letter-spacing: 0.24px;
 }
@@ -211,7 +211,7 @@ export default {
     display: inline-block;
     margin-left: 1px;
 
-    font-family: 'Nanum Square';
+    font-family: 'Nanum Square', sans-serif;
     font-size: 16px;
     letter-spacing: 0.24px;
     text-align: left;
