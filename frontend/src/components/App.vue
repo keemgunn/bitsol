@@ -72,6 +72,7 @@
     :searchArr="searchArr"
     :dbinfo="dbinfo"
     :coverBottom="coverBottom"
+    @moreinfo="changeCoverBottom"
   />
 
 </div>
@@ -91,6 +92,7 @@ export default {
     keyword: '',
     searchArr: [],
     dbinfo: {},
+    recordHeight: 66,
     coverBottom: {
       "height": "100%"
     },
@@ -108,8 +110,17 @@ export default {
       console.log(arg);
       return false;
     },
-    listFit(count){
-      this.coverBottom.height = "calc(100% - " + String(count * 66) + "px)"
+    fitCoverBottom(count, height){
+      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
+    },
+    changeCoverBottom(state){
+      if(state){
+        this.recordHeight = 80;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }else{
+        this.recordHeight = 66;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }
     },
     expandUserBox(){
       this.userBoxExtend = !this.userBoxExtend;
@@ -125,7 +136,7 @@ export default {
       console.log(this.keyword);
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
-      this.listFit(this.searchArr.length);
+      this.fitCoverBottom(this.searchArr.length, this.recordHeight);
     }
   },
   created() {

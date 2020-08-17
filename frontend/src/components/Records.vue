@@ -81,7 +81,8 @@ export default {
   props: [
     "record",
     "refgTerm",
-    "refgLimit"
+    "refgLimit",
+    "moreinfo"
   ],
   methods: {
     askUpdate(i){

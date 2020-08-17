@@ -12,7 +12,7 @@ export default new Vuex.Store({
     id: null,
 accessLevel: 1, // 0
 userName: "null", // null
-    colorConfig: "purple", // default
+    colorConfig: "default", // default
     modal: {
       display: 'App',
       scopeTab: 'refg'
