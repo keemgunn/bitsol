@@ -1,50 +1,81 @@
 <template>
 <div id="app">
 
-  <div id="scopeTab">
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'refg'}"
-        @click="callback('scopeBox_refg')">
-      <div class="scopeText">냉장고팩지급</div>
+  <div id="wrapper-header">
+    <div class="user-box" 
+      :class="{plus: userBoxExtend}"
+      @mouseenter="expandUserBox"
+      @mouseleave="expandUserBox">
+
+      <div id="account">
+        user:<div id="user-name">{{this.$store.state.userName}}</div>
+      </div>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}" v-if="userBoxExtend">
+          <div class="menu-text">
+            테마 변경
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>arrow_drop_down</title>
+              <g> 
+                <polygon points="7 10 12 15 17 10"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div :class="{'user-menu':1}"
+        v-if="userBoxExtend"
+        @click="logout()">
+          <div class="menu-text">
+            로그아웃
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Shape Copy</title>
+              <g transform="translate(7,0)">
+                <polygon transform="translate(5,-5) rotate(45)" points="17.8925565 12.8417938 12.8417938 12.8417938 12.8417938 17.8925565 11.1582062 17.8925565 11.1582062 12.8417938 6.10744349 12.8417938 6.10744349 11.1582062 11.1582062 11.1582062 11.1582062 6.10744349 12.8417938 6.10744349 12.8417938 11.1582062 17.8925565 11.1582062"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+
+      <div class="border" :class="{'border-extended': userBoxExtend}"></div>
     </div>
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'info'}"
-        @click="callback('scopeBox_info')">
-      <div class="scopeText">상세정보</div>
-    </div>
-    <div class="scopeBox"
-        :class="{scopeSelected: this.$store.state.modal.scopeTab === 'admin'}"
-        v-if="this.$store.state.accessLevel > 1"
-        @click="callback('scopeBox_admin')">
-      <div class="scopeText">학생관리</div>
-    </div>
+
+    <form id="searchBox"
+    @submit.prevent
+    v-if="this.$store.state.modal.scopeTap !== 'admin'"
+    autocomplete="off">
+      <input
+        id = "searchField"
+        ref="searchField" 
+        placeholder="search..."
+        type="text" 
+        @input="keyword = $event.target.value"
+        @keyup="search()"
+      />
+      <div id="searchIndicator">
+        <div class="load-bar" v-if="loadingState"></div>
+      </div>
+      <div id="searchIcon"></div>
+    </form>
+
   </div>
 
-  <div id="accountBox" @click="callback('accountBox')">
-    <div id="userName">user: {{this.$store.state.userName}}</div>
-  </div>
-
-  <form id="searchBox"
-  @submit.prevent
-  v-if="this.$store.state.modal.scopeTap !== 'admin'"
-  autocomplete="off">
-    <input
-      id = "searchField"
-      ref="searchField" 
-      placeholder="search..."
-      type="text" 
-      @input="keyword = $event.target.value"
-      @keyup="search()"
-    />
-    <div id="searchIndicator"></div>
-    <div id="searchIcon"></div>
-  </form>
-    
   <StudentList
-  v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
-  :keyword="keyword"
-  :searchArr="searchArr"
-  :dbinfo="dbinfo"
+    v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
+    :keyword="keyword"
+    :searchArr="searchArr"
+    :dbinfo="dbinfo"
+    :coverBottom="coverBottom"
+    @moreinfo="changeCoverBottom"
+    @loading="loading"
   />
 
 </div>
@@ -58,14 +89,19 @@ export default {
   name: 'App',
   components: {
     StudentList
-
   },
   props: [],
   data() { return {
     keyword: '',
-    refgTerm: null,
     searchArr: [],
-    dbinfo: {}
+    dbinfo: {},
+    recordHeight: 66,
+    coverBottom: {
+      "height": "100%"
+    },
+    userBoxExtend: false,
+    loadingState: 0
+
   }},
   computed: {
 
@@ -74,14 +110,30 @@ export default {
     logout(){
       this.$emit('logout');
     },
-    typing(e) {
-      this.keyword = e.target.value
-    },
     callback(arg){
       console.log(arg);
       return false;
     },
 
+    //_____________ USER INTERFACE ACTIONS _________
+    fitCoverBottom(count, height){
+      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
+    },
+    changeCoverBottom(state){
+      if(state){
+        this.recordHeight = 146;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }else{
+        this.recordHeight = 66;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }
+    },
+    expandUserBox(){
+      this.userBoxExtend = !this.userBoxExtend;
+    },
+    loading(bool){
+      this.loadingState = bool;
+    },
     //___________ LOAD/SEARCH DATABASE __________
     async getDBinfo(){
       let {data} = await axios.get('/db/info');
@@ -89,9 +141,10 @@ export default {
       console.log(this.dbinfo);
     },
     async search(){
-      console.log(this.keyword);
+      this.loadingState = 1;
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
+      this.fitCoverBottom(this.searchArr.length, this.recordHeight);
     }
   },
   created() {
@@ -111,89 +164,130 @@ export default {
 
 
 
-<style lang="scss" scoped> #app 
-{
-  margin-top: 40px;
-  width: calc(100vw - 150px);
-  height: calc(100vh - 40px);
-  min-width: 470px;
-  max-width: 710px;
 
-  background-color: transparent;
+<style lang="scss" scoped> #app {
+  // ------------------------------------------------
+  // ------------------------------------------------
+  float: left;
+  z-index: 10;
+  width: calc(100vw - 120px);
+  height: 100vh;
+  min-width: 490px;
+  max-width: 710px;
+  // background-color: aqua;
 }
 
 /* --------------- HEADER-------------- */
-#scopeTab {
-  display: block;
+#wrapper-header {
+  width: calc(100% - 40px);
+  height: 157px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: var(--i94);
+  // background-color: rgb(86, 139, 255);
+}
+
+.user-box { //------------------------
   float: left;
-  height: 31px;
-  width: fit-content; 
-
-  background-color: transparent;
-}
-.scopeBox { //--------------------------
-  display: inline-block;
-  height: 31p;
   width: fit-content;
-  margin-right: 10px; 
-
-  font-family: 'Nanum Square', sans-serif;
-  font-size: 20px;   
-  text-align: center;
-  letter-spacing: 0.3px;
-  line-height: 30px;
-
-  border-bottom: 2px solid var(--i94);
-  font-weight: 400;
-  color: var(--i45);
-}
-.scopeBox :hover {
-  cursor: pointer;
-  color: var(--i30);
-}
-.scopeText {
-  display: inline-block;
-  margin-left: 3px;
-  margin-right: 3px;
-}
-.scopeSelected {
-  border-bottom: 2px solid var(--accent02);
-  font-weight: 700;
-  color: var(--accent02);
-}
-.scopeSelected :hover {
-  color: var(--accent02);
-}
-
-#accountBox { //------------------------
-  display: block;
-  float: right;
+  height: 30px;
   margin-top: 4px;
-  color: var(--i45);
-}
-#accountBox :hover {
-  border-bottom: 1px solid var(--accent02);
-  cursor: pointer;
-  color: var(--accent02);
-}
-#userName {
-  display: inline;
-  font-family: 'Barlow','Nanum Square';
+  transition: 200ms;
   font-weight: 400;
+  color: var(--i45);
+  // background-color: rgb(8, 5, 29);
+}
+  .plus {
+    transition: 200ms;
+    font-weight: 800;
+  }
+
+#account {
+  float: left;
+  width: fit-content;
+  height: 18px;
+  margin-right: 12px;
+
+  font-family: 'Space Mono', sans-serif;
   font-size: 16px;
   letter-spacing: 0.24px;
-  text-align: right;
 }
+  #user-name {
+    display: inline-block;
+    margin-left: 1px;
 
+    font-family: 'Nanum Square', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.24px;
+    text-align: left;
 
-/* --------------- SEARCH BOX -------------- */
-#searchBox {
+    // background-color: rgb(14, 34, 88);
+  }
+
+.user-menu { // -----------------------
+  float: left;
+  bottom: 18px;
+  width: fit-content;
+  height: 25px;
+  margin-right: 1px;
+  font-family: 'Nanum Square';
+  font-size: 14px;
+  letter-spacing: 0.21px;
+  text-align: right;
+  font-weight: 400;
+  color: var(--i30);
+  fill: var(--i30);
+}
+  .user-menu:hover {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--accent01);
+    fill: var(--accent01);
+    transition: 300ms;
+  }
+    .menu-text {
+      float: left;
+      margin-top: 5px;
+    }
+    .icon {
+      float: left;
+      margin-top: 1px;
+      width: 24px;
+      height: 24px;
+    }
+
+.border { // ------------------------
   display: block;
-  margin-top: 62px;
+  width: 0%;
+  height: 2px;
+  position: relative;
+  left: 0;
+  top: 28px;
+  transition: 300ms;
+  animation-timing-function: ease-in-out;
+  background-color: var(--i30);
+}
+  .border-extended {
+    transition: 400ms;
+    animation-timing-function: ease-out;
+    width: 100%;
+  }
+
+
+#searchBox { //------------------------
+  display: block;
+  position: relative;
+  top: 31px;
+  padding-top: 40px;
+
   width: 100%;
   height: 80px;
+
   border-bottom: 2px solid var(--i30);
-  background-color: transparent;
+  // background-color: darkkhaki;
 }
 #searchBox :hover, :focus {
   ~ #searchIndicator {
@@ -205,7 +299,7 @@ export default {
     transition: 200ms;
   }
 }
-#searchField { //------------------
+#searchField { //------
   display: block;
   float: left;
 
@@ -251,5 +345,72 @@ export default {
   mask-image: url(../assets/images/searchIcon.svg) no-repeat;
   background-color: var(--i30);
 }
+
+.load-bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  // width: 120px;
+  // -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+  // mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+
+
+  animation: blink 300ms cubic-bezier(.37,.06,.67,.94) infinite;
+
+  background-color: var(--accent01);
+}
+
+
+// ----------------------------------- ANIMATION
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 300ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+@keyframes shuttle {
+  0% {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    left: 0%;
+  }
+  50% {
+    -webkit-mask-image: linear-gradient(to right, transparent 19%,  black 20%, black 50%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 19%,  black 20%, black 50%, transparent 100%);
+    left: 75%;
+  }
+  100% {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    mask-image: linear-gradient(to right, transparent 0%,  black 50%, black 80%, transparent 81%);
+    left: 0%;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 
 </style>

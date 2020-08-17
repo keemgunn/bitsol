@@ -20,6 +20,7 @@ router.get('/info', (req, res) => {
     "date": info.date,
     "refgTerm": info.refgTerm,
     "deadline": info.deadline,
+    "refgLimit": info.refgLimit,
     "studentCount": info["serial-list"].length
   })
 })
@@ -64,14 +65,6 @@ router.post('/search', (req, res) => {
     searchKey = req.body.keyword;
     mysql.searchStudent(searchKey, res);
 })
-
-
-
-
-
-
-
-
 
 
 
