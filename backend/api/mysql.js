@@ -38,7 +38,7 @@ function versionCheck(prop){
   }
 }
 
-
+let processing = 0;
 
 // ################# QUERIES ####################
 use(currentSchema);
@@ -180,25 +180,35 @@ function updateRefg(student_id, update, res){
 }
 
 function searchStudent(keyword, res){
-  // resumeConnection();
-  logRefresh();
-  addMonitor(monitor, res);
-  
-  use(currentSchema);
+  console.log('@@@@@@ processing:', processing);
+  if(processing > 0){
+    console.log("### request-jam-error .../mysql.js/searchStudent");
+    processing = 0;
+  }else{
+    processing += 1;
 
-  let joiResult = searchKeySchema.validate({keyword});
-  if (joiResult.error){
-    res.json({
-      arg: []
-    });
-  }else {
-    let key = quote(joiResult.value.keyword);
-
-    let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
-    query = query.concat("r.room_name REGEXP ", key, " || ");
-    query = query.concat("s.student_name REGEXP ", key, ");")
+    // resumeConnection();
+    logRefresh();
+    addMonitor(monitor, res);
+    
+    use(currentSchema);
   
-    select(query);
+    let joiResult = searchKeySchema.validate({keyword});
+    if(joiResult.error){
+      console.log('joiResult.error');
+      res.json({
+        arg: []
+      });
+      processing = 0;
+    }else{
+      let key = quote(joiResult.value.keyword);
+  
+      let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+      query = query.concat("r.room_name REGEXP ", key, " || ");
+      query = query.concat("s.student_name REGEXP ", key, ");");
+    
+      select(query);
+    }
   }
 }
 
@@ -260,7 +270,8 @@ function addMonitor(monitor, res){
     console.log('$$$ SEARCH REQUEST ... @mysql.js/monitor');
     res.json({
       arg
-    })
+    });
+    processing = 0;
   });
   monitor.on('query end', (arg) => {
     // ----------- response methods

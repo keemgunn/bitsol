@@ -292,12 +292,15 @@ export default {
   transition: 200ms;
 }
   .unavailable {
+    transition: 200ms;
     fill: var(--i70);
   }
   .available {
+    transition: 200ms;
     fill: var(--i30);
   }
   .supplement {
+    transition: 200ms;
     fill: var(--accent02);
   }
 
