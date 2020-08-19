@@ -117,6 +117,7 @@ export default {
     },
     async changeTheme(color){
       this.$store.state.colorConfig = color;
+      localStorage.colorConfig = color;
       const {data} = await axios.post('/auth/theme/change', {
         "id": this.$store.state.id ,"color": color})
       console.log("theme set: ", data.color);
