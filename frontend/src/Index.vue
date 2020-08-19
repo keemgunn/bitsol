@@ -41,7 +41,7 @@
   <div class="cover-app-side" :style="right0"></div>
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.accessLevel !== 0"></div>
+  v-if="this.$store.state.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('refg' || 'info')"></div>
 
 <router-view></router-view>
 </div>

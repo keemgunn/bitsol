@@ -1,5 +1,5 @@
 <template>
-<div id="stdtlist">
+<div id="search-list">
 
   <div id="optionBox"
   v-if="this.$store.state.modal.scopeTab === 'refg' || 'info'">
@@ -72,7 +72,7 @@
 import Records from '@/components/Records'
 
 export default {
-  name: 'StudentList',
+  name: 'SearchList',
   components: {
     Records
   },
@@ -843,7 +843,7 @@ export default {
 
 
 
-<style lang="scss" scoped> #stdtlist {
+<style lang="scss" scoped> #search-list {
   display: block;
   width: 100%;
   height: calc(100% - 187px);

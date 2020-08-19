@@ -1,12 +1,11 @@
 <template>
 <div id="app">
 
-  <div id="wrapper-header" @mouseleave="toggleThemeList(0)">
-
+  <div id="wrapper-header">
 
     <form id="searchBox"
     @submit.prevent
-    v-if="this.$store.state.modal.scopeTap !== 'admin'"
+    v-if="this.$store.state.modal.scopeTap === ('refg' || 'info')"
     autocomplete="off">
       <input
         id = "searchField"
@@ -22,16 +21,13 @@
       <div id="searchIcon"></div>
     </form>
 
-
     <div class="user-box"
     :class="{'user-box-bold':(userBoxExtend || showThemeList)}"
     @mouseenter="expandUserBox"
     @mouseleave="expandUserBox">
-
       <div id="account">
         user:<div id="user-name">{{this.$store.state.userName}}</div>
       </div>
-
       <transition name="fade">
         <div :class="{'user-menu':1}"
         v-if="userBoxExtend || showThemeList"
@@ -49,7 +45,6 @@
           </div>
         </div>
       </transition>
-
       <transition name="fade">
         <div :class="{'user-menu':1}"
         v-if="userBoxExtend || showThemeList"
@@ -67,11 +62,11 @@
           </div>
         </div>
       </transition>
-
       <div class="border" :class="{'border-extended': userBoxExtend || showThemeList}"></div>
-
       <transition name="orb-fade">
-        <div class="theme-list" v-if="showThemeList">
+        <div class="theme-list" 
+        v-if="showThemeList"
+        @mouseleave="toggleThemeList(0)">
           <div
           class="orb"
           :key="color" 
@@ -83,12 +78,10 @@
           </div>
         </div>
       </transition>
-
     </div>
+  </div> <!------------- wrapper-header --------------->
 
-  </div>
-
-  <StudentList
+  <SearchList
     v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
     :keyword="keyword"
     :searchArr="searchArr"
@@ -103,13 +96,13 @@
 
 <script>
 import axios from 'axios'
-import StudentList from '@/components/StudentList'
+import SearchList from '@/components/SearchList'
 import Theme from '@/components/Theme'
 
 export default {
   name: 'App',
   components: {
-    StudentList,
+    SearchList,
     Theme
   },
   props: [],
@@ -118,6 +111,7 @@ export default {
     searchArr: [],
     dbinfo: {},
 
+    // ------ Student List ---
     recordHeight: 66,
     coverBottom: {
       "height": "100%"
@@ -230,7 +224,6 @@ export default {
   transition: 200ms;
   font-weight: 400;
   color: var(--i45);
-  // background-color: rgb(220, 214, 255);
 }
 .user-box-bold {
   font-weight: 800;
@@ -242,7 +235,6 @@ export default {
   width: fit-content;
   height: 18px;
   margin-right: 12px;
-
   font-family: 'Space Mono', sans-serif;
   font-size: 16px;
   letter-spacing: 0.24px;
@@ -250,19 +242,17 @@ export default {
   #user-name {
     display: inline-block;
     margin-left: 1px;
-
     font-family: 'Nanum Square', sans-serif;
     font-size: 16px;
     letter-spacing: 0.24px;
     text-align: left;
-
     // background-color: rgb(14, 34, 88);
   }
   #user-name:hover{
     cursor: pointer;
   }
 
-.user-menu { // -----------------------
+.user-menu { 
   float: left;
   bottom: 18px;
   width: fit-content;
@@ -294,13 +284,15 @@ export default {
       height: 24px;
     }
 
-.theme-list{
+.theme-list{ // -------------------
   float: left;
   display: relative;
   padding-top: 14px;
+  padding-bottom: 20px;
 
-  width: fit-content;
+  width: 100%;
   height: 28px;
+  background-color: aquamarine;
 }
   .orb {
     float: left;
