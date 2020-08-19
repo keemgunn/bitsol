@@ -31,15 +31,15 @@
 
     <div class="user-box"
     :class="{'user-box-bold':userBoxExtend, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
-    @mouseenter="expandUserBox(1)"
-    @mouseleave="expandUserBox(0); toggleThemeList(0);">
+    @mouseenter="toggle('userBoxExtend', 1)"
+    @mouseleave="toggle('userBoxExtend',0); toggle('showThemeList', 0);">
       <div id="account">
         user:<div id="user-name">{{this.$store.state.userName}}</div>
       </div>
       <transition name="fade">
         <div :class="{'user-menu':1}"
         v-if="userBoxExtend"
-        @click="toggleThemeList(1)">
+        @click="toggle('showThemeList',1)">
           <div class="menu-text">
             테마 변경
           </div>
@@ -149,6 +149,9 @@ export default {
     },
 
     //_____________ UI ACTIONS _________
+    toggle(target, config){
+      this[target] = config;
+    },
     fitCoverBottom(count, height){
       this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
     },
@@ -161,30 +164,12 @@ export default {
         this.fitCoverBottom(this.searchArr.length, this.recordHeight);
       }
     },
-    expandUserBox(i){
-      this.userBoxExtend = i;
-    },
-    toggleThemeList(i){
-      this.showThemeList = i;
-    },
-
-
     loading(bool){
       this.loadingState = bool;
     },
 
 
-    selectAdminMenu(name){
-      this.adminMenu = name;
-    },
-
-
-    toggle(target, data){
-      this[target] = data;
-    },
-
-
-    //___________ LOAD/SEARCH DATABASE __________
+    //___________ LeffiOAD/SEARCH DATABASE __________
     async getDBinfo(){
       let {data} = await axios.get('/db/info');
       this.dbinfo = data;
@@ -380,7 +365,7 @@ export default {
   border-top: 2px solid var(--i30);
   border-bottom: 2px solid var(--i30);
   background-color: aqua;
-  
+
   .menu {
     display: inline-block;
     margin-top: 12px;
