@@ -21,6 +21,14 @@
       <div id="searchIcon"></div>
     </form>
 
+    <div id="admin-tab"
+    v-if="this.$store.state.modal.scopeTab === 'admin'">
+      <div class="menu" :class="{'menu-selected':(adminMenu==='index')}" @click="toggle('adminMenu', 'index')">개요</div>
+      <div class="menu" :class="{'menu-selected':(adminMenu==='db')}" @click="toggle('adminMenu', 'db')">DB 관리</div>
+      <div class="menu" :class="{'menu-selected':(adminMenu==='refg')}" @click="toggle('adminMenu', 'refg')">냉장고팩 관리</div>
+      <div class="menu" :class="{'menu-selected':(adminMenu==='user')}" @click="toggle('adminMenu', 'user')">사용자 관리</div>
+    </div>
+
     <div class="user-box"
     :class="{'user-box-bold':userBoxExtend, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
     @mouseenter="expandUserBox(1)"
@@ -78,9 +86,6 @@
         </div>
       </transition>
     </div>
-    <br><br><br><br><br>
-    {{userBoxExtend}}
-    {{showThemeList}}
   </div> <!----------- wrapper-header ------------->
 
   <transition name="fade"> <!-------------------------->
@@ -119,6 +124,10 @@ export default {
     // ------ user-box ---
     userBoxExtend: 0,
     showThemeList: 0,
+    // ------ admin-box ---
+    adminMenu: 'index',
+      // 'index' 'db' 'refg' 'user'
+
     // ------ search-list ---
     recordHeight: 66,
     coverBottom: {
@@ -130,15 +139,16 @@ export default {
 
   },
   methods: {
+
+    //_____________ USER CONFIG _________
     logout(){
       this.$emit('logout');
     },
-    callback(arg){
-      console.log(arg);
-      return false;
+    changeTheme(color){
+      this.$emit('change-theme', color);
     },
 
-    //_____________ USER INTERFACE ACTIONS _________
+    //_____________ UI ACTIONS _________
     fitCoverBottom(count, height){
       this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
     },
@@ -157,12 +167,23 @@ export default {
     toggleThemeList(i){
       this.showThemeList = i;
     },
-    changeTheme(color){
-      this.$emit('change-theme', color);
-    },
+
+
     loading(bool){
       this.loadingState = bool;
     },
+
+
+    selectAdminMenu(name){
+      this.adminMenu = name;
+    },
+
+
+    toggle(target, data){
+      this[target] = data;
+    },
+
+
     //___________ LOAD/SEARCH DATABASE __________
     async getDBinfo(){
       let {data} = await axios.get('/db/info');
@@ -236,10 +257,9 @@ export default {
     position: default;
   }
   .user-box-admin {
-    bottom: 10px;
+    bottom: 54px;
     transition: 200ms;
   }
-
 
 #account {
   float: left;
@@ -303,7 +323,7 @@ export default {
 
   width: 100%;
   height: 28px;
-  background-color: aquamarine;
+  // background-color: aquamarine;
 }
   .orb {
     float: left;
@@ -351,6 +371,45 @@ export default {
     transition: 400ms;
     animation-timing-function: ease-out;
   }
+
+#admin-tab {
+  position: relative;
+  top: 75px;
+  width: 100%;
+  height: 45px;
+  border-top: 2px solid var(--i30);
+  border-bottom: 2px solid var(--i30);
+  background-color: aqua;
+  
+  .menu {
+    display: inline-block;
+    margin-top: 12px;
+    margin-left: 14px;
+    margin-right: 6px;
+    font-family: 'Nanum Square';
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0;
+    transition: 200ms;
+    color: var(--i45);
+    // background-color: chartreuse;
+  }
+   .menu:hover {
+     transition: 200ms;
+     cursor: pointer;
+     color: var(--i30);
+   }
+   .menu-selected {
+     transition: 300ms;
+     font-weight: 600;
+     color: var(--accent02);
+   }
+    .menu-selected:hover{
+      transition: 200ms;
+      color: var(--accent02);
+    }
+}
+
 
 
 #searchBox { //------------------------
