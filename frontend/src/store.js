@@ -10,13 +10,15 @@ import styles from './assets/styles.json';
 export default new Vuex.Store({
   state: {
     id: null,
-    accessLevel: 2, // 0
-    userName: "김건", // null
-    colorConfig: "default", // default
+    // accessLevel:0,
+      accessLevel: 2,
+    // userName: null,
+      userName: "김건", // null
+    colorConfig: "default",
     modal: {
       display: 'App',
-      scopeTab: 'admin',
-        // 'searchList' 'admin'
+        // scopeTab: 'search-list',
+        scopeTab: 'admin',
     },
     colorKeys: Object.keys(styles.colors),
     colors: styles.colors

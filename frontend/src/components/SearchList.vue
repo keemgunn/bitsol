@@ -1,12 +1,13 @@
 <template>
 <div id="search-list">
 
-  <div id="optionBox"
-  v-if="this.$store.state.modal.scopeTab === 'refg' || 'info'">
-
-    <div id="han" v-if="this.$store.state.modal.scopeTab === 'refg'">보관팩 기간: </div>
-    <div id="date" v-if="this.$store.state.modal.scopeTab === 'refg'">{{dbinfo.deadline}}</div>
-
+  <div id="optionBox">
+    <transition name="fade">
+      <div id="han" v-if="!moreinfo">보관팩 기간: </div>
+    </transition>
+    <transition name="fade">
+      <div id="date" v-if="!moreinfo">{{dbinfo.deadline}}</div>
+    </transition>
     <div class="moreinfo" @click="toggleInfoScope">
       <div :class="{'moreinfo-des':1, 'moreinfo-des-on':moreinfo }">학생 정보 보기</div>
       <div class="switch">
@@ -27,7 +28,7 @@
 
   </div>
 
-  <div id="wrapper-no-result" v-if="searchArr.length === 0 && this.$store.state.modal.scopeTab === 'refg'">
+  <div id="wrapper-no-result" v-if="searchArr.length === 0">
     <div id="no-result"
     v-if="this.keyword == ''">
       호실 또는 이름으로 검색 ...
@@ -813,10 +814,10 @@ export default {
   computed: {
   },
   props: [
-    "keyword",
-    "searchArr", // from /db/search
-    "dbinfo",
-    "coverBottom"
+    "keyword", // from App
+    "searchArr", // from .../db/search
+    "dbinfo", // from .../db/info
+    "coverBottom" // from App
   ],
   methods: {
     toggleInfoScope(){
@@ -860,7 +861,7 @@ export default {
   user-select: none;
   -webkit-user-select: none;
   background-color: var(--i94);
-  // background-color: rgb(145, 199, 145);
+  background-color: rgb(145, 199, 145);
 }
   #han {
     display: inline-block;

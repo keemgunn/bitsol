@@ -3,16 +3,16 @@
 
   <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <title>Orb</title>
+    <title>Orb</title>
 
-  <circle 
-  :class="{'orb-border':1, 'selected': isSelected}"
-  @click="$emit('change-theme', color)"
-  cx="14" cy="14" r="14"></circle>
+    <circle 
+    :class="{'orb-border':1, 'selected': isSelected}"
+    @click="$emit('change-theme', color)"
+    cx="14" cy="14" r="14"></circle>
 
-  <circle :style="colorSet" class="orb-bg" cx="14" cy="14" r="12"></circle>
+    <circle :style="colorSet" class="orb-bg" cx="14" cy="14" r="12"></circle>
 
-  <path :style="colorSet" class="orb-accent" d="M21.128769,6.98710509 C20.293568,5.12864209 16.7908937,4 14,4 C8.4771525,4 4,8.4771525 4,14 C4,17.2847527 5.38827847,20.5134024 8.05716466,21.9445443 C10.0779576,23.0281579 21.9639699,8.84556809 21.128769,6.98710509 Z"></path>
+    <path :style="colorSet" class="orb-accent" d="M21.128769,6.98710509 C20.293568,5.12864209 16.7908937,4 14,4 C8.4771525,4 4,8.4771525 4,14 C4,17.2847527 5.38827847,20.5134024 8.05716466,21.9445443 C10.0779576,23.0281579 21.9639699,8.84556809 21.128769,6.98710509 Z"></path>
 
   </svg>
 

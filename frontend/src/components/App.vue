@@ -1,11 +1,11 @@
 <template>
 <div id="app">
 
-  <div id="wrapper-header">
+  <div id="wrapper-header"> <!-------------------------->
 
-    <form id="searchBox"
+    <form id="searchBox" 
+    v-if="this.$store.state.modal.scopeTab === 'search-list'"
     @submit.prevent
-    v-if="this.$store.state.modal.scopeTap === ('refg' || 'info')"
     autocomplete="off">
       <input
         id = "searchField"
@@ -22,15 +22,15 @@
     </form>
 
     <div class="user-box"
-    :class="{'user-box-bold':(userBoxExtend || showThemeList)}"
-    @mouseenter="expandUserBox"
-    @mouseleave="expandUserBox">
+    :class="{'user-box-bold':userBoxExtend, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
+    @mouseenter="expandUserBox(1)"
+    @mouseleave="expandUserBox(0); toggleThemeList(0);">
       <div id="account">
         user:<div id="user-name">{{this.$store.state.userName}}</div>
       </div>
       <transition name="fade">
         <div :class="{'user-menu':1}"
-        v-if="userBoxExtend || showThemeList"
+        v-if="userBoxExtend"
         @click="toggleThemeList(1)">
           <div class="menu-text">
             테마 변경
@@ -47,7 +47,7 @@
       </transition>
       <transition name="fade">
         <div :class="{'user-menu':1}"
-        v-if="userBoxExtend || showThemeList"
+        v-if="userBoxExtend"
         @click="logout()">
           <div class="menu-text">
             로그아웃
@@ -62,11 +62,10 @@
           </div>
         </div>
       </transition>
-      <div class="border" :class="{'border-extended': userBoxExtend || showThemeList}"></div>
+      <div class="border" :class="{'border-extended': userBoxExtend}"></div>
       <transition name="orb-fade">
         <div class="theme-list" 
-        v-if="showThemeList"
-        @mouseleave="toggleThemeList(0)">
+        v-if="showThemeList">
           <div
           class="orb"
           :key="color" 
@@ -79,17 +78,22 @@
         </div>
       </transition>
     </div>
-  </div> <!------------- wrapper-header --------------->
+    <br><br><br><br><br>
+    {{userBoxExtend}}
+    {{showThemeList}}
+  </div> <!----------- wrapper-header ------------->
 
-  <SearchList
-    v-if="this.$store.state.modal.scopeTab === ('refg' || 'info')"
-    :keyword="keyword"
-    :searchArr="searchArr"
-    :dbinfo="dbinfo"
-    :coverBottom="coverBottom"
-    @moreinfo="changeCoverBottom"
-    @loading="loading"
-  />
+  <transition name="fade"> <!-------------------------->
+    <SearchList
+      v-if="this.$store.state.modal.scopeTab === 'search-list'"
+      :keyword="keyword"
+      :searchArr="searchArr"
+      :dbinfo="dbinfo"
+      :coverBottom="coverBottom"
+      @moreinfo="changeCoverBottom"
+      @loading="loading"
+    />
+  </transition>
 
 </div>
 </template>
@@ -110,15 +114,16 @@ export default {
     keyword: '',
     searchArr: [],
     dbinfo: {},
-
-    // ------ Student List ---
+    // ------ UI ---
+    loadingState: 0,
+    // ------ user-box ---
+    userBoxExtend: 0,
+    showThemeList: 0,
+    // ------ search-list ---
     recordHeight: 66,
     coverBottom: {
       "height": "100%"
     },
-    userBoxExtend: false,
-    showThemeList: 0,
-    loadingState: 0
 
   }},
   computed: {
@@ -146,8 +151,8 @@ export default {
         this.fitCoverBottom(this.searchArr.length, this.recordHeight);
       }
     },
-    expandUserBox(){
-      this.userBoxExtend = !this.userBoxExtend;
+    expandUserBox(i){
+      this.userBoxExtend = i;
     },
     toggleThemeList(i){
       this.showThemeList = i;
@@ -211,7 +216,7 @@ export default {
   user-select: none;
   -webkit-user-select: none;
   background-color: var(--i94);
-  // background-color: rgb(86, 139, 255);
+  background-color: rgb(86, 139, 255);
 }
 
 .user-box { //------------------------
@@ -224,11 +229,17 @@ export default {
   transition: 200ms;
   font-weight: 400;
   color: var(--i45);
+  background-color: cornsilk;
 }
-.user-box-bold {
-  font-weight: 800;
-  position: default;
-}
+  .user-box-bold {
+    font-weight: 800;
+    position: default;
+  }
+  .user-box-admin {
+    bottom: 10px;
+    transition: 200ms;
+  }
+
 
 #account {
   float: left;
@@ -335,6 +346,7 @@ export default {
   background-color: var(--i30);
 }
   .border-extended {
+    pointer-events: none;
     width: 100%;
     transition: 400ms;
     animation-timing-function: ease-out;

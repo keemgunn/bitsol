@@ -29,7 +29,7 @@
     </form>
   </div>
 
-  <div class="cover-app-side" :style="left0"></div>
+  <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="left0"></div>
   <App
     v-if="this.$store.state.accessLevel !== 0"
     :accessLevel="this.$store.accessLevel"
@@ -38,10 +38,10 @@
     @change-theme="changeTheme"
     key="app"
   />
-  <div class="cover-app-side" :style="right0"></div>
+  <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="right0"></div>
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('refg' || 'info')"></div>
+  v-if="this.$store.state.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('search-list')"></div>
 
 <router-view></router-view>
 </div>
