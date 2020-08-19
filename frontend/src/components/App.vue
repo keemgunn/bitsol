@@ -30,16 +30,16 @@
     </div>
 
     <div class="user-box"
-    :class="{'user-box-bold':userBoxExtend, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
-    @mouseenter="toggle('userBoxExtend', 1)"
-    @mouseleave="toggle('userBoxExtend',0); toggle('showThemeList', 0);">
+    :class="{'user-box-bold':userBoxState, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
+    @mouseenter="toggle('userBoxState', 1)"
+    @mouseleave="toggle('userBoxState', 0);">
       <div id="account">
         user:<div id="user-name">{{this.$store.state.userName}}</div>
       </div>
       <transition name="fade">
-        <div :class="{'user-menu':1}"
-        v-if="userBoxExtend"
-        @click="toggle('showThemeList',1)">
+        <div :class="{'user-menu':1, 'user-menu-selected':(userBoxState===2)}"
+        v-if="userBoxState"
+        @click="toggle('userBoxState',2)">
           <div class="menu-text">
             테마 변경
           </div>
@@ -55,7 +55,7 @@
       </transition>
       <transition name="fade">
         <div :class="{'user-menu':1}"
-        v-if="userBoxExtend"
+        v-if="userBoxState"
         @click="logout()">
           <div class="menu-text">
             로그아웃
@@ -70,10 +70,10 @@
           </div>
         </div>
       </transition>
-      <div class="border" :class="{'border-extended': userBoxExtend}"></div>
+      <div class="border" :class="{'border-extended': userBoxState}"></div>
       <transition name="orb-fade">
         <div class="theme-list" 
-        v-if="showThemeList">
+        v-if="userBoxState === 2">
           <div
           class="orb"
           :key="color" 
@@ -122,12 +122,9 @@ export default {
     // ------ UI ---
     loadingState: 0,
     // ------ user-box ---
-    userBoxExtend: 0,
-    showThemeList: 0,
+    userBoxState: 0,
     // ------ admin-box ---
     adminMenu: 'index',
-      // 'index' 'db' 'refg' 'user'
-
     // ------ search-list ---
     recordHeight: 66,
     coverBottom: {
@@ -299,7 +296,14 @@ export default {
       width: 24px;
       height: 24px;
     }
+  .user-menu-selected {
+    font-weight: 700;
+    color: var(--accent01);
+    fill: var(--accent01);
+    transition: 300ms;
+  }
 
+  
 .theme-list{ // -------------------
   float: left;
   display: relative;
