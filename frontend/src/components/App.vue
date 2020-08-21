@@ -220,7 +220,6 @@ export default {
     background-color: rgb(86, 139, 255);
 
   .user-box { //------------------------
-    float: left;
     position: relative;
     bottom: 86px;
     width: fit-content;
@@ -230,7 +229,7 @@ export default {
     transition: 200ms;
     color: var(--i45);
       background-color: cornsilk;
-
+    
     #account { //----------------
       float: left;
       width: fit-content;
@@ -319,7 +318,6 @@ export default {
   }
 
   #searchBox { //------------------------
-    display: block;
     position: relative;
     top: 75px;
     width: 100%;

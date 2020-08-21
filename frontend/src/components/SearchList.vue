@@ -853,9 +853,7 @@ export default {
 
 /* --------------- REFG HEADER-------------- */
 #optionBox { 
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-bottom: 40px;
+  padding: 10px 0px 40px 20px;
   height: 35px;
   line-height: 35px;
   user-select: none;
@@ -866,14 +864,14 @@ export default {
   #han { // -------------------------
     display: inline-block;
     bottom: 2px;
-    font-family: 'Nanum Square';
+    font-family: 'Nanum Square', sans-serif;
     font-weight: 800;
     font-size: 21px;
     letter-spacing: 0.31px;
   }#date {
     display: inline-block;
     left: 4px;
-    font-family: 'Barlow';
+    font-family: 'Barlow', sans-serif;
     font-weight: 600;
     font-size: 24px;
     letter-spacing: 1.44px;

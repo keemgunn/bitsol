@@ -178,7 +178,6 @@ export default {
 
   color: var(--i30);
   background-color: var(--i94);
-  // background-color: lightblue;
 }
 ::selection {
   color: var(--i30);
