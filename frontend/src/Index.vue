@@ -23,7 +23,7 @@
       <input 
         type="submit" 
         value="login" 
-        class="btn"
+        class="login-btn"
       />
       <label class="id_label" for="id_field">id:</label>
     </form>
@@ -156,8 +156,8 @@ export default {
 
 
 <style lang="scss">
-//-----------------------------------------------------
-//-----------------------------------------------------
+//------------------------------------------------
+//------------------------------------------------
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 #index {
@@ -222,7 +222,7 @@ export default {
   cursor: text;
   }
   &:placeholder-shown 
-  ~ .btn {
+  ~ .login-btn {
     color: var(--i70);
     background-color: var(--i90);
     pointer-events: none;
@@ -246,7 +246,7 @@ export default {
   }
 }
 
-.btn {
+.login-btn {
   display: block;
   width: 60px;
   height: 26px;
@@ -267,7 +267,7 @@ export default {
   color: var(--accent00);
   background-color: var(--accent01);
 }
-.btn:hover {
+.login-btn:hover {
   color: var(--accent00);
   background-color: var(--accent02);
 }

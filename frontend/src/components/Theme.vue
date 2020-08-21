@@ -46,18 +46,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .orb-border {
   display: block;
   width: 28px;
   height: 28px;
   fill: var(--i94);
-}
-  .orb-border:hover {
+}.orb-border:hover {
     cursor: pointer;
-  }
-  .selected {
+}.selected {
     fill: var(--i30);
-  }
+}
+
 .orb-bg {
   display: block;
   pointer-events: none;
@@ -68,6 +68,7 @@ export default {
   margin-left: 2px;
   fill: var(--i94);
 }
+
 .orb-accent {
   display: block;
   pointer-events: none;

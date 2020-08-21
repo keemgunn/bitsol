@@ -11,14 +11,14 @@ export default new Vuex.Store({
   state: {
     id: null,
     // accessLevel:0,
-      accessLevel: 2,
+      accessLevel: 1,
     // userName: null,
       userName: "김건", // null
     colorConfig: "default",
     modal: {
       display: 'App',
-        // scopeTab: 'search-list',
-        scopeTab: 'admin',
+        scopeTab: 'search-list',
+        // scopeTab: 'admin',
     },
     colorKeys: Object.keys(styles.colors),
     colors: styles.colors
