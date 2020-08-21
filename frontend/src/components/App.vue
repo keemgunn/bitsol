@@ -1,7 +1,7 @@
 <template>
 <div id="app">
 
-  <div id="wrapper-header"> <!-------------------------->
+  <div class="wrapper-header" :class="{'wrapper-header-admin':this.$store.state.modal.scopeTab === 'admin'}"> <!-------------------------->
 
     <form id="searchBox" 
     v-if="this.$store.state.modal.scopeTab === 'search-list'"
@@ -207,11 +207,11 @@ export default {
   height: 100vh;
   min-width: 490px;
   max-width: 710px;
-  // background-color: aqua;
+  background-color: aqua;
 }
 
 /* --------------- HEADER-------------- */
-#wrapper-header {
+.wrapper-header {
   width: calc(100% - 40px);
   height: 157px;
   padding: 20px 20px 0px 20px;
@@ -380,6 +380,8 @@ export default {
       transition: 200ms;
     }
   }
+}.wrapper-header-admin {
+  height: 144px;
 }
 
 
