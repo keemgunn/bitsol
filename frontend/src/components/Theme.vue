@@ -36,6 +36,11 @@ export default {
     },
 
   },
+  methods: {
+    changeTheme() {
+      this.$store.dispatch('CHANGE-THEME', {color: this.color})
+    }
+  },
   created() {
     this.colorSet = {
       "--i94": this["$store"]["state"]["colors"][this.color]["--i94"],

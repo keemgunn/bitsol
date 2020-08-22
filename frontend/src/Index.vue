@@ -8,7 +8,6 @@
 
   <LoginBox 
     v-if="this.$store.state.accessLevel === 0"
-    :id="id"
     @verify="this.verify"
   />
 
@@ -16,11 +15,9 @@
 
   <App
     v-if="this.$store.state.accessLevel !== 0"
-    :id="id"
     :accessLevel="this.$store.accessLevel"
     @set-color="setColor"
     @logout="logout"
-    @change-theme="changeTheme"
     key="app"
   />
 
@@ -44,7 +41,6 @@ export default {
   components: { App, LoginBox },
   data() { return {
     themeColor: {},
-    id: null,
     lightening: {
       "top" : "0px",
       "left": "0px",
@@ -52,58 +48,48 @@ export default {
     },
   }},
   methods: {
-    //__________ AUTH _________________
+    //___________ AUTHENTICATION METHODS ____________
     verify(){ 
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
       if(this.$store.state.accessLevel) { // 이미 인증이 되어있다면 
-        this.$axios.post('/auth/deposit', {id: localStorage.id})
+        this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');
       }
     },
 
-    //___________OTHER METHODS__________
+    //______________ UI METHODS _____________
+
     setModal(property, state){
-      this.$store.dispatch('SET_MODAL', {property, state})
+      this.$store.dispatch('SET_MODAL', {property, state});
+      console.log('### modal set ...@Index/setModal');
     },
-    async changeTheme(color){
-      this.$store.state.colorConfig = color;
-      localStorage.colorConfig = color;
-      const {data} = await this.$axios.post('/auth/theme/change', {
-        "id": this.$store.state.id ,"color": color})
-      console.log("theme set: ", data.color);
-      this.setColor();
-    },
+
     setColor(){
       this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
+      console.log('### color set ...@Index/setColor');
     },
     
     light_on(){
       this["lightening"]["background-color"] = "var(--i70)";
-    },
-    light_off(){
+    },light_off(){
       this["lightening"]["background-color"] = "var(--i94)";
-    },
-    light_move(e){
+    },light_move(e){
       this.lightening.top = String(e.pageY) + "px";
       this.lightening.left = String(e.pageX) + "px";
     }
 
   }, 
   
-  //___________INITIATING__________
   created() {
     this.setColor();
     this.verify(); // 바로 인증부터 시작
-    window.addEventListener("beforeunload", async () => {
+    window.addEventListener("beforeunload", () => {
       this.sessionOut();
     });
-  },
-  mounted() {
-    this.$refs.id_field.focus();
-  },
+  }
 }
 </script>
 

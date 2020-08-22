@@ -81,7 +81,7 @@
           v-for="color in this.$store.state.colorKeys">
             <Theme
               :color="color"
-              @change-theme="changeTheme"
+              @set-color="$emit('set-color')"
             />
           </div>
         </div>
@@ -115,7 +115,7 @@ export default {
     SearchList,
     Theme
   },
-  props: ["id"],
+  props: [],
   data() { return {
     keyword: '',
     searchArr: [],
@@ -137,13 +137,7 @@ export default {
 
   },
   methods: {
-
-    //_____________ USER CONFIG _________
     logout(){ this.$store.dispatch('LOGOUT');
-    },
-
-    changeTheme(color){
-      this.$emit('change-theme', color);
     },
 
     //_____________ UI ACTIONS _________
@@ -169,6 +163,7 @@ export default {
 
     //___________ LeffiOAD/SEARCH DATABASE __________
     async getDBinfo(){
+      console.log('### request ...@App/getDBinfo');
       let {data} = await axios.get('/db/info');
       this.dbinfo = data;
       console.log(this.dbinfo);
@@ -180,13 +175,10 @@ export default {
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
     },
     async recover(){
-      if(this.id === null){
-        const {data} = await axios.post('/auth/recover', {id: localStorage.id});
-        axios.defaults.headers.common['Authorization'] = data.accessToken;
-        this.$store.state.id = localStorage.id;
-        this.$store.state.userName = localStorage.userName;
-        this.$store.state.colorConfig = localStorage.colorConfig;
+      if(this.$store.state.id === null){
+        this.$store.dispatch('RECOVER');
         this.$emit('set-color');
+        console.log('### configuration recovered ... @App/recover');
       }else{
         this.$emit('set-color');
       }

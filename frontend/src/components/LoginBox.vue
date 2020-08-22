@@ -8,8 +8,8 @@
       v-model="id"
       placeholder="id:"
       name="id_field" 
-      ref="id_field"
       id = "id_field"
+      ref="id_field"
       required
     />
     <input 
@@ -30,8 +30,9 @@ import { v4 as uuidv4 } from 'uuid';
 export default {
   name:"LoginBox",
   data() { return {
+    id: null
   }},
-  props: ["id"],
+  props: [],
   methods: {
     //___________AUTHORIZATION METHODS__________
     async login(e) { e.preventDefault();
@@ -44,7 +45,10 @@ export default {
       }
       this.$store.dispatch('LOGIN', identity);
     },
-  }
+  },
+  mounted() {
+    this.$refs.id_field.focus();
+  },
 }
 </script>
 

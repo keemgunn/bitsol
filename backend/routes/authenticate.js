@@ -101,9 +101,7 @@ router.post('/load-config', (req, res) => {
 // ============= REFRESH METHODS
 
 router.post('/deposit', (req, res) => {
-  console.log(req.body.id);
   console.log(req.headers);
-  console.log(req.headers.authorization);
   const {id} = req.body;
   deposit[id] = req.headers.authorization;
     user[id]["state"]["isOnline"] = false;
@@ -139,6 +137,7 @@ router.post('/logout', (req, res) => {
 
 // ============= THEME CHANGER
 router.post('/theme/change', (req, res) => {
+  console.log(req.body);
   const {id, color} = req.body;
   user[id]["config"]["colorConfig"] = color;
   version.update(users_json, user);
