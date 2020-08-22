@@ -95,6 +95,7 @@ export default new Vuex.Store({
     },
 
 
+    
   },
   actions: {
     //___________ AUTHENTICATION METHODS _______
@@ -120,7 +121,6 @@ export default new Vuex.Store({
         commit('ALERT', 'VERIFICATION FAILED (401)')
       }
     },
-
     DEPOSIT () {
       axios.post('/auth/deposit', {id: localStorage.id});
     },
@@ -145,7 +145,8 @@ export default new Vuex.Store({
     },
 
 
-    //___________ UI METHODS _______
+
+    //___________ UI METHODS __________
 
     CHANGE_THEME({commit}, {color}) {
       console.log('$$$ request ...$action/CHANGE_THEME');

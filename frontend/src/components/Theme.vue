@@ -20,8 +20,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "Theme",
   props: [
@@ -34,7 +32,6 @@ export default {
     isSelected: function() {
       return (localStorage.colorConfig === this.color)
     },
-
   },
   methods: {
     changeTheme() {
@@ -84,7 +81,5 @@ export default {
   height: 20px;
   fill: var(--accent02);
 }
-
-
 
 </style>
