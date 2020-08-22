@@ -172,21 +172,15 @@ export default {
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-    },
-    async recover(){
-      if(this.$store.state.auth.id === null){
-        this.$store.dispatch('RECOVER');
-        console.log('### app loaded');
-        console.log('### configuration recovered ... @App/recover');
-      }else{
-        console.log('### app loaded ...@App/recover');
-      }
     }
   },
   created() {
-    this.recover();
+    if(this.$store.state.auth.id === null){
+      this.$store.dispatch('RECOVER');
+      console.log('### configuration recovered ... @App');
+    }
     this.getDBinfo();
-    },
+  },
   mounted() {
     this.$refs.searchField.focus();
   }
