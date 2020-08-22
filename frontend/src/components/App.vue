@@ -34,7 +34,7 @@
     @mouseenter="toggle('userBoxState', 1)"
     @mouseleave="toggle('userBoxState', 0);">
       <div id="account">
-        user:<div id="user-name">{{this.$store.state.userName}}</div>
+        user:<div id="user-name">{{this.$store.state.auth.userName}}</div>
       </div>
       <transition name="fade">
         <div class="user-menu"
@@ -78,10 +78,9 @@
           <div
           class="orb"
           :key="color" 
-          v-for="color in this.$store.state.colorKeys">
+          v-for="color in this.$store.state.theme.colorKeys">
             <Theme
               :color="color"
-              @change-theme="changeTheme"
             />
           </div>
         </div>
@@ -137,13 +136,7 @@ export default {
 
   },
   methods: {
-
-    //_____________ USER CONFIG _________
-    logout(){
-      this.$emit('logout');
-    },
-    changeTheme(color){
-      this.$emit('change-theme', color);
+    logout(){ this.$store.dispatch('LOGOUT');
     },
 
     //_____________ UI ACTIONS _________
@@ -169,6 +162,7 @@ export default {
 
     //___________ LeffiOAD/SEARCH DATABASE __________
     async getDBinfo(){
+      console.log('### request ...@App/getDBinfo');
       let {data} = await axios.get('/db/info');
       this.dbinfo = data;
       console.log(this.dbinfo);
@@ -178,20 +172,24 @@ export default {
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+    },
+    async recover(){
+      if(this.$store.state.auth.id === null){
+        this.$store.dispatch('RECOVER');
+        console.log('### app loaded');
+        console.log('### configuration recovered ... @App/recover');
+      }else{
+        console.log('### app loaded ...@App/recover');
+      }
     }
   },
   created() {
-    console.log("created");
-    this.$emit('app-created');
+    this.recover();
     this.getDBinfo();
     },
   mounted() {
     this.$refs.searchField.focus();
-  },
-  beforeDestroy() {
-    // this.$emit('close-session')
-  },
-
+  }
 }
 </script>
 
@@ -207,7 +205,6 @@ export default {
   height: 100vh;
   min-width: 490px;
   max-width: 710px;
-  background-color: aqua;
 }
 
 /* --------------- HEADER-------------- */
@@ -305,12 +302,12 @@ export default {
   }
 
   .theme-list{ // -------------------
-    float: left;
-    display: relative;
+    margin-top: 27px;
     padding-top: 14px;
     padding-bottom: 20px;
     width: 100%;
     height: 28px;
+    background-color: fuchsia;
     .orb {
       float: left;
       margin-right: 7px;
@@ -392,7 +389,7 @@ export default {
   height: 45px;
   border-top: 2px solid var(--i30);
   border-bottom: 2px solid var(--i30);
-  background-color: aqua;
+  background-color: rgba(0, 255, 255, 0.5);
 
   .menu {
     display: inline-block;

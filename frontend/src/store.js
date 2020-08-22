@@ -6,86 +6,161 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
+const defaultColor = "purple"
 
 export default new Vuex.Store({
   state: {
-    id: null,
-    // accessLevel:0,
-      accessLevel: 1,
-    // userName: null,
-      userName: "김건", // null
-    colorConfig: "default",
+
+    auth: {
+      id:null, accessLevel:0, userName:null,
+      // id: '2018317024', accessLevel: 3, userName: "김건",
+    },
+
     modal: {
       display: 'App',
-        scopeTab: 'search-list',
-        // scopeTab: 'admin',
+      scopeTab: 'search-list',
+      // scopeTab: 'admin',
     },
-    colorKeys: Object.keys(styles.colors),
-    colors: styles.colors
+    
+    theme: {
+      applied: styles["colors"][defaultColor],
+      colorKeys: Object.keys(styles.colors),
+      colors: styles.colors
+    },
+
+    alert: null,
+
   },
   getters: {
 
   },
   mutations: {
-    ISSUED (state, {data}) {
-      console.log("$$$ mutation:ISSUED ...$store");
-      console.log(data);
-      state.id = data.id;
-        localStorage.id = data.id;
+    //___________ AUTHENTICATION METHODS _______
+    async LOGIN (state, {data}) {
+      console.log('$$$ request ...$mutation/LOGIN');
+      state.auth.id = data.id;
+      localStorage.id = data.id;
+      state.auth.userName = data.config.userName;
+      localStorage.userName = data.config.userName;
+      state.theme.applied = styles["colors"][data.config.colorConfig];
+      localStorage.colorConfig = data.config.colorConfig;
+      console.log('$$$ state loaded ...$mutation/LOGIN');
+
+      const verification = await axios.post('/auth/verify', {id:data.id});
+      state.auth.accessLevel = verification.data.accessLevel;
+      console.log('$$$ access verified ...$mutation/LOGIN');
     },
+
     VERIFIED (state, {data}) {
-      console.log("$$$ mutation:VERIFIED ...$store");
+      console.log("$$$ request ...$mutation/VERIFIED");
       console.log(data);
-      state.accessLevel = data.accessLevel;
+      state.auth.accessLevel = data.accessLevel;
     },
-    LOAD_CONFIG (state, {data}) {
-      console.log("$$$ mutation:LOAD_CONFIG ...$store");
-      console.log(data);
-      state.userName = data.userName;
-        localStorage.userName = data.userName;
-      state.colorConfig = data.colorConfig;
-        localStorage.colorConfig = data.colorConfig;
+
+    RECOVER (state) {
+      console.log('$$$ request ...$mutation/RECOVER');
+      state.auth.id = localStorage.id;
+      state.auth.userName = localStorage.userName;
+      state.theme.applied = styles["colors"][localStorage.colorConfig];
     },
+
     LOGOUT (state) {
-      state.accessLevel = 0;
-      state.id = null;
-      state.userName = null;
-      state.colorConfig = "default";
+      console.log('$$$ request ...$mutation/LOGOUT');
+      state.auth.accessLevel = 0;
+      state.auth.id = null;
+      state.auth.userName = null;
+      state.theme.applied = styles["colors"][defaultColor];
       delete localStorage.id ;
       delete localStorage.userName ;
-      localStorage.colorConfig = 'default';
+      localStorage.colorConfig = defaultColor;
     },
+
+    //___________ UI METHODS _______
     SET_MODAL (state, {data}) {
       console.log("$$$ mutation:LOAD_CONFIG ...$store");
       state["modal"][data.property] = data.state;
-    }
+    },
+
+    CHANGE_THEME (state, {color}) {
+      console.log('$$$ request ...$mutation/CHANGE_THEME');
+      console.log(color);
+      state.theme.applied = styles["colors"][color];
+      localStorage.colorConfig = color;
+      console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
+    },
+
+    ALERT (state, msg) {
+      console.log(msg);
+      state.alert = msg;
+    },
+
+
+    
   },
   actions: {
-    async ISSUED ({commit}, data) {
-      console.log("$$$ action:ISSUED ...$store");
-      commit('ISSUED', {data});
+    //___________ AUTHENTICATION METHODS _______
+    async LOGIN ({commit}, identity) {
+      console.log("$$$ request ...$action/LOGIN");
+      let {data} = await axios.post('auth/login', identity);
+      if (data.accessToken) {
+        console.log("$$$ token issued ...$action/LOGIN");
+        axios.defaults.headers.common['Authorization'] = data.accessToken;
+        commit('LOGIN', {data});
+      }else{
+        console.log("$$$ something wrong ...$action/LOGIN");
+      }
     },
+
     async VERIFY ({commit}) {
-      console.log("$$$ action:VERIFY ...$store");
-      let id = localStorage.id;
-      const {data} = await axios.post('/auth/verify', {id});
-      commit('VERIFIED', {data});
+      console.log("$$$ request ...$action/VERIFY");
+      const {data} = await axios.post('/auth/verify', {id: localStorage.id});
+      if(data.accessLevel){
+        console.log('$$$ access verified ...$action/VERIFY');
+        commit('VERIFIED', {data});
+      }else{
+        commit('ALERT', 'VERIFICATION FAILED (401)')
+      }
     },
-    async LOAD_CONFIG ({commit}, id) {
-      console.log("$$$ action:GET_CONFIG ...$store");
-      const data = await axios.post('/auth/load-config', id);
-      commit('LOAD_CONFIG', data);
+    DEPOSIT () {
+      axios.post('/auth/deposit', {id: localStorage.id});
     },
+
+    async RECOVER ({commit}) {
+      console.log('$$$ request ...$action/RECOVER');
+      const {data} = await axios.post('/auth/recover', {id:localStorage.id});
+      if(data.accessToken){
+        console.log('$$$ accessToken detected ...$action/RECOVER');
+        axios.defaults.headers.common['Authorization'] = data.accessToken;
+        commit('RECOVER');
+      }else{
+        console.log('$$$ no recieved accessToken from deposit object ...$action/RECOVER');
+      }
+    },
+
     LOGOUT ({commit}) {
-      console.log("$$$ action:LOGOUT $store");
+      console.log("$$$ request ...$action/LOGOUT");
       axios.post('/auth/logout', {id: localStorage.id});
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
+
+
+
+    //___________ UI METHODS __________
+
+    CHANGE_THEME({commit}, {color}) {
+      console.log('$$$ request ...$action/CHANGE_THEME');
+      commit('CHANGE_THEME', {color});
+      axios.post('/auth/theme/change', {id: localStorage.id, color:color});
+    },
+
     SET_MODAL ({commit}, {property, state}) {
       console.log("$$$ action:SET_MODAL ...$store");
       let data = {property, state};
       commit('SET_MODAL', {data});
-    }
+    },
+
+
+
   }
 })
