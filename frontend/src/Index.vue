@@ -1,30 +1,28 @@
 <template>
 <div id="index" 
-  :style="themeColor"
+  :style="this.$store.state.theme.applied"
   @mouseover="light_on"
   @mousemove="light_move"
   @mouseout="light_off"
 >
 
   <LoginBox 
-    v-if="this.$store.state.accessLevel === 0"
+    v-if="this.$store.state.auth.accessLevel === 0"
     @verify="this.verify"
   />
 
   <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="{'left':0}"></div>
 
   <App
-    v-if="this.$store.state.accessLevel !== 0"
-    :accessLevel="this.$store.accessLevel"
-    @set-color="setColor"
-    @logout="logout"
+    v-if="this.$store.state.auth.accessLevel !== 0"
+    :accessLevel="this.$store.state.auth.accessLevel"
     key="app"
   />
 
   <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="{'right':0}"></div>
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('search-list')"></div>
+  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('search-list')"></div>
 
 <router-view></router-view>
 </div>
@@ -53,7 +51,7 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      if(this.$store.state.accessLevel) { // 이미 인증이 되어있다면 
+      if(this.$store.state.auth.accessLevel) { // 이미 인증이 되어있다면 
         this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');
@@ -65,11 +63,6 @@ export default {
     setModal(property, state){
       this.$store.dispatch('SET_MODAL', {property, state});
       console.log('### modal set ...@Index/setModal');
-    },
-
-    setColor(){
-      this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
-      console.log('### color set ...@Index/setColor');
     },
     
     light_on(){
@@ -84,7 +77,7 @@ export default {
   }, 
   
   created() {
-    this.setColor();
+    // this.setColor();
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", () => {
       this.sessionOut();
@@ -107,15 +100,11 @@ export default {
   height: 100vh;
   justify-content: center;
   align-items: center;
-
   position: absolute;
-
   overflow: hidden;
-
   font-family: 'Space Mono', 'Barlow', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   color: var(--i30);
   background-color: var(--i94);
 }
@@ -123,9 +112,6 @@ export default {
   color: var(--i30);
   background: var(--accent01);
 }
-
-
-
 
 
 // ------------------------- APP WRAPPER

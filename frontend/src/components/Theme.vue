@@ -7,7 +7,7 @@
 
     <circle 
     :class="{'orb-border':1, 'selected': isSelected}"
-    @click="$emit('change-theme', color)"
+    @click="changeTheme()"
     cx="14" cy="14" r="14"></circle>
 
     <circle :style="colorSet" class="orb-bg" cx="14" cy="14" r="12"></circle>
@@ -32,19 +32,19 @@ export default {
   }},
   computed: {
     isSelected: function() {
-      return (this.$store.state.colorConfig === this.color)
+      return (localStorage.colorConfig === this.color)
     },
 
   },
   methods: {
     changeTheme() {
-      this.$store.dispatch('CHANGE-THEME', {color: this.color})
+      this.$store.dispatch('CHANGE_THEME', {color: this.color})
     }
   },
   created() {
     this.colorSet = {
-      "--i94": this["$store"]["state"]["colors"][this.color]["--i94"],
-      "--accent02": this["$store"]["state"]["colors"][this.color]["--accent02"]
+      "--i94": this["$store"]["state"]["theme"]["colors"][this.color]["--i94"],
+      "--accent02": this["$store"]["state"]["theme"]["colors"][this.color]["--accent02"]
     }
   },
 }

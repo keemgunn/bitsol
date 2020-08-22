@@ -6,23 +6,30 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
+const defaultColor = "purple"
 
 export default new Vuex.Store({
   state: {
-    id: null, accessLevel:0, userName: null,
-    // id: '2018317024', accessLevel: 1, userName: "김건",
+
+    auth: {
+      id:null, accessLevel:0, userName:null,
+      // id: '2018317024', accessLevel: 3, userName: "김건",
+    },
+
+    modal: {
+      display: 'App',
+      scopeTab: 'search-list',
+      // scopeTab: 'admin',
+    },
     
-      modal: {
-        display: 'App',
-        scopeTab: 'search-list',
-        // scopeTab: 'admin',
-      },
-      
-    colorConfig: "default",
-    colors: styles.colors,
-    colorKeys: Object.keys(styles.colors),
+    theme: {
+      applied: styles["colors"][defaultColor],
+      colorKeys: Object.keys(styles.colors),
+      colors: styles.colors
+    },
 
     alert: null,
+
   },
   getters: {
 
@@ -31,41 +38,41 @@ export default new Vuex.Store({
     //___________ AUTHENTICATION METHODS _______
     async LOGIN (state, {data}) {
       console.log('$$$ request ...$mutation/LOGIN');
-      state.id = data.id;
+      state.auth.id = data.id;
       localStorage.id = data.id;
-      state.userName = data.config.userName;
+      state.auth.userName = data.config.userName;
       localStorage.userName = data.config.userName;
-      state.colorConfig = data.config.colorConfig;
+      state.theme.applied = styles["colors"][data.config.colorConfig];
       localStorage.colorConfig = data.config.colorConfig;
       console.log('$$$ state loaded ...$mutation/LOGIN');
 
       const verification = await axios.post('/auth/verify', {id:data.id});
-      state.accessLevel = verification.data.accessLevel;
+      state.auth.accessLevel = verification.data.accessLevel;
       console.log('$$$ access verified ...$mutation/LOGIN');
     },
 
     VERIFIED (state, {data}) {
       console.log("$$$ request ...$mutation/VERIFIED");
       console.log(data);
-      state.accessLevel = data.accessLevel;
+      state.auth.accessLevel = data.accessLevel;
     },
 
     RECOVER (state) {
       console.log('$$$ request ...$mutation/RECOVER');
-      state.id = localStorage.id;
-      state.userName = localStorage.userName;
-      state.colorConfig = localStorage.colorConfig;
+      state.auth.id = localStorage.id;
+      state.auth.userName = localStorage.userName;
+      state.theme.applied = styles["colors"][localStorage.colorConfig];
     },
 
     LOGOUT (state) {
       console.log('$$$ request ...$mutation/LOGOUT');
-      state.accessLevel = 0;
-      state.id = null;
-      state.userName = null;
-      state.colorConfig = "default";
+      state.auth.accessLevel = 0;
+      state.auth.id = null;
+      state.auth.userName = null;
+      state.theme.applied = styles["colors"][defaultColor];
       delete localStorage.id ;
       delete localStorage.userName ;
-      localStorage.colorConfig = 'default';
+      localStorage.colorConfig = defaultColor;
     },
 
     //___________ UI METHODS _______
@@ -77,7 +84,7 @@ export default new Vuex.Store({
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
       console.log(color);
-      state.colorConfig = color;
+      state.theme.applied = styles["colors"][color];
       localStorage.colorConfig = color;
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
@@ -143,7 +150,7 @@ export default new Vuex.Store({
     CHANGE_THEME({commit}, {color}) {
       console.log('$$$ request ...$action/CHANGE_THEME');
       commit('CHANGE_THEME', {color});
-      this.axios.post('/auth/theme/change', {id: localStorage.id, color:color});
+      axios.post('/auth/theme/change', {id: localStorage.id, color:color});
     },
 
     SET_MODAL ({commit}, {property, state}) {

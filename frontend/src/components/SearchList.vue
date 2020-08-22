@@ -3,10 +3,10 @@
 
   <div id="optionBox">
     <transition name="fade">
-      <div id="han" v-if="!moreinfo">보관팩 기간: </div>
-    </transition>
-    <transition name="fade">
-      <div id="date" v-if="!moreinfo">{{dbinfo.deadline}}</div>
+      <div id="deadline">
+        <div id="han" v-if="!moreinfo">보관팩 기간: </div>
+        <div id="date" v-if="!moreinfo">{{dbinfo.deadline}} </div>
+      </div>
     </transition>
     <div class="moreinfo" @click="toggleInfoScope">
       <div :class="{'moreinfo-des':1, 'moreinfo-des-on':moreinfo }">학생 정보 보기</div>
@@ -853,28 +853,37 @@ export default {
 
 /* --------------- REFG HEADER-------------- */
 #optionBox { 
-  padding: 10px 0px 40px 20px;
+  padding: 10px 0px 40px 0px;
+  position: initial;;
+  width: 100%;
   height: 35px;
   line-height: 35px;
   user-select: none;
   -webkit-user-select: none;
   background-color: var(--i94);
-  background-color: rgb(145, 199, 145);
+  background-color: rgba(68, 255, 68, 0.397);
 
-  #han { // -------------------------
-    display: inline-block;
-    bottom: 2px;
-    font-family: 'Nanum Square', sans-serif;
-    font-weight: 800;
-    font-size: 21px;
-    letter-spacing: 0.31px;
-  }#date {
-    display: inline-block;
-    left: 4px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    letter-spacing: 1.44px;
+  #deadline {
+    float: left;
+    margin-left: 20px;
+    left: 20px;
+    #han { // -------------------------
+      display: inline-block;
+      position: relative;
+      font-family: 'Nanum Square', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      letter-spacing: 0.31px;
+    }#date {
+      display: inline-block;
+      position: relative;
+      top: 1px;
+      left: 3px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 23px;
+      letter-spacing: 1px;
+    }
   }
 
   .moreinfo {
