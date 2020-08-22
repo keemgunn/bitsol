@@ -108,8 +108,6 @@ export default {
   data() { return {
     update: 0,
     submitCheck: false,
-    refgLimit00: 2,
-    refgTerm00: '19_1',
     cf0: 0,
     cf1: 1
   }},
@@ -162,7 +160,9 @@ export default {
     submit(){
       if(this.submitCheck === false){
         this.submitCheck = true
-        //submit method
+        //submit method ~~~~~~~
+
+
         console.log("~~~ submitted");
       }else{
         this.alert("already submitted")
@@ -172,26 +172,10 @@ export default {
   computed: {
     updateLimit: function(){
       return this.refgLimit - this["record"][this.refgTerm]
-    },
-    updateLimit00: function(){
-      return this.refgLimit00 - this["record"][this.refgTerm00]
-    },
-  },
-  created() {
-    // console.log("created /Records");
-    // this.$emit('loading', 1);
+    }
   },
   mounted() {
     this.alert("~~ record mounted ~~");
-    // this.$emit('loading', 0);
-  },
-  beforeUpdate() {
-    // console.log("beforeUpdate /Records");
-    // this.$emit('loading', 1);
-  },
-  updated() {
-    // console.log("updated /Records");
-    // this.$emit('loading', 0);
   },
 }
 </script>

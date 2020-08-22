@@ -51,7 +51,6 @@
             :refgTerm="dbinfo.refgTerm"
             :refgLimit="dbinfo.refgLimit"
             :moreinfo="moreinfo"
-            @loading="loading"
           />
         <div :class="{'cover-result-side':1, 'cover-result-side-expand':moreinfo}"></div>
       </div>
@@ -823,21 +822,15 @@ export default {
     toggleInfoScope(){
       this.moreinfo = !this.moreinfo
       this.$emit('moreinfo', this.moreinfo);
-    },
-    loading(bool){
-      this.$emit('loading', bool);
     }
-  },
-  created() {
-
   },
   beforeUpdate() {
     console.log("beforeUpdate /StudentList ----");
-    this.loading(1);
+    this.emit('loading', 1);
   },
   updated() {
     console.log("updated /StudentList ----");
-    this.loading(0);
+    this.emit('loading', 0);
   },
 }
 </script>
