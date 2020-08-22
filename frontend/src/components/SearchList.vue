@@ -826,11 +826,11 @@ export default {
   },
   beforeUpdate() {
     console.log("beforeUpdate /StudentList ----");
-    this.emit('loading', 1);
+    this.$emit('loading', 1);
   },
   updated() {
     console.log("updated /StudentList ----");
-    this.emit('loading', 0);
+    this.$emit('loading', 0);
   },
 }
 </script>
