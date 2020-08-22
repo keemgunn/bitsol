@@ -108,8 +108,6 @@ export default {
   data() { return {
     update: 0,
     submitCheck: false,
-    refgLimit00: 2,
-    refgTerm00: '19_1',
     cf0: 0,
     cf1: 1
   }},
@@ -162,7 +160,9 @@ export default {
     submit(){
       if(this.submitCheck === false){
         this.submitCheck = true
-        //submit method
+        //submit method ~~~~~~~
+
+
         console.log("~~~ submitted");
       }else{
         this.alert("already submitted")
@@ -172,26 +172,10 @@ export default {
   computed: {
     updateLimit: function(){
       return this.refgLimit - this["record"][this.refgTerm]
-    },
-    updateLimit00: function(){
-      return this.refgLimit00 - this["record"][this.refgTerm00]
-    },
-  },
-  created() {
-    // console.log("created /Records");
-    // this.$emit('loading', 1);
+    }
   },
   mounted() {
     this.alert("~~ record mounted ~~");
-    // this.$emit('loading', 0);
-  },
-  beforeUpdate() {
-    // console.log("beforeUpdate /Records");
-    // this.$emit('loading', 1);
-  },
-  updated() {
-    // console.log("updated /Records");
-    // this.$emit('loading', 0);
   },
 }
 </script>
@@ -199,8 +183,8 @@ export default {
 
 
 <style lang="scss" scoped> 
-// ------------------------------------------------------
-// ------------------------------------------------------
+// -------------------------------------------------
+// -------------------------------------------------
 .records {
   float: left;
   width: calc(100% - 46px);
@@ -213,6 +197,7 @@ export default {
   background-color: var(--i100);
   transition: 150ms;
 }
+
 .content {
   width: 100%;
   height: 50px;
@@ -244,7 +229,6 @@ export default {
   margin-top: 4px;
   margin-left: 15px;
   cursor: default;
-
   font-family: 'Barlow', sans-serif;
   font-weight: 400;
   font-size: 32px;
@@ -259,7 +243,6 @@ export default {
   margin-right: 7px;
   bottom: 2px;
   cursor: default;
-
   font-family: 'Core Gothic D', sans-serif;
   font-weight: 400;
   font-size: 26px;
@@ -269,19 +252,15 @@ export default {
 }
 .room-name-expand {
   transition: 300ms;
-
   margin-top: 7px;
   margin-left: 14px;
-
   font-weight: 500;
   font-size: 28px;
   letter-spacing: 0.74px;
 }
 .student-name-expand {
   transition: 300ms;
-
   margin-left: 3px;
-
   font-weight: 500;
   font-size: 22px;
   letter-spacing: -0.38px;
@@ -294,10 +273,8 @@ export default {
   display: inline-block;
   position: relative;
   top: 2px;
-
   width: 27px;
   height: 27px;
-
   transition: 200ms;
 }
   .unavailable {

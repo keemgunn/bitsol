@@ -3,21 +3,21 @@
 
   <div id="optionBox">
     <transition name="fade">
-      <div id="han" v-if="!moreinfo">보관팩 기간: </div>
-    </transition>
-    <transition name="fade">
-      <div id="date" v-if="!moreinfo">{{dbinfo.deadline}}</div>
+      <div id="deadline">
+        <div id="han" v-if="!moreinfo">보관팩 기간: </div>
+        <div id="date" v-if="!moreinfo">{{dbinfo.deadline}} </div>
+      </div>
     </transition>
     <div class="moreinfo" @click="toggleInfoScope">
       <div :class="{'moreinfo-des':1, 'moreinfo-des-on':moreinfo }">학생 정보 보기</div>
       <div class="switch">
-        <svg :class="{'switch-box':1, 'switch-box-on':moreinfo }" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg :class="{'box':1, 'box-on':moreinfo }" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <title>Switch Box</title>
           <g>
             <rect id="Rectangle-Copy" x="0" y="0" width="30" height="16" rx="8"></rect>
           </g>
         </svg>
-        <svg :class="{'switch-btn':1, 'switch-btn-on':moreinfo}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg :class="{'btn':1, 'btn-on':moreinfo}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <title>Oval</title>
           <g>
             <circle id="Oval" cx="6" cy="6" r="6"></circle>
@@ -51,7 +51,6 @@
             :refgTerm="dbinfo.refgTerm"
             :refgLimit="dbinfo.refgLimit"
             :moreinfo="moreinfo"
-            @loading="loading"
           />
         <div :class="{'cover-result-side':1, 'cover-result-side-expand':moreinfo}"></div>
       </div>
@@ -823,21 +822,15 @@ export default {
     toggleInfoScope(){
       this.moreinfo = !this.moreinfo
       this.$emit('moreinfo', this.moreinfo);
-    },
-    loading(bool){
-      this.$emit('loading', bool);
     }
-  },
-  created() {
-
   },
   beforeUpdate() {
     console.log("beforeUpdate /StudentList ----");
-    this.loading(1);
+    this.$emit('loading', 1);
   },
   updated() {
     console.log("updated /StudentList ----");
-    this.loading(0);
+    this.$emit('loading', 0);
   },
 }
 </script>
@@ -853,103 +846,107 @@ export default {
 
 /* --------------- REFG HEADER-------------- */
 #optionBox { 
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-bottom: 40px;
+  padding: 10px 0px 40px 0px;
+  position: initial;;
+  width: 100%;
   height: 35px;
   line-height: 35px;
   user-select: none;
   -webkit-user-select: none;
   background-color: var(--i94);
-  background-color: rgb(145, 199, 145);
-}
-  #han {
-    display: inline-block;
-    bottom: 2px;
-    font-family: 'Nanum Square';
-    font-weight: 800;
-    font-size: 21px;
-    letter-spacing: 0.31px;
-  }
-  #date {
-    display: inline-block;
-    left: 4px;
-    font-family: 'Barlow';
-    font-weight: 600;
-    font-size: 24px;
-    letter-spacing: 1.44px;
-  }
-.moreinfo {
-  float: right;
-  width: 122px;
-  height: 16px;
-  margin-top: 10px;
-  margin-right: 20px;
-  font-family: 'Nanum Square';
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.21px;
-  color: var(--i45);
-  transition: 200ms;
-}
+  background-color: rgba(68, 255, 68, 0.397);
 
-.moreinfo-des {
-  position: relative;
-
-  bottom: 9px;
-  width: 86px;
-  height: 16px;
-}
-.moreinfo-des-on {
-  color: var(--accent02);
-}
-.switch  {
-  position: relative;
-  float: right;
-  bottom: 16px;
-  width: 30px;
-  height: 16px;
-}
-  .switch-box {
+  #deadline {
     float: left;
-    width: 30px;
+    margin-left: 20px;
+    left: 20px;
+    #han { // -------------------------
+      display: inline-block;
+      position: relative;
+      font-family: 'Nanum Square', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      letter-spacing: 0.31px;
+    }#date {
+      display: inline-block;
+      position: relative;
+      top: 1px;
+      left: 3px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 23px;
+      letter-spacing: 1px;
+    }
+  }
+
+  .moreinfo {
+    float: right;
+    width: 122px;
     height: 16px;
-    fill: var(--i70);
+    margin-top: 10px;
+    margin-right: 20px;
+    font-family: 'Nanum Square';
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.21px;
+    color: var(--i45);
     transition: 200ms;
-  }
-  .switch-btn {
-    position: relative;
-    float: left;
-    bottom: 14px;
-    left: 2px;
-    width: 12px;
-    height: 12px;
-    fill: var(--i94);
+
+    .moreinfo-des {
+      position: relative;
+      bottom: 9px;
+      width: 86px;
+      height: 16px;
+    }.moreinfo-des-on {
+      color: var(--accent02);
+    }
+
+    .switch {
+      position: relative;
+      float: right;
+      bottom: 16px;
+      width: 30px;
+      height: 16px;
+
+      .box {
+          float: left;
+          width: 30px;
+          height: 16px;
+          fill: var(--i70);
+          transition: 200ms;
+      }.box-on {
+        transition: 200ms;
+        fill: var(--accent02);
+      }
+      .btn {
+          position: relative;
+          float: left;
+          bottom: 14px;
+          left: 2px;
+          width: 12px;
+          height: 12px;
+          fill: var(--i94);
+          transition: 200ms;
+      }.btn-on {
+        animation-timing-function: ease-in-out;
+        transition: 200ms;
+        left: 16px;
+      }
+    }
+  }.moreinfo:hover {
+    cursor: pointer;
+    color: var(--accent01);
     transition: 200ms;
-  }
-    .switch-box-on {
-      transition: 200ms;
+    .box {
+      fill: var(--accent01);
+    }.moreinfo-des-on {
+      color: var(--accent02);
+    }.box-on {
       fill: var(--accent02);
     }
-    .switch-btn-on {
-      animation-timing-function: ease-in-out;
-      transition: 200ms;
-      left: 16px;
-    }
-.moreinfo:hover {
-  cursor: pointer;
-  color: var(--accent01);
-  transition: 200ms;
-  .switch-box {
-    fill: var(--accent01);
-  }
-  .moreinfo-des-on {
-    color: var(--accent02);
-  }
-  .switch-box-on {
-    fill: var(--accent02);
   }
 }
+
 
 /* --------------- SEARCH RESULTS -------------- */
 #wrapper-no-result {
