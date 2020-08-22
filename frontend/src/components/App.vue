@@ -119,12 +119,12 @@ export default {
     keyword: '',
     searchArr: [],
     dbinfo: {},
+
     // ------ UI ---
     loadingState: 0,
-    // ------ user-box ---
     userBoxState: 0,
-    // ------ admin-box ---
     adminMenu: 'index',
+
     // ------ search-list ---
     recordHeight: 66,
     coverBottom: {
@@ -132,10 +132,8 @@ export default {
     },
 
   }},
-  computed: {
-
-  },
   methods: {
+
     logout(){ this.$store.dispatch('LOGOUT');
     },
 
@@ -155,10 +153,6 @@ export default {
         this.fitCoverBottom(this.searchArr.length, this.recordHeight);
       }
     },
-    loading(bool){
-      this.loadingState = bool;
-    },
-
 
     //___________ LeffiOAD/SEARCH DATABASE __________
     async getDBinfo(){
@@ -168,11 +162,14 @@ export default {
       console.log(this.dbinfo);
     },
     async search(){
-      this.loadingState = 1;
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+    },
+    loading(bool){
+      this.loadingState = bool;
     }
+    
   },
   created() {
     if(this.$store.state.auth.id === null){
