@@ -115,7 +115,7 @@ export default {
     SearchList,
     Theme
   },
-  props: [],
+  props: ["id"],
   data() { return {
     keyword: '',
     searchArr: [],
@@ -139,9 +139,9 @@ export default {
   methods: {
 
     //_____________ USER CONFIG _________
-    logout(){
-      this.$emit('logout');
+    logout(){ this.$store.dispatch('LOGOUT');
     },
+
     changeTheme(color){
       this.$emit('change-theme', color);
     },
@@ -178,20 +178,27 @@ export default {
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+    },
+    async recover(){
+      if(this.id === null){
+        const {data} = await axios.post('/auth/recover', {id: localStorage.id});
+        axios.defaults.headers.common['Authorization'] = data.accessToken;
+        this.$store.state.id = localStorage.id;
+        this.$store.state.userName = localStorage.userName;
+        this.$store.state.colorConfig = localStorage.colorConfig;
+        this.$emit('set-color');
+      }else{
+        this.$emit('set-color');
+      }
     }
   },
   created() {
-    console.log("created");
-    this.$emit('app-created');
+    this.recover();
     this.getDBinfo();
     },
   mounted() {
     this.$refs.searchField.focus();
-  },
-  beforeDestroy() {
-    // this.$emit('close-session')
-  },
-
+  }
 }
 </script>
 

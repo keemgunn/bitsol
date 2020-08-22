@@ -10,41 +10,49 @@ import styles from './assets/styles.json';
 export default new Vuex.Store({
   state: {
     id: null,
-    // accessLevel:0,
-      accessLevel: 1,
-    // userName: null,
-      userName: "김건", // null
-    colorConfig: "default",
-    modal: {
-      display: 'App',
+    accessLevel:0,
+      // accessLevel: 1,
+    userName: null,
+      // userName: "김건",
+      
+      modal: {
+        display: 'App',
         scopeTab: 'search-list',
         // scopeTab: 'admin',
-    },
+      },
+      
+    colorConfig: "default",
+    colors: styles.colors,
     colorKeys: Object.keys(styles.colors),
-    colors: styles.colors
   },
   getters: {
 
   },
   mutations: {
-    ISSUED (state, {data}) {
-      console.log("$$$ mutation:ISSUED ...$store");
+
+    //___________ AUTHENTICATION METHODS _______
+    async LOGIN (state, {data}) {
+      console.log('$$$ request ...$mutation/LOGIN');
       console.log(data);
+
       state.id = data.id;
-        localStorage.id = data.id;
+      localStorage.id = data.id;
+      state.userName = data.config.userName;
+      localStorage.userName = data.config.userName;
+      state.colorConfig = data.config.colorConfig;
+      localStorage.colorConfig = data.config.colorConfig;
+      console.log('$$$ state loaded ...$mutation/LOGIN');
+
+      const verification = await axios.post('/auth/verify', {id:data.id});
+      state.accessLevel = verification.data.accessLevel;
+      console.log('$$$ access verified ...$mutation/LOGIN');
     },
+
+
     VERIFIED (state, {data}) {
       console.log("$$$ mutation:VERIFIED ...$store");
       console.log(data);
       state.accessLevel = data.accessLevel;
-    },
-    LOAD_CONFIG (state, {data}) {
-      console.log("$$$ mutation:LOAD_CONFIG ...$store");
-      console.log(data);
-      state.userName = data.userName;
-        localStorage.userName = data.userName;
-      state.colorConfig = data.colorConfig;
-        localStorage.colorConfig = data.colorConfig;
     },
     LOGOUT (state) {
       state.accessLevel = 0;
@@ -61,20 +69,27 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async ISSUED ({commit}, data) {
-      console.log("$$$ action:ISSUED ...$store");
-      commit('ISSUED', {data});
+
+    //___________ AUTHENTICATION METHODS _______
+    async LOGIN ({commit}, identity) {
+      console.log("$$$ request ...$action/LOGIN");
+      let {data} = await axios.post('auth/login', identity);
+      console.log(data);
+      if (data.accessToken) {
+        console.log("$$$ token issued ...$action/LOGIN");
+        axios.defaults.headers.common['Authorization'] = data.accessToken;
+        commit('LOGIN', {data});
+      }else{
+        console.log("$$$ something wrong ...$action/LOGIN");
+      }
     },
+
+
     async VERIFY ({commit}) {
       console.log("$$$ action:VERIFY ...$store");
       let id = localStorage.id;
       const {data} = await axios.post('/auth/verify', {id});
       commit('VERIFIED', {data});
-    },
-    async LOAD_CONFIG ({commit}, id) {
-      console.log("$$$ action:GET_CONFIG ...$store");
-      const data = await axios.post('/auth/load-config', id);
-      commit('LOAD_CONFIG', data);
     },
     LOGOUT ({commit}) {
       console.log("$$$ action:LOGOUT $store");

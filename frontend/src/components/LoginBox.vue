@@ -2,66 +2,48 @@
 <div id="loginBox">
   
   <form @submit="login" autocomplete="off">
-      <input
-        type="text" 
-        class = "id_field"
-        v-model="id"
-        placeholder="id:"
-        name="id_field" 
-        ref="id_field"
-        id = "id_field"
-        required
-      />
-      <input 
-        type="submit" 
-        value="login" 
-        class="login-btn"
-      />
-      <label class="id_label" for="id_field">id:</label>
-    </form>
+    <input
+      type="text" 
+      class = "id_field"
+      v-model="id"
+      placeholder="id:"
+      name="id_field" 
+      ref="id_field"
+      id = "id_field"
+      required
+    />
+    <input 
+      type="submit" 
+      value="login" 
+      class="login-btn"
+    />
+    <label class="id_label" for="id_field">id:</label>
+  </form>
 
 </div>
 </template>
 
 
 <script>
-import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name:"LoginBox",
   data() { return {
-    msg: "Hello",
-    key: '',
-    authorized: false,
-    testArr: [],
-    test00: null
   }},
+  props: ["id"],
   methods: {
-    async login(e) {
-      e.preventDefault();
-      this.heimdall(this.key);
+    //___________AUTHORIZATION METHODS__________
+    async login(e) { e.preventDefault();
+                          this.id = '2018317024';
+      const identity = {
+        id: this.id,
+        expiresIn: 10800,
+        accessTime: new Date(),
+        requestPoint: uuidv4()
+      }
+      this.$store.dispatch('LOGIN', identity);
     },
-    heimdall(key) {
-      this.$store.dispatch('LOGIN', {key})
-      .then(() => this.doorOpened())
-      .catch(({message}) => this.msg = message)
-    },
-    doorOpened(){
-      // this.$router.push('/students');
-      axios.get('api/auth')
-        .then( res => {
-          // this.authorized = res.data.authorized;
-          // this.heimdall(this.authorized, this.user);
-          console.log(res);
-        })
-        .catch( err => {
-          console.log(err);
-      });
-    }
-
-    
-
-
   }
 }
 </script>

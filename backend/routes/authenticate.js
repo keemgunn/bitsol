@@ -18,22 +18,26 @@ let deposit = { "id" : "accessToken" };
 
 
 
-// ============= @issueToken() => $store/ISSUE
+// ============= @login() => $store/LOGIN
 
-router.post('/issue', (req, res) => {
+router.post('/login', (req, res) => {
   const device = req["headers"]["user-agent"];
   const {id, expiresIn, accessTime, requestPoint} = req.body;
   if(user.hasOwnProperty(id)) {
-    console.log("### userID confirmed .../auth/issue");
+    console.log("### userID confirmed .../auth/login");
     const accessToken = heimdall.generate(user[id]["auth"], requestPoint, expiresIn);
-    res.json({ accessToken, id:user[id]["auth"]["id"] });
-    console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
+    res.json({ 
+      accessToken, 
+      id:user[id]["auth"]["id"],
+      config: user[id]["config"]
+    });
+    console.log("token issued, expiresIn: ", expiresIn, "\n");
     //_____user-info update_____
       user[id]["state"]["isOnline"] = true;
       user[id]["state"]["device"] = device;
       user[id]["state"]["last-access"] = accessTime;
         version.update(users_json, user);
-    //_____user-info update_____
+    //_____access-log update_____
       let newlog ={ accessTime, id, "userName": user[id]["config"]["userName"], device };
       let log = version.readSync(access_log_json);
       log.unshift(newlog);
@@ -49,7 +53,7 @@ router.post('/issue', (req, res) => {
 // ============= @verify() => $store/VERIFY 
 
 router.post('/verify', (req, res) => {
-console.log("### initiating-verification ... /auth/verify");
+console.log("\n\n### initiating-verification ... /auth/verify");
 const {id} = req.body || {id: "none"};
   if(req.headers.authorization) {
     console.log("### accessToken-Detected ... /auth/verify");
@@ -82,14 +86,13 @@ function VERIFY(token, id){
 // ============= $store/LOAD_CONFIG
 
 router.post('/load-config', (req, res) => {
-  const data = req.body;
-  console.log(data);
-  if(user.hasOwnProperty(data.id)) {
-      res.json(user[data.id]["config"]);
-      console.log("### config loaded .../auth/load-config");
+  const {id} = req.body;
+  if(user.hasOwnProperty(id)) {
+    res.json(user[id]["config"]);
+    console.log("### config loaded .../auth/load-config");
   }else {
-      console.log("### no userID .../auth/load-config");
-      return res.status(404).json({error: 'No user id'})
+    console.log("### no userID .../auth/load-config");
+    return res.status(404).json({error: 'No user id'})
   }
 })
 
@@ -98,6 +101,9 @@ router.post('/load-config', (req, res) => {
 // ============= REFRESH METHODS
 
 router.post('/deposit', (req, res) => {
+  console.log(req.body.id);
+  console.log(req.headers);
+  console.log(req.headers.authorization);
   const {id} = req.body;
   deposit[id] = req.headers.authorization;
     user[id]["state"]["isOnline"] = false;

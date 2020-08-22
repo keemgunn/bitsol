@@ -6,14 +6,19 @@
   @mouseout="light_off"
 >
 
-  <LoginBox v-if="this.$store.state.accessLevel === 0" />
+  <LoginBox 
+    v-if="this.$store.state.accessLevel === 0"
+    :id="id"
+    @verify="this.verify"
+  />
 
   <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="{'left':0}"></div>
 
   <App
     v-if="this.$store.state.accessLevel !== 0"
+    :id="id"
     :accessLevel="this.$store.accessLevel"
-    @app-created="recoverConfig"
+    @set-color="setColor"
     @logout="logout"
     @change-theme="changeTheme"
     key="app"
@@ -30,8 +35,6 @@
 
 
 <script>
-import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid';
 
 import App from '@/components/App'
 import LoginBox from '@/components/LoginBox'
@@ -49,45 +52,15 @@ export default {
     },
   }},
   methods: {
-    //___________AUTHORIZATION METHODS__________
-    async login(e) { e.preventDefault();
-                              this.id = '2018317024'
-      let accessTime = new Date();
-      const requestPoint = uuidv4();
-      axios.defaults.headers.common['Authorization'] =
-        await this.issueToken(this.id, 10800, accessTime, requestPoint);
-      this.loadConfig(this.id);
-      this.setColor();
-      this.verify();
-    },
-    async issueToken(id, expiresIn, accessTime, requestPoint) {
-      const { data } = await axios.post('/auth/issue', {id, expiresIn, accessTime, requestPoint}); 
-      this.$store.dispatch('ISSUED', data)
-      return data.accessToken;
-    },
-    loadConfig(id){ this.$store.dispatch('LOAD_CONFIG', {id});
-    },
-    verify(){ this.$store.dispatch('VERIFY'); 
-    },
-    logout(){ this.$store.dispatch('LOGOUT'); this.id = null;
+    //__________ AUTH _________________
+    verify(){ 
+      this.$store.dispatch('VERIFY');
     },
     sessionOut(){
       if(this.$store.state.accessLevel) { // 이미 인증이 되어있다면 
-        axios.post('/auth/deposit', {id: localStorage.id})
+        this.$axios.post('/auth/deposit', {id: localStorage.id})
       }else {
         console.log('no-authorized-history');
-      }
-    },
-    async recoverConfig(){ // from App/$emit(app-created)
-      if(this.id === null && localStorage.id){
-        const {data} = await axios.post('/auth/recover', {id: localStorage.id});
-        axios.defaults.headers.common['Authorization'] = data.accessToken;
-        this.$store.state.id = await localStorage.id;
-        this.$store.state.userName = await localStorage.userName;
-        this.$store.state.colorConfig = await localStorage.colorConfig;
-        this.setColor();
-      } else {
-        this.setColor();
       }
     },
 
@@ -98,14 +71,15 @@ export default {
     async changeTheme(color){
       this.$store.state.colorConfig = color;
       localStorage.colorConfig = color;
-      const {data} = await axios.post('/auth/theme/change', {
+      const {data} = await this.$axios.post('/auth/theme/change', {
         "id": this.$store.state.id ,"color": color})
       console.log("theme set: ", data.color);
       this.setColor();
     },
-    async setColor(){
-      this.themeColor = await this["$store"]["state"]["colors"][this.$store.state.colorConfig];
+    setColor(){
+      this.themeColor = this["$store"]["state"]["colors"][this.$store.state.colorConfig];
     },
+    
     light_on(){
       this["lightening"]["background-color"] = "var(--i70)";
     },
