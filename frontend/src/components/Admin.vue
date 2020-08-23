@@ -55,18 +55,16 @@ export default {
   position: absolute;
   left: 0;
   width: 100vw;
-  height: calc(100% - 164px);
+  height: calc(100% - 200px);
   justify-content: center;
 }
 
 #content-wrapper {
   margin: auto;
-
   width: calc(100vw - 120px);
   min-width: 490px;
   max-width: 710px;
-  height: calc(100% );
-
+  height: 100%;
   background-color: rgba(235, 15, 59, 0.329);
 }
 

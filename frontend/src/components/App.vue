@@ -122,20 +122,21 @@
 
   </div> <!----------- wrapper-header ------------->
 
-  <transition name="fade"> <!-------------------------->
-    <SearchList
-      v-if="this.$store.state.modal.mode === 'search-list'"
-      :keyword="keyword"
-      :searchArr="searchArr"
-      :dbinfo="dbinfo"
-      :coverBottom="coverBottom"
-      @moreinfo="changeCoverBottom"
-      @loading="loading"
-    />
-  </transition>
+  <transition name="fade"><SearchList
+    v-if="this.$store.state.modal.mode === 'search-list'"
+    :keyword="keyword"
+    :searchArr="searchArr"
+    :dbinfo="dbinfo"
+    :coverBottom="coverBottom"
+    @moreinfo="changeCoverBottom"
+    @loading="loading"
+  /></transition>
 
-  <Admin
-  />
+  <transition name="admin-menu"><Admin 
+    v-if="this.$store.state.modal.mode === 'admin'"
+
+  /></transition>
+
 
 </div>
 </template>
@@ -243,7 +244,7 @@ export default {
   height: 100vh;
   min-width: 490px;
   max-width: 710px;
-  background-color: rgba(0, 255, 255, 0.267);
+  // background-color: rgba(0, 255, 255, 0.267);
 }
 
 /* --------------- HEADER-------------- */
