@@ -1,5 +1,5 @@
 <template>
-<div id="app">
+<div class="app">
 
   <div class="wrapper-header" 
   :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}"> <!-------------------------->
@@ -134,6 +134,9 @@
     />
   </transition>
 
+  <Admin
+  />
+
 </div>
 </template>
 
@@ -141,12 +144,14 @@
 import axios from 'axios'
 import SearchList from '@/components/SearchList'
 import Theme from '@/components/Theme'
+import Admin from '@/components/Admin'
 
 export default {
   name: 'App',
   components: {
     SearchList,
-    Theme
+    Theme,
+    Admin,
   },
   props: [],
   data() { return {
@@ -229,7 +234,7 @@ export default {
 
 
 
-<style lang="scss" scoped> #app {
+<style lang="scss" scoped> .app {
 // -------------------------------------------
 // -------------------------------------------
   float: left;
@@ -238,6 +243,7 @@ export default {
   height: 100vh;
   min-width: 490px;
   max-width: 710px;
+  background-color: rgba(0, 255, 255, 0.267);
 }
 
 /* --------------- HEADER-------------- */
@@ -248,7 +254,7 @@ export default {
   user-select: none; -webkit-user-select: none;
   transition: 300ms;
   background-color: var(--i94);
-    background-color: rgb(206, 222, 255);
+    background-color: rgba(70, 131, 255, 0.185);
 
   .admin-menu { //------------------------
     float: right;
@@ -474,7 +480,7 @@ export default {
   height: 45px;
   border-top: 2px solid var(--i30);
   border-bottom: 2px solid var(--i30);
-  background-color: rgba(0, 255, 255, 0.5);
+  background-color: rgba(0, 255, 255, 0.377);
 
   .menu {
     display: inline-block;

@@ -18,8 +18,8 @@ export default new Vuex.Store({
 
     modal: {
       display: 'App',
-      mode: 'search-list',
-      // mode: 'admin',
+      // mode: 'search-list',
+      mode: 'admin',
     },
     
     theme: {
