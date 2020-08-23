@@ -46,7 +46,7 @@
           </div>
           <div class="icon">
             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>arrow_drop_down</title>
+              <title>theme</title>
               <g> 
                 <polygon points="7 10 12 15 17 10"></polygon>
               </g>
@@ -57,16 +57,16 @@
       <transition name="fade">
         <div class="user-menu"
         :class="{'user-menu-selected':(userBoxState===2)}"
-        v-if="userBoxState"
-        @click="$emit('modal', 'mode')">
+        v-if="(userBoxState && this.$store.state.modal.mode === 'search-list') && this.$store.state.auth.accessLevel > 1"
+        @click="$emit('modal','mode','admin')">
           <div class="menu-text">
             관리자
           </div>
-          <div class="icon">
+          <div class="icon-admin">
             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>arrow_drop_down</title>
-              <g> 
-                <polygon points="7 10 12 15 17 10"></polygon>
+              <title>settings</title>
+              <g id="settings-24px">
+                <path d="M19.14,12.94 C19.18,12.64 19.2,12.33 19.2,12 C19.2,11.68 19.18,11.36 19.13,11.06 L21.16,9.48 C21.34,9.34 21.39,9.07 21.28,8.87 L19.36,5.55 C19.24,5.33 18.99,5.26 18.77,5.33 L16.38,6.29 C15.88,5.91 15.35,5.59 14.76,5.35 L14.4,2.81 C14.36,2.57 14.16,2.4 13.92,2.4 L10.08,2.4 C9.84,2.4 9.65,2.57 9.61,2.81 L9.25,5.35 C8.66,5.59 8.12,5.92 7.63,6.29 L5.24,5.33 C5.02,5.25 4.77,5.33 4.65,5.55 L2.74,8.87 C2.62,9.08 2.66,9.34 2.86,9.48 L4.89,11.06 C4.84,11.36 4.8,11.69 4.8,12 C4.8,12.31 4.82,12.64 4.87,12.94 L2.84,14.52 C2.66,14.66 2.61,14.93 2.72,15.13 L4.64,18.45 C4.76,18.67 5.01,18.74 5.23,18.67 L7.62,17.71 C8.12,18.09 8.65,18.41 9.24,18.65 L9.6,21.19 C9.65,21.43 9.84,21.6 10.08,21.6 L13.92,21.6 C14.16,21.6 14.36,21.43 14.39,21.19 L14.75,18.65 C15.34,18.41 15.88,18.09 16.37,17.71 L18.76,18.67 C18.98,18.75 19.23,18.67 19.35,18.45 L21.27,15.13 C21.39,14.91 21.34,14.66 21.15,14.52 L19.14,12.94 Z M12,15.6 C10.02,15.6 8.4,13.98 8.4,12 C8.4,10.02 10.02,8.4 12,8.4 C13.98,8.4 15.6,10.02 15.6,12 C15.6,13.98 13.98,15.6 12,15.6 Z" id="Shape" fill-rule="evenodd"></path>
               </g>
             </svg>
           </div>
@@ -81,7 +81,7 @@
           </div>
           <div class="icon">
             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>Shape Copy</title>
+              <title>logout</title>
               <g transform="translate(7,0)">
                 <polygon transform="translate(5,-5) rotate(45)" points="17.8925565 12.8417938 12.8417938 12.8417938 12.8417938 17.8925565 11.1582062 17.8925565 11.1582062 12.8417938 6.10744349 12.8417938 6.10744349 11.1582062 11.1582062 11.1582062 11.1582062 6.10744349 12.8417938 6.10744349 12.8417938 11.1582062 17.8925565 11.1582062"></polygon>
               </g>
@@ -256,7 +256,7 @@ export default {
       bottom: 18px;
       width: fit-content;
       height: 25px;
-      margin-right: 3px;
+      margin-right: 2px;
       font-family: 'Nanum Square', sans-serif;
       font-size: 14px;
       letter-spacing: 0.21px;
@@ -273,6 +273,12 @@ export default {
         margin-top: 1px;
         width: 24px;
         height: 24px;
+      }
+      .icon-admin {
+        float: left;
+        margin: 3px 7px 0px 3px;
+        width: 19px;
+        height: 19px;
       }
     }.user-menu:hover {
       cursor: pointer;
