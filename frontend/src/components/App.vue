@@ -1,10 +1,10 @@
 <template>
 <div id="app">
 
-  <div class="wrapper-header" :class="{'wrapper-header-admin':this.$store.state.modal.scopeTab === 'admin'}"> <!-------------------------->
+  <div class="wrapper-header" :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}"> <!-------------------------->
 
     <form id="searchBox" 
-    v-if="this.$store.state.modal.scopeTab === 'search-list'"
+    v-if="this.$store.state.modal.mode === 'search-list'"
     @submit.prevent
     autocomplete="off">
       <input
@@ -22,7 +22,7 @@
     </form>
 
     <div id="admin-tab"
-    v-if="this.$store.state.modal.scopeTab === 'admin'">
+    v-if="this.$store.state.modal.mode === 'admin'">
       <div class="menu" :class="{'menu-selected':(adminMenu==='index')}" @click="toggle('adminMenu', 'index')">개요</div>
       <div class="menu" :class="{'menu-selected':(adminMenu==='db')}" @click="toggle('adminMenu', 'db')">DB 관리</div>
       <div class="menu" :class="{'menu-selected':(adminMenu==='user')}" @click="toggle('adminMenu', 'user')">사용자 관리</div>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="user-box"
-    :class="{'user-box-bold':userBoxState, 'user-box-admin':(this.$store.state.modal.scopeTab === 'admin')}"
+    :class="{'user-box-bold':userBoxState, 'user-box-admin':(this.$store.state.modal.mode === 'admin')}"
     @mouseenter="toggle('userBoxState', 1)"
     @mouseleave="toggle('userBoxState', 0);">
       <div id="account">
@@ -43,6 +43,24 @@
         @click="toggle('userBoxState',2)">
           <div class="menu-text">
             테마 변경
+          </div>
+          <div class="icon">
+            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>arrow_drop_down</title>
+              <g> 
+                <polygon points="7 10 12 15 17 10"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="user-menu"
+        :class="{'user-menu-selected':(userBoxState===2)}"
+        v-if="userBoxState"
+        @click="$emit('modal', 'mode')">
+          <div class="menu-text">
+            관리자
           </div>
           <div class="icon">
             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -90,7 +108,7 @@
 
   <transition name="fade"> <!-------------------------->
     <SearchList
-      v-if="this.$store.state.modal.scopeTab === 'search-list'"
+      v-if="this.$store.state.modal.mode === 'search-list'"
       :keyword="keyword"
       :searchArr="searchArr"
       :dbinfo="dbinfo"
@@ -238,7 +256,7 @@ export default {
       bottom: 18px;
       width: fit-content;
       height: 25px;
-      margin-right: 1px;
+      margin-right: 3px;
       font-family: 'Nanum Square', sans-serif;
       font-size: 14px;
       letter-spacing: 0.21px;

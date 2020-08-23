@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="wrapper-result" v-if="this.$store.state.modal.scopeTab === 'refg' || 'info'">
+  <div class="wrapper-result" v-if="this.$store.state.modal.mode === 'refg' || 'info'">
     <div class="content-overflow">
       <div class="result"
       :key="record.student_id"
@@ -59,7 +59,7 @@
     <div class="cover-scroll-bottom"></div>
   </div>
 
-  <div id="wrapper-no-result" v-if="searchArr.length !== 0 && this.$store.state.modal.scopeTab === 'refg'">
+  <div id="wrapper-no-result" v-if="searchArr.length !== 0 && this.$store.state.modal.mode === 'refg'">
   </div>
 
 </div>

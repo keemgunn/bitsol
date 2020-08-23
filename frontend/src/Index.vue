@@ -11,18 +11,19 @@
     @verify="this.verify"
   />
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="{'left':0}"></div>
+  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'left':0}"></div>
 
   <App
     v-if="this.$store.state.auth.accessLevel !== 0"
     :accessLevel="this.$store.state.auth.accessLevel"
     key="app"
+    @modal="setModal"
   />
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.scopeTab === ('search-list')" :style="{'right':0}"></div>
+  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'right':0}"></div>
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.scopeTab === ('search-list')"></div>
+  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.mode === ('search-list')"></div>
 
 <router-view></router-view>
 </div>

@@ -6,20 +6,20 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
-const defaultColor = "purple"
+const defaultColor = "default"
 
 export default new Vuex.Store({
   state: {
 
     auth: {
-      id:null, accessLevel:0, userName:null,
-      // id: '2018317024', accessLevel: 3, userName: "김건",
+      // id:null, accessLevel:0, userName:null,
+      id: '2018317024', accessLevel: 3, userName: "김건",
     },
 
     modal: {
       display: 'App',
-      scopeTab: 'search-list',
-      // scopeTab: 'admin',
+      mode: 'search-list',
+      // mode: 'admin',
     },
     
     theme: {
