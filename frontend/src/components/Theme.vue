@@ -3,7 +3,7 @@
 
   <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <title>Orb</title>
+    <title>{{color}}</title>
 
     <circle 
     :class="{'orb-border':1, 'selected': isSelected}"
@@ -64,9 +64,9 @@ export default {
   display: block;
   pointer-events: none;
   position: relative;
+  top: 2px;
   width: 24px;
   height: 24px;
-  top: 2px;
   margin-left: 2px;
   fill: var(--i94);
 }

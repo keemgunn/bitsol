@@ -29,6 +29,14 @@
       <div class="menu" :class="{'menu-selected':(adminMenu==='refg')}" @click="toggle('adminMenu', 'refg')">냉장고팩 관리</div>
     </div>
 
+    <div class="admin-menu">
+      <div class="admin-menu-text">관리자</div>
+      <div class="admin-menu-icon"></div>
+
+    </div>
+
+
+
     <div class="user-box"
     :class="{'user-box-bold':userBoxState, 'user-box-admin':(this.$store.state.modal.mode === 'admin')}"
     @mouseenter="toggle('userBoxState', 1)"
@@ -104,6 +112,7 @@
         </div>
       </transition>
     </div>
+
   </div> <!----------- wrapper-header ------------->
 
   <transition name="fade"> <!-------------------------->
@@ -225,9 +234,37 @@ export default {
   background-color: var(--i94);
     background-color: rgb(86, 139, 255);
 
-  .user-box { //------------------------
+  .admin-menu { //------------------------
     position: relative;
     bottom: 86px;
+    left: 323px;
+    width: 200px;
+    height: 30px;
+    justify-content: right;
+
+
+    background-color:blueviolet;
+
+
+    .admin-menu-text {
+      display: inline-block;
+      font-family: 'Nanum Square', sans-serif;
+      font-size: 16px;
+      text-align: right;
+      background-color: yellow;
+    }
+    .admin-menu-icon {
+      display: inline-block;
+      margin: 3px 7px 0px 3px;
+      width: 19px;
+      height: 19px;
+      background-color: bisque;
+    }
+  }
+
+  .user-box { //------------------------
+    position: relative;
+    bottom: 116px;
     width: fit-content;
     height: 30px;
     margin-top: 4px;
@@ -324,8 +361,11 @@ export default {
     height: 28px;
     background-color: fuchsia;
     .orb {
-      float: left;
+      display: inline-block;
+      width: 28px;
+      height: 28px;
       margin-right: 7px;
+      background-color: gold;
     }
   }
 

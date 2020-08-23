@@ -2,12 +2,6 @@
 <div id="search-list">
 
   <div id="optionBox">
-    <transition name="fade">
-      <div id="deadline">
-        <div id="han" v-if="!moreinfo">보관팩 기간: </div>
-        <div id="date" v-if="!moreinfo">{{dbinfo.deadline}} </div>
-      </div>
-    </transition>
     <div class="moreinfo" @click="toggleInfoScope">
       <div :class="{'moreinfo-des':1, 'moreinfo-des-on':moreinfo }">학생 정보 보기</div>
       <div class="switch">
@@ -25,7 +19,12 @@
         </svg>
       </div>
     </div>
-
+    <transition name="fade">
+      <div id="deadline" v-if="!moreinfo">
+        <div id="han">보관팩 기간: </div>
+        <div id="date">{{dbinfo.deadline}}88/88</div>
+      </div>
+    </transition>
   </div>
 
   <div id="wrapper-no-result" v-if="searchArr.length === 0">
@@ -857,12 +856,13 @@ export default {
   background-color: rgba(68, 255, 68, 0.397);
 
   #deadline {
-    float: left;
-    margin-left: 20px;
+    position: relative;
     left: 20px;
+    width: 200px;
+    height: 35px;
+    background-color: antiquewhite;
     #han { // -------------------------
       display: inline-block;
-      position: relative;
       font-family: 'Nanum Square', sans-serif;
       font-weight: 800;
       font-size: 21px;
