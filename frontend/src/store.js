@@ -6,7 +6,7 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
-const defaultColor = "default"
+const defaultColor = "purple"
 
 export default new Vuex.Store({
   state: {
