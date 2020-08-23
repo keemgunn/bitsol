@@ -853,14 +853,14 @@ export default {
   user-select: none;
   -webkit-user-select: none;
   background-color: var(--i94);
-  background-color: rgba(68, 255, 68, 0.397);
+  // background-color: rgba(68, 255, 68, 0.397);
 
   #deadline {
     position: relative;
     left: 20px;
     width: 200px;
     height: 35px;
-    background-color: antiquewhite;
+    // background-color: antiquewhite;
     #han { // -------------------------
       display: inline-block;
       font-family: 'Nanum Square', sans-serif;

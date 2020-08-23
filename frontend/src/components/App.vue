@@ -1,9 +1,10 @@
 <template>
 <div id="app">
 
-  <div class="wrapper-header" :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}"> <!-------------------------->
+  <div class="wrapper-header" 
+  :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}"> <!-------------------------->
 
-    <form id="searchBox" 
+    <transition><form id="searchBox" 
     v-if="this.$store.state.modal.mode === 'search-list'"
     @submit.prevent
     autocomplete="off">
@@ -19,22 +20,46 @@
         <div class="load-bar" v-if="loadingState"></div>
       </div>
       <div id="searchIcon"></div>
-    </form>
+    </form></transition>
 
-    <div id="admin-tab"
+    <transition ><div id="admin-tab"
     v-if="this.$store.state.modal.mode === 'admin'">
       <div class="menu" :class="{'menu-selected':(adminMenu==='index')}" @click="toggle('adminMenu', 'index')">개요</div>
       <div class="menu" :class="{'menu-selected':(adminMenu==='db')}" @click="toggle('adminMenu', 'db')">DB 관리</div>
       <div class="menu" :class="{'menu-selected':(adminMenu==='user')}" @click="toggle('adminMenu', 'user')">사용자 관리</div>
       <div class="menu" :class="{'menu-selected':(adminMenu==='refg')}" @click="toggle('adminMenu', 'refg')">냉장고팩 관리</div>
+    </div></transition>
+
+    <div class="admin-menu" :class="{'admin-menu-on':this.$store.state.modal.mode === 'admin'}"
+    v-if="this.$store.state.auth.accessLevel > 1"
+    @click="modeChange()">
+      <div class="admin-menu-icon"
+      v-if="this.$store.state.modal.mode === 'search-list'">
+        <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>settings</title>
+          <g id="settings-24px">
+            <path d="M19.14,12.94 C19.18,12.64 19.2,12.33 19.2,12 C19.2,11.68 19.18,11.36 19.13,11.06 L21.16,9.48 C21.34,9.34 21.39,9.07 21.28,8.87 L19.36,5.55 C19.24,5.33 18.99,5.26 18.77,5.33 L16.38,6.29 C15.88,5.91 15.35,5.59 14.76,5.35 L14.4,2.81 C14.36,2.57 14.16,2.4 13.92,2.4 L10.08,2.4 C9.84,2.4 9.65,2.57 9.61,2.81 L9.25,5.35 C8.66,5.59 8.12,5.92 7.63,6.29 L5.24,5.33 C5.02,5.25 4.77,5.33 4.65,5.55 L2.74,8.87 C2.62,9.08 2.66,9.34 2.86,9.48 L4.89,11.06 C4.84,11.36 4.8,11.69 4.8,12 C4.8,12.31 4.82,12.64 4.87,12.94 L2.84,14.52 C2.66,14.66 2.61,14.93 2.72,15.13 L4.64,18.45 C4.76,18.67 5.01,18.74 5.23,18.67 L7.62,17.71 C8.12,18.09 8.65,18.41 9.24,18.65 L9.6,21.19 C9.65,21.43 9.84,21.6 10.08,21.6 L13.92,21.6 C14.16,21.6 14.36,21.43 14.39,21.19 L14.75,18.65 C15.34,18.41 15.88,18.09 16.37,17.71 L18.76,18.67 C18.98,18.75 19.23,18.67 19.35,18.45 L21.27,15.13 C21.39,14.91 21.34,14.66 21.15,14.52 L19.14,12.94 Z M12,15.6 C10.02,15.6 8.4,13.98 8.4,12 C8.4,10.02 10.02,8.4 12,8.4 C13.98,8.4 15.6,10.02 15.6,12 C15.6,13.98 13.98,15.6 12,15.6 Z" id="Shape" fill-rule="evenodd"></path>
+          </g>
+        </svg>
+      </div>
+      <div class="admin-menu-text"
+      v-if="this.$store.state.modal.mode === 'search-list'">
+        관리자
+      </div>
+      <div class="admin-menu-icon"
+      v-if="this.$store.state.modal.mode === 'admin'">
+        <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>settings</title>
+          <g id="settings-24px">
+            <path d="M19.14,12.94 C19.18,12.64 19.2,12.33 19.2,12 C19.2,11.68 19.18,11.36 19.13,11.06 L21.16,9.48 C21.34,9.34 21.39,9.07 21.28,8.87 L19.36,5.55 C19.24,5.33 18.99,5.26 18.77,5.33 L16.38,6.29 C15.88,5.91 15.35,5.59 14.76,5.35 L14.4,2.81 C14.36,2.57 14.16,2.4 13.92,2.4 L10.08,2.4 C9.84,2.4 9.65,2.57 9.61,2.81 L9.25,5.35 C8.66,5.59 8.12,5.92 7.63,6.29 L5.24,5.33 C5.02,5.25 4.77,5.33 4.65,5.55 L2.74,8.87 C2.62,9.08 2.66,9.34 2.86,9.48 L4.89,11.06 C4.84,11.36 4.8,11.69 4.8,12 C4.8,12.31 4.82,12.64 4.87,12.94 L2.84,14.52 C2.66,14.66 2.61,14.93 2.72,15.13 L4.64,18.45 C4.76,18.67 5.01,18.74 5.23,18.67 L7.62,17.71 C8.12,18.09 8.65,18.41 9.24,18.65 L9.6,21.19 C9.65,21.43 9.84,21.6 10.08,21.6 L13.92,21.6 C14.16,21.6 14.36,21.43 14.39,21.19 L14.75,18.65 C15.34,18.41 15.88,18.09 16.37,17.71 L18.76,18.67 C18.98,18.75 19.23,18.67 19.35,18.45 L21.27,15.13 C21.39,14.91 21.34,14.66 21.15,14.52 L19.14,12.94 Z M12,15.6 C10.02,15.6 8.4,13.98 8.4,12 C8.4,10.02 10.02,8.4 12,8.4 C13.98,8.4 15.6,10.02 15.6,12 C15.6,13.98 13.98,15.6 12,15.6 Z" id="Shape" fill-rule="evenodd"></path>
+          </g>
+        </svg>
+      </div>
+      <div class="admin-menu-text"
+      v-if="this.$store.state.modal.mode === 'admin'">
+        학생 목록
+      </div>
     </div>
-
-    <div class="admin-menu">
-      <div class="admin-menu-text">관리자</div>
-      <div class="admin-menu-icon"></div>
-
-    </div>
-
 
 
     <div class="user-box"
@@ -57,24 +82,6 @@
               <title>theme</title>
               <g> 
                 <polygon points="7 10 12 15 17 10"></polygon>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </transition>
-      <transition name="fade">
-        <div class="user-menu"
-        :class="{'user-menu-selected':(userBoxState===2)}"
-        v-if="(userBoxState && this.$store.state.modal.mode === 'search-list') && this.$store.state.auth.accessLevel > 1"
-        @click="$emit('modal','mode','admin')">
-          <div class="menu-text">
-            관리자
-          </div>
-          <div class="icon-admin">
-            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>settings</title>
-              <g id="settings-24px">
-                <path d="M19.14,12.94 C19.18,12.64 19.2,12.33 19.2,12 C19.2,11.68 19.18,11.36 19.13,11.06 L21.16,9.48 C21.34,9.34 21.39,9.07 21.28,8.87 L19.36,5.55 C19.24,5.33 18.99,5.26 18.77,5.33 L16.38,6.29 C15.88,5.91 15.35,5.59 14.76,5.35 L14.4,2.81 C14.36,2.57 14.16,2.4 13.92,2.4 L10.08,2.4 C9.84,2.4 9.65,2.57 9.61,2.81 L9.25,5.35 C8.66,5.59 8.12,5.92 7.63,6.29 L5.24,5.33 C5.02,5.25 4.77,5.33 4.65,5.55 L2.74,8.87 C2.62,9.08 2.66,9.34 2.86,9.48 L4.89,11.06 C4.84,11.36 4.8,11.69 4.8,12 C4.8,12.31 4.82,12.64 4.87,12.94 L2.84,14.52 C2.66,14.66 2.61,14.93 2.72,15.13 L4.64,18.45 C4.76,18.67 5.01,18.74 5.23,18.67 L7.62,17.71 C8.12,18.09 8.65,18.41 9.24,18.65 L9.6,21.19 C9.65,21.43 9.84,21.6 10.08,21.6 L13.92,21.6 C14.16,21.6 14.36,21.43 14.39,21.19 L14.75,18.65 C15.34,18.41 15.88,18.09 16.37,17.71 L18.76,18.67 C18.98,18.75 19.23,18.67 19.35,18.45 L21.27,15.13 C21.39,14.91 21.34,14.66 21.15,14.52 L19.14,12.94 Z M12,15.6 C10.02,15.6 8.4,13.98 8.4,12 C8.4,10.02 10.02,8.4 12,8.4 C13.98,8.4 15.6,10.02 15.6,12 C15.6,13.98 13.98,15.6 12,15.6 Z" id="Shape" fill-rule="evenodd"></path>
               </g>
             </svg>
           </div>
@@ -180,6 +187,14 @@ export default {
         this.fitCoverBottom(this.searchArr.length, this.recordHeight);
       }
     },
+    modeChange(){
+      if(this.$store.state.modal.mode === 'search-list'){
+        this.$store.state.modal.mode = 'admin'
+      }else{
+        this.$store.state.modal.mode = 'search-list'
+      }
+    },
+
 
     //___________ LeffiOAD/SEARCH DATABASE __________
     async getDBinfo(){
@@ -231,47 +246,63 @@ export default {
   height: 157px;
   padding: 20px 20px 0px 20px;
   user-select: none; -webkit-user-select: none;
+  transition: 300ms;
   background-color: var(--i94);
-    background-color: rgb(86, 139, 255);
+    background-color: rgb(206, 222, 255);
 
   .admin-menu { //------------------------
+    float: right;
     position: relative;
-    bottom: 86px;
-    left: 323px;
-    width: 200px;
-    height: 30px;
-    justify-content: right;
-
-
-    background-color:blueviolet;
-
-
+    bottom: 82px;
+    width: fit-content;
+    height: 24px;
+    // background-color:rgb(230, 206, 253);
     .admin-menu-text {
-      display: inline-block;
+      float: right;
+      position: relative;
+      top: 4px;
       font-family: 'Nanum Square', sans-serif;
       font-size: 16px;
       text-align: right;
-      background-color: yellow;
+      color: var(--i30);
+      // background-color: yellow;
     }
     .admin-menu-icon {
-      display: inline-block;
-      margin: 3px 7px 0px 3px;
+      float: right;
+      margin: 3px 3px 0px 3px;
       width: 19px;
       height: 19px;
-      background-color: bisque;
+      fill: var(--i30);
+      // background-color: bisque;
     }
+  }.admin-menu:hover {
+    cursor: pointer;
+    .admin-menu-text {
+      top: 3px;
+      font-weight: 700;
+      color: var(--accent01);
+    }
+    .admin-menu-icon {
+      fill: var(--accent01);
+    }
+  }.admin-menu-on {
+    bottom: 50px;
   }
+
+
+
 
   .user-box { //------------------------
     position: relative;
-    bottom: 116px;
+    bottom: 86px;
     width: fit-content;
     height: 30px;
     margin-top: 4px;
     font-weight: 400;
     transition: 200ms;
     color: var(--i45);
-      background-color: cornsilk;
+    transition: 200ms;
+      // background-color: cornsilk;
     
     #account { //----------------
       float: left;
@@ -355,17 +386,16 @@ export default {
 
   .theme-list{ // -------------------
     margin-top: 27px;
-    padding-top: 14px;
+    padding-top: 10px;
     padding-bottom: 20px;
     width: 100%;
     height: 28px;
-    background-color: fuchsia;
+    // background-color: fuchsia;
     .orb {
       display: inline-block;
       width: 28px;
       height: 28px;
       margin-right: 7px;
-      background-color: gold;
     }
   }
 
@@ -542,6 +572,27 @@ export default {
 }
 .orb-fade-leave-active {
   transition: all 200ms;
+}
+
+
+.admin-menu-enter {
+  opacity: 0;
+}
+.admin-menu-enter-to {
+  opacity: 1;
+}
+.admin-menu-enter-active{
+  transition: all 300ms;
+  transition-delay: 300ms;
+}
+.admin-menu-leave {
+  opacity: 1;
+}
+.admin-menu-leave-to {
+  opacity: 0;
+}
+.admin-menu-leave-active {
+  transition: all 280ms;
 }
 
 
