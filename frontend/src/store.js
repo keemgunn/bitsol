@@ -6,7 +6,7 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
-const defaultColor = "default"
+const defaultColor = "purple"
 
 export default new Vuex.Store({
   state: {
@@ -75,11 +75,6 @@ export default new Vuex.Store({
     },
 
     //___________ UI METHODS _______
-    SET_MODAL (state, {data}) {
-      console.log("$$$ mutation:LOAD_CONFIG ...$store");
-      state["modal"][data.property] = data.state;
-    },
-
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
       console.log(color);
@@ -88,6 +83,7 @@ export default new Vuex.Store({
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
 
+    
     ALERT (state, msg) {
       console.log(msg);
       state.alert = msg;
@@ -153,11 +149,6 @@ export default new Vuex.Store({
       axios.post('/auth/theme/change', {id: localStorage.id, color:color});
     },
 
-    SET_MODAL ({commit}, {property, state}) {
-      console.log("$$$ action:SET_MODAL ...$store");
-      let data = {property, state};
-      commit('SET_MODAL', {data});
-    },
 
 
 

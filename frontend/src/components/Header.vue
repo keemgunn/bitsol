@@ -5,17 +5,15 @@
 
     <User/>
 
-    <AdminBtn
-      v-if="this.$store.state.auth.accessLevel > 1"
+    <AdminBtn v-if="this.$store.state.auth.accessLevel > 1"/>
+
+    <SearchBox 
+      v-if="this.$store.state.modal.mode === 'search'"
+      :searchArr="searchArr"
+      :recordHeight="recordHeight"
+      :coverBottom="coverBottom"
+      :loadingState="loadingState"
     />
-
-
-
-
-
-
-
-
 
 
   </div>
@@ -27,35 +25,24 @@
 <script>
 import User from '@/components/Header/User'
 import AdminBtn from '@/components/Header/AdminBtn'
+import SearchBox from '@/components/Header/SearchBox'
 import axios from 'axios'
 
 
 export default {
   name: "Header",
   components: {
-    User, AdminBtn
+    User, AdminBtn, SearchBox
   },
   props: [
-
+    "searchArr",
+    "recordHeight",
+    "coverBottom",
+    "loadingState",
+    "dbinfo"
   ],
-  data() { return {
-
-    //__________ UI
-    recordHeight: 66,
-    coverBottom: {
-      "height": "100%"
-    },
-
-    //__________ DB
-    dbinfo: {},
-    keyword: '',
-    searchArr: [],
-
-  }},
-  computed: {
-
-  },
   methods: {
+
     //___________ AUTH __________
     async getDBinfo(){
       console.log('### request ...@App/getDBinfo');
@@ -65,37 +52,11 @@ export default {
     },
 
     //___________ LOAD/SEARCH DATABASE __________
-    async search(){
-      let {data} = await axios.post('/db/search', {keyword: this.keyword});
+    async search(keyword){
+      let {data} = await axios.post('/db/search', {keyword});
       this.searchArr = data.arg;
       this.fitCoverBottom(this.searchArr.length, this.recordHeight);
     },
-    loading(bool){
-      this.loadingState = bool;
-    },
-
-    //___________ UI ACTION __________
-
-    fitCoverBottom(count, height){
-      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
-    },
-    changeCoverBottom(state){
-      if(state){
-        this.recordHeight = 146;
-        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-      }else{
-        this.recordHeight = 66;
-        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-      }
-    },
-    modeChange(){
-      if(this.$store.state.modal.mode === 'search-list'){
-        this.$store.state.modal.mode = 'admin'
-      }else{
-        this.$store.state.modal.mode = 'search-list'
-      }
-    },
-
 
   },
   created() { //_____________________________
@@ -104,15 +65,6 @@ export default {
       console.log('### configuration recovered ... @App');
     }
     this.getDBinfo();
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 
@@ -146,7 +98,6 @@ export default {
   height: 100%;
   background-color: var(--i94);
 }
-
 
 
 // ================== ANIMATION =================

@@ -20,12 +20,15 @@
 
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
 export default {
   name: "Search",
   props: [
-
+    "searchArr",
+    "recordHeight",
+    "coverBottom",
+    "loadingState"
   ],
   data() { return {
 
@@ -34,29 +37,37 @@ export default {
 
   },
   methods: {
-    async getDBinfo(){
-      console.log('### request ...@App/getDBinfo');
-      let {data} = await axios.get('/db/info');
-      this.dbinfo = data;
-      console.log(this.dbinfo);
+
+    //___________ UI ACTION __________
+    fitCoverBottom(count, height){
+      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
     },
+    changeCoverBottom(state){
+      if(state){
+        this.recordHeight = 146;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }else{
+        this.recordHeight = 66;
+        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      }
+    },
+    loading(bool){
+      this.loadingState = bool;
+    },
+
   },
   created() {
-    if(this.$store.state.auth.id === null){
-      this.$store.dispatch('RECOVER');
-      console.log('### configuration recovered ... @App');
-    }
-    this.getDBinfo();
+
   },
   mounted() {
-    
+
   },
   beforeUpdate() {
-    
+    this.loading(1);
   },
-  beforeCreate() {
-    
-  },
+  updated() {
+    this.loading(1);
+  }
 }
 </script>
 
@@ -71,7 +82,6 @@ export default {
   justify-content: center;
   align-items: center;
   user-select: none; -webkit-user-select: none;
-  background-color: rgba(151, 23, 255, 0.226);
 }
 #content {
   position: relative; top: 0; left: 0;
@@ -80,7 +90,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
-  background-color: rgb(0, 224, 150);
+  // background-color: rgb(0, 224, 150);
 }
 
 

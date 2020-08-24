@@ -13,13 +13,21 @@
 
   <Header 
     v-if="this.$store.state.auth.accessLevel > 0"
+    :dbinfo="dbinfo"
+    :searchArr="searchArr"
+    :recordHeight="recordHeight"
+    :coverBottom="coverBottom"
+    :loadingState="loadingState"
   />
 
   <Search
     v-if="(this.$store.state.auth.accessLevel > 0)
     && (this.$store.state.modal.mode === 'search')"
+    :searchArr="searchArr"
+    :recordHeight="recordHeight"
+    :coverBottom="coverBottom"
+    :loadingState="loadingState"
   />
-
 
   <!-- <Admin /> -->
 
@@ -42,15 +50,23 @@ export default {
   name: 'Index',
   components: { LoginBox, Header, Search, },
   data() { return {
-    themeColor: {},
+    dbinfo: {},
 
+    // _______ UI STATE
+    themeColor: {},
     lightening: {
       "top" : "0px",
       "left": "0px",
       "background-color": "var(--i94)"
     },
 
+    // ________ SEARCH METHOD
     searchArr: [],
+    recordHeight: 66,
+    coverBottom: {
+      "height": "100%"
+    },
+    loadingState: 0,
 
   }},
   methods: {
@@ -67,12 +83,6 @@ export default {
     },
 
     //______________ UI METHODS _____________
-
-    setModal(property, state){
-      this.$store.dispatch('SET_MODAL', {property, state});
-      console.log('### modal set ...@Index/setModal');
-    },
-    
     light_on(){
       this["lightening"]["background-color"] = "var(--i70)";
     },light_off(){
@@ -80,12 +90,14 @@ export default {
     },light_move(e){
       this.lightening.top = String(e.pageY) + "px";
       this.lightening.left = String(e.pageX) + "px";
-    }
+    },
+
+
+
 
   }, 
   
   created() {
-    // this.setColor();
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", () => {
       this.sessionOut();

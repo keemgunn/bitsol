@@ -56,7 +56,6 @@
 </template>
 
 
-
 <script>
 import Theme from '@/components/Theme'
 
@@ -65,37 +64,15 @@ export default {
   components: {
     Theme
   },
-  props: [
-
-  ],
   data() { return {
     userBoxState: 0,
   }},
-  computed: {
-
-  },
   methods: {
     logout(){ this.$store.dispatch('LOGOUT');
     },
-
     toggle(target, config){
       this[target] = config;
     },
-
-
-
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 </script>
@@ -183,7 +160,6 @@ export default {
 }
 
 
-
 // ================== ANIMATION =================
 
 .fade-enter-active, .fade-leave-active {
@@ -213,10 +189,6 @@ export default {
 .orb-fade-leave-active {
   transition: all 200ms;
 }
-
-
-
-
 
 
 </style>
