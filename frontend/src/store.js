@@ -6,7 +6,7 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
-const defaultColor = "purple"
+const defaultColor = "default"
 
 export default new Vuex.Store({
   state: {
@@ -19,6 +19,12 @@ export default new Vuex.Store({
     modal: {
       mode: 'search', 
         // search, admin
+      search: {
+        moreinfo: false,
+        recordHeight: 66,
+        coverBottom: { "height": "100%" },
+        loadingState: 0
+      }
     },
     
     theme: {
@@ -83,7 +89,7 @@ export default new Vuex.Store({
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
 
-    
+
     ALERT (state, msg) {
       console.log(msg);
       state.alert = msg;

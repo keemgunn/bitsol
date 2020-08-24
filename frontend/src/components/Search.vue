@@ -6,10 +6,14 @@
 <div id="content">
 
   <div id="option">
+    <Deadline 
+      v-if="recordHeight === 66" 
+      :dbinfo="dbinfo"
+    />
 
-    <ScopeBtn @change-scope="changeCoverBottom"/>
-
-
+    <ScopeBtn 
+      @change-scope="changeCoverBottom"
+    />
   </div>
 
 
@@ -35,12 +39,13 @@
 
 <script>
 import ScopeBtn from '@/components/Search/ScopeBtn'
+import Deadline from '@/components/Search/Deadline'
 // import axios from 'axios';
 
 export default {
   name: "Search",
   components: {
-    ScopeBtn, 
+    ScopeBtn, Deadline
   },
   props: [
     "dbinfo",
@@ -111,20 +116,20 @@ export default {
   height: 100%;
   // background-color: rgb(0, 224, 150);
 }
+
 #option {
   position: absolute; top: 0; left: 0;
   width: 100%;
   height: 86px;
   background-color: var(--i94);
 }
+
 #list {
   position: absolute; top: 86px; left: 0;
   width: 100%;
   height: calc(100% - 86px);
   background-color: rgba(255, 0, 191, 0.493);
 }
-
-
 
 
 

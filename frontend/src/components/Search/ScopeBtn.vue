@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped> #scope-btn {
-  position: absolute; top: 26px; right: 0;
+  position: absolute; top: 24px; right: 0;
   width: fit-content;
   height: 16px;
   transition: 400ms;
