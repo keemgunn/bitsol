@@ -5,6 +5,10 @@
 
     <User/>
 
+    <AdminBtn
+      v-if="this.$store.state.auth.accessLevel > 1"
+    />
+
 
 
 
@@ -21,15 +25,15 @@
 
 
 <script>
-import User from '@/components/User'
+import User from '@/components/Header/User'
+import AdminBtn from '@/components/Header/AdminBtn'
 import axios from 'axios'
-
 
 
 export default {
   name: "Header",
   components: {
-    User, 
+    User, AdminBtn
   },
   props: [
 

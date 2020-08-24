@@ -127,6 +127,7 @@ export default {
   margin-right: 10px;
   width: fit-content;
   height: 28px;
+  transition: 300ms;
   // background-color: aqua;
 }
 
@@ -165,7 +166,7 @@ export default {
   width: 0%;
   height: 3px;
   background-color: var(--i30);
-  transition: 200ms;
+  transition: 300ms;
   animation-timing-function: ease-in-out;
 }.border-expand {
   pointer-events: none;
