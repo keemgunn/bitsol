@@ -163,9 +163,9 @@ export default {
     dbinfo: {},
 
     // ------ UI ---
-    loadingState: 0,
+          loadingState: 0,
     userBoxState: 0,
-    adminMenu: 'db',
+          adminMenu: 'db',
 
     // ------ search-list ---
     recordHeight: 66,

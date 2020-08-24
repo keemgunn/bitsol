@@ -35,6 +35,7 @@ export default {
   },
   methods: {
     changeTheme() {
+      console.log('~ Theme/changeTheme()');
       this.$store.dispatch('CHANGE_THEME', {color: this.color})
     }
   },
@@ -48,6 +49,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#theme {
+  float: left;
+  margin-right: 5px;
+}
 
 .orb-border {
   display: block;

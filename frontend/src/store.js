@@ -17,7 +17,7 @@ export default new Vuex.Store({
     },
 
     modal: {
-      display: 'search', 
+      mode: 'search', 
         // search, admin
     },
     

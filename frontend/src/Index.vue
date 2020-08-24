@@ -17,14 +17,14 @@
 
   <Search
     v-if="(this.$store.state.auth.accessLevel > 0)
-    && (this.$store.state.modal.display === 'search')"
+    && (this.$store.state.modal.mode === 'search')"
   />
 
 
   <!-- <Admin /> -->
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.display === ('search')"></div>
+  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.mode === ('search')"></div>
 
 <router-view></router-view>
 </div>
