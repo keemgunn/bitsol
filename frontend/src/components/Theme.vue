@@ -55,7 +55,6 @@ export default {
 }
 
 .orb-border {
-  display: block;
   width: 28px;
   height: 28px;
   fill: var(--i94);
@@ -66,7 +65,6 @@ export default {
 }
 
 .orb-bg {
-  display: block;
   pointer-events: none;
   position: relative;
   top: 2px;
@@ -77,7 +75,6 @@ export default {
 }
 
 .orb-accent {
-  display: block;
   pointer-events: none;
   position: relative;
   top: 2px;
