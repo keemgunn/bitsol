@@ -1,12 +1,11 @@
 <template>
 <div id="deadline">
 
-
     <div id="title">보관팩 기간: </div>
+
     <div id="date">8/24{{dbinfo.deadline}}</div>
+
     <div id="change">변경</div>
-
-
 
 </div>
 </template>
