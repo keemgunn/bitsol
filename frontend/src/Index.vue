@@ -23,6 +23,7 @@
   <Search
     v-if="(this.$store.state.auth.accessLevel > 0)
     && (this.$store.state.modal.mode === 'search')"
+    :dbinfo="dbinfo"
     :searchArr="searchArr"
     :recordHeight="recordHeight"
     :coverBottom="coverBottom"
@@ -123,7 +124,7 @@ export default {
   height: 100vh;
   justify-content: center;
   align-items: center;
-  // overflow: hidden;
+  overflow: hidden;
   font-family: 'Space Mono', 'Barlow', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

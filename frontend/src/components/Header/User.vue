@@ -89,7 +89,7 @@ export default {
   letter-spacing: 0.24px;
   color: var(--i45);
   fill: var(--i45);
-  background-color: wheat;
+  // background-color: wheat;
 }.user:hover {
   color: var(--i30);
 }.user-expand {

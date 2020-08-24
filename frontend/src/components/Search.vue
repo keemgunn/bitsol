@@ -3,28 +3,47 @@
 <div id="search">
 <div class="cover-app-side" :style="{'left':0}"></div>
 <div class="cover-app-side" :style="{'right':0}"></div>
-
 <div id="content">
+
+  <div id="option">
+
+    <ScopeBtn @change-scope="changeCoverBottom"/>
+
+
+  </div>
+
+
+  <div id="list">
+
+
+  </div>
+
+
+
+
+
+
+
+
+
 
 
 </div>
-
-
-
-
-
-
 </div>
 </template>
 
 
-
 <script>
+import ScopeBtn from '@/components/Search/ScopeBtn'
 // import axios from 'axios';
 
 export default {
   name: "Search",
+  components: {
+    ScopeBtn, 
+  },
   props: [
+    "dbinfo",
     "searchArr",
     "recordHeight",
     "coverBottom",
@@ -92,7 +111,18 @@ export default {
   height: 100%;
   // background-color: rgb(0, 224, 150);
 }
-
+#option {
+  position: absolute; top: 0; left: 0;
+  width: 100%;
+  height: 86px;
+  background-color: var(--i94);
+}
+#list {
+  position: absolute; top: 86px; left: 0;
+  width: 100%;
+  height: calc(100% - 86px);
+  background-color: rgba(255, 0, 191, 0.493);
+}
 
 
 
