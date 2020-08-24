@@ -1,9 +1,6 @@
 <template>
 <div id="admin">
 
-
-
-
   <div class="sidecar-wrapper left">
     
   </div>
@@ -12,16 +9,20 @@
     
   </div>
 
-
-
-
-
-
-
   <div id="content-wrapper">
 
-  </div>
+    <div id="index-wrapper" v-if="adminMenu==='index'"></div>
+    <div id="db-wrapper" v-if="adminMenu==='db'"></div>
+    <div id="user-wrapper" v-if="adminMenu==='user'"></div>
+    <div id="refg-wrapper" v-if="adminMenu==='refg'"></div>
 
+
+
+
+
+
+
+  </div>
 
 
 
@@ -34,7 +35,7 @@
 export default {
   name: "Admin",
   props: [
-    "color"
+    "adminMenu"
   ],
   data() { return {
 
@@ -58,16 +59,13 @@ export default {
   height: calc(100% - 200px);
   justify-content: center;
 }
-
 #content-wrapper {
   margin: auto;
   width: calc(100vw - 120px);
   min-width: 490px;
   max-width: 710px;
   height: 100%;
-  background-color: rgba(235, 15, 59, 0.329);
 }
-
 .sidecar-wrapper {
   position: absolute;
   width: 200px;
@@ -94,6 +92,33 @@ export default {
     left: calc(50% + 245px);
   } 
 }
+#index-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 140, 0, 0.438);
+}
+#db-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(43, 255, 0, 0.438);
+}
+#user-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 162, 255, 0.438);
+}
+#refg-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(119, 0, 255, 0.438);
+}
+//---------------------------------------------------
+//---------------------------------------------------
+
+
+
+
+
 
 
 

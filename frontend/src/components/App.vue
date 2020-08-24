@@ -2,7 +2,7 @@
 <div class="app">
 
   <div class="wrapper-header" 
-  :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}"> <!-------------------------->
+  :class="{'wrapper-header-admin':this.$store.state.modal.mode === 'admin'}">
 
     <transition><form id="searchBox" 
     v-if="this.$store.state.modal.mode === 'search-list'"
@@ -134,6 +134,7 @@
 
   <transition name="admin-menu"><Admin 
     v-if="this.$store.state.modal.mode === 'admin'"
+    :adminMenu="adminMenu"
 
   /></transition>
 
