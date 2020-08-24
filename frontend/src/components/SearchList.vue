@@ -68,7 +68,8 @@
 
 
 <script>
-import Records from '@/components/Records'
+import axios from 'axios';
+import Records from '@/components/Records';
 
 export default {
   name: 'SearchList',
@@ -76,6 +77,8 @@ export default {
     Records
   },
   data() { return {
+    dbinfo: {},
+    moreinfo: false,
     testArr: [
       {
         room_id: 408,
@@ -807,21 +810,40 @@ export default {
         '20_3': 0
       }
     ],
-    moreinfo: false
   }},
   computed: {
   },
   props: [
     "keyword", // from App
     "searchArr", // from .../db/search
-    "dbinfo", // from .../db/info
     "coverBottom" // from App
   ],
   methods: {
     toggleInfoScope(){
       this.moreinfo = !this.moreinfo
       this.$emit('moreinfo', this.moreinfo);
+    },
+    async getDBinfo(){
+      console.log('### request ...@App/getDBinfo');
+      let {data} = await axios.get('/db/info');
+      this.dbinfo = data;
+      console.log(this.dbinfo);
+    },
+    async search(){
+      let {data} = await axios.post('/db/search', {keyword: this.keyword});
+      this.searchArr = data.arg;
+      this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+    },
+    loading(bool){
+      this.loadingState = bool;
     }
+  },
+  created() {
+    if(this.$store.state.auth.id === null){
+      this.$store.dispatch('RECOVER');
+      console.log('### configuration recovered ... @App');
+    }
+    this.getDBinfo();
   },
   beforeUpdate() {
     console.log("beforeUpdate /StudentList ----");
@@ -836,11 +858,12 @@ export default {
 
 
 
-<style lang="scss" scoped> #search-list {
-  display: block;
+<style lang="scss" scoped> 
+#search-list {
+  position: absolute; top: 0; left: 0;
   width: 100%;
-  height: calc(100% - 187px);
-  // background-color: khaki;
+  height: 100%;
+  background-color: rgba(151, 23, 255, 0.226);
 }
 
 /* --------------- REFG HEADER-------------- */

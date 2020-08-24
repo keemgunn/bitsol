@@ -11,19 +11,20 @@
     @verify="this.verify"
   />
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'left':0}"></div>
-
-  <App
-    v-if="this.$store.state.auth.accessLevel !== 0"
-    :accessLevel="this.$store.state.auth.accessLevel"
-    key="app"
-    @modal="setModal"
+  <Header 
+    v-if="this.$store.state.auth.accessLevel > 0"
   />
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'right':0}"></div>
+  <Search
+    v-if="(this.$store.state.auth.accessLevel > 0)
+    && (this.$store.state.modal.display === 'search')"
+  />
+
+
+  <!-- <Admin /> -->
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.mode === ('search-list')"></div>
+  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.display === ('search')"></div>
 
 <router-view></router-view>
 </div>
@@ -32,19 +33,25 @@
 
 <script>
 
-import App from '@/components/App'
 import LoginBox from '@/components/LoginBox'
+import Header from '@/components/Header'
+import Search from '@/components/Search'
+// import Admin from '@/components/Admin'
 
 export default {
   name: 'Index',
-  components: { App, LoginBox },
+  components: { LoginBox, Header, Search, },
   data() { return {
     themeColor: {},
+
     lightening: {
       "top" : "0px",
       "left": "0px",
       "background-color": "var(--i94)"
     },
+
+    searchArr: [],
+
   }},
   methods: {
     //___________ AUTHENTICATION METHODS ____________
@@ -95,14 +102,16 @@ export default {
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 #index {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 0;
   display: flex;
   width: 100vw;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  overflow: hidden;
+  // overflow: hidden;
   font-family: 'Space Mono', 'Barlow', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -117,11 +126,11 @@ export default {
 
 // ------------------------- APP WRAPPER
 .cover-app-side {
+  position: absolute; top: 0;
   z-index: 2;
-  position: absolute;
   height: 100vh;
   background-color: var(--i94);
-  // background-color: fuchsia;
+  // background-color: rgba(78, 78, 78, 0.295);
 }
 
 @media ( max-width: 2000px ) {
