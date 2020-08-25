@@ -15,9 +15,7 @@ export default new Vuex.Store({
       // id:null, accessLevel:0, userName:null,
       id: '2018317024', accessLevel: 3, userName: "김건",
     },
-
     dbinfo: {},
-    
     mode: 'search', 
 
     searchArr: [],

@@ -34,11 +34,11 @@ export default {
     changeScope(){
       if(this.search.moreinfo){
         this.search.moreinfo = false;
-        this.search.recordHeight = 146;
+        this.search.recordHeight = 66;
         this.searchCoverBottom();
       }else{
         this.search.moreinfo = true;
-        this.search.recordHeight = 66;
+        this.search.recordHeight = 146;
         this.searchCoverBottom();
       }
     },
