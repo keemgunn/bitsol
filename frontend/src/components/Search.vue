@@ -6,8 +6,13 @@
 <div id="content">
 
   <div id="option">
+
+    <transition name="fade">
     <Deadline v-if="!search.moreinfo" />
+    </transition>
+
     <ScopeBtn/>
+    
   </div>
 
   <div id="list-wrapper">
@@ -23,16 +28,6 @@
     <div id="cover-bottom" :style="search.coverBottom"></div>
   </div>
   <div class="cover-scroll-bottom"></div>
-
-
-
-
-
-
-
-
-
-
 
 </div>
 </div>
@@ -103,7 +98,7 @@ export default {
   height: 100vh;
   background-color: var(--i94);
 }
-@media ( max-width: 2000px ) {
+@media ( max-width: 4000px ) {
   .cover-app-side {
       width: calc( 50vw - 355px );
   }   

@@ -7,7 +7,9 @@
 
     <AdminBtn v-if="auth.accessLevel > 1" />
 
+    <transition name="appear">
     <SearchBox v-if="mode === 'search'" />
+    </transition>
 
   </div>
 </div>

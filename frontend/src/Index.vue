@@ -6,24 +6,29 @@
   @mouseout="light_off"
 >
 
+  <transition name="login-box">
   <LoginBox 
     v-if="auth.accessLevel === 0"
     @verify="this.verify"
-  />
+  /></transition>
 
+  <transition name="appear">
   <Header 
     v-if="auth.accessLevel > 0"
-  />
+  /></transition>
 
+  <transition name="appear">
   <Search
     v-if="(auth.accessLevel > 0)
     && (mode === 'search')"
-  />
+  /></transition>
 
   <!-- <Admin /> -->
 
+  <transition name="appear">
   <div id="light" :style="lightening"
-  v-if="auth.accessLevel !== 0 && mode === ('search')"></div>
+  v-if="auth.accessLevel !== 0 && mode === ('search')"
+  ></div></transition>
 
 <router-view></router-view>
 </div>
@@ -110,33 +115,8 @@ export default {
 }
 
 
-// ------------------------- APP WRAPPER
-.cover-app-side {
-  position: absolute; top: 0;
-  z-index: 2;
-  height: 100vh;
-  background-color: var(--i94);
-  // background-color: rgba(78, 78, 78, 0.295);
-}
-
-@media ( max-width: 2000px ) {
-    .cover-app-side {
-        width: calc( 50vw - 340px );
-    }   
-}
-@media ( max-width: 800px ) {
-    .cover-app-side {
-        width: calc( 10vw );
-    } 
-}
-@media ( max-width: 550px ) {
-    .cover-app-side {
-        width: calc( 7vw );
-    } 
-}
-
-
 // ------------------------- VISUAL EFFECT
+
 #light {
   z-index: 1;
   position: absolute;
@@ -156,6 +136,62 @@ export default {
 
   background-color: var(--i70);
 }
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 300ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+.appear-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.appear-enter-to {
+  opacity: 1;
+}
+.appear-enter-active{
+  transition: all 200ms;
+  transition-delay: 300ms;
+}
+.appear-leave {
+  opacity: 1;
+}
+.appear-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.appear-leave-active {
+  transition: all 300ms;
+}
+
+
+.login-box-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.login-box-enter-to {
+  opacity: 1;
+}
+.login-box-enter-active{
+  transition: all 200ms;
+  transition-delay: 300ms;
+}
+.login-box-leave {
+  opacity: 1;
+}
+.login-box-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.login-box-leave-active {
+  transition: all 300ms;
+}
+
+
 
 
 </style>
