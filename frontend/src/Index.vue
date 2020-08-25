@@ -1,39 +1,29 @@
 <template>
 <div id="index" 
-  :style="this.$store.state.theme.applied"
+  :style="theme.applied"
   @mouseover="light_on"
   @mousemove="light_move"
   @mouseout="light_off"
 >
 
   <LoginBox 
-    v-if="this.$store.state.auth.accessLevel === 0"
+    v-if="auth.accessLevel === 0"
     @verify="this.verify"
   />
 
   <Header 
-    v-if="this.$store.state.auth.accessLevel > 0"
-    :dbinfo="dbinfo"
-    :searchArr="searchArr"
-    :recordHeight="recordHeight"
-    :coverBottom="coverBottom"
-    :loadingState="loadingState"
+    v-if="auth.accessLevel > 0"
   />
 
   <Search
-    v-if="(this.$store.state.auth.accessLevel > 0)
-    && (this.$store.state.modal.mode === 'search')"
-    :dbinfo="dbinfo"
-    :searchArr="searchArr"
-    :recordHeight="recordHeight"
-    :coverBottom="coverBottom"
-    :loadingState="loadingState"
+    v-if="(auth.accessLevel > 0)
+    && (mode === 'search')"
   />
 
   <!-- <Admin /> -->
 
   <div id="light" :style="lightening"
-  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.mode === ('search')"></div>
+  v-if="auth.accessLevel !== 0 && mode === ('search')"></div>
 
 <router-view></router-view>
 </div>
@@ -41,48 +31,38 @@
 
 
 <script>
-
-import LoginBox from '@/components/LoginBox'
-import Header from '@/components/Header'
-import Search from '@/components/Search'
+import LoginBox from '@/components/LoginBox';
+import Header from '@/components/Header';
+import Search from '@/components/Search';
 // import Admin from '@/components/Admin'
+import { mapState } from 'vuex';
 
 export default {
   name: 'Index',
   components: { LoginBox, Header, Search, },
   data() { return {
-    dbinfo: {},
-
-    // _______ UI STATE
     themeColor: {},
     lightening: {
       "top" : "0px",
       "left": "0px",
       "background-color": "var(--i94)"
     },
-
-    // ________ SEARCH METHOD
-    searchArr: [],
-    recordHeight: 66,
-    coverBottom: {
-      "height": "100%"
-    },
-    loadingState: 0,
-
   }},
+  computed: {
+    ...mapState(['auth', 'mode', 'theme']),
+  },
   methods: {
     //___________ AUTHENTICATION METHODS ____________
     verify(){ 
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      if(this.$store.state.auth.accessLevel) { // 이미 인증이 되어있다면 
+      if(this.auth.accessLevel) { // 이미 인증이 되어있다면 
         this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');
       }
     },
-
     //______________ UI METHODS _____________
     light_on(){
       this["lightening"]["background-color"] = "var(--i70)";
@@ -92,12 +72,7 @@ export default {
       this.lightening.top = String(e.pageY) + "px";
       this.lightening.left = String(e.pageX) + "px";
     },
-
-
-
-
-  }, 
-  
+  },
   created() {
     this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", () => {
@@ -110,8 +85,6 @@ export default {
 
 
 <style lang="scss">
-//------------------------------------------------
-//------------------------------------------------
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 #index {

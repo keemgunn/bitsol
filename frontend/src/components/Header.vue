@@ -5,16 +5,9 @@
 
     <User/>
 
-    <AdminBtn v-if="this.$store.state.auth.accessLevel > 1"/>
+    <AdminBtn v-if="auth.accessLevel > 1" />
 
-    <SearchBox 
-      v-if="this.$store.state.modal.mode === 'search'"
-      :searchArr="searchArr"
-      :recordHeight="recordHeight"
-      :coverBottom="coverBottom"
-      :loadingState="loadingState"
-    />
-
+    <SearchBox v-if="mode === 'search'" />
 
   </div>
 </div>
@@ -23,52 +16,32 @@
 
 
 <script>
-import User from '@/components/header/User'
-import AdminBtn from '@/components/header/AdminBtn'
-import SearchBox from '@/components/header/SearchBox'
-import axios from 'axios'
-
+import User from '@/components/header/User';
+import AdminBtn from '@/components/header/AdminBtn';
+import SearchBox from '@/components/header/SearchBox';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: "Header",
   components: {
     User, AdminBtn, SearchBox
   },
-  props: [
-    "searchArr",
-    "recordHeight",
-    "coverBottom",
-    "loadingState",
-    "dbinfo"
-  ],
+  computed: {
+    ...mapState(['mode', 'auth'])
+  },
   methods: {
-
-    //___________ AUTH __________
-    async getDBinfo(){
-      console.log('### request ...@App/getDBinfo');
-      let {data} = await axios.get('/db/info');
-      this.dbinfo = data;
-      console.log(this.dbinfo);
-    },
-
-    //___________ LOAD/SEARCH DATABASE __________
-    async search(keyword){
-      let {data} = await axios.post('/db/search', {keyword});
-      this.searchArr = data.arg;
-      this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-    },
-
+    ...mapMutations(['DB_INFO'])
   },
   created() { //_____________________________
     if(this.$store.state.auth.id === null){
       this.$store.dispatch('RECOVER');
-      console.log('### configuration recovered ... @App');
+      console.log('### configuration recovered ... @Header');
     }
-    this.getDBinfo();
+    this.DB_INFO();
   },
 }
-
 </script>
+
 
 
 <style lang="scss" scoped> #header {
@@ -88,7 +61,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
-  background-color: rgba(219, 126, 13, 0.24);
+  // background-color: rgba(219, 126, 13, 0.24);
 }
 
 #light-cover { 

@@ -7,7 +7,7 @@
 
     <circle 
     :class="{'orb-border':1, 'selected': isSelected}"
-    @click="changeTheme()"
+    @click="CHANGE_THEME({color})"
     cx="14" cy="14" r="14"></circle>
 
     <circle :style="colorSet" class="orb-bg" cx="14" cy="14" r="12"></circle>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   name: "Theme",
   props: [
@@ -32,17 +34,15 @@ export default {
     isSelected: function() {
       return (localStorage.colorConfig === this.color)
     },
+    ...mapState(['theme'])
   },
   methods: {
-    changeTheme() {
-      console.log('~ Theme/changeTheme()');
-      this.$store.dispatch('CHANGE_THEME', {color: this.color})
-    }
+    ...mapMutations(['CHANGE_THEME'])
   },
   created() {
     this.colorSet = {
-      "--i94": this["$store"]["state"]["theme"]["colors"][this.color]["--i94"],
-      "--accent02": this["$store"]["state"]["theme"]["colors"][this.color]["--accent02"]
+      "--i94": this['theme']["colors"][this.color]["--i94"],
+      "--accent02": this['theme']["colors"][this.color]["--accent02"]
     }
   },
 }

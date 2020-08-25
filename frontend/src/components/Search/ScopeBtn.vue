@@ -24,11 +24,11 @@
 import { mapState, mapMutations } from 'vuex';
 
 export default {
-  name: "AdminBtn",
+  name: "ScopeBtn",
   data() { return {
   }},
   computed: {
-    ...mapState(['search'])
+    ...mapState(['search']),
   },
   methods: {
     changeScope(){

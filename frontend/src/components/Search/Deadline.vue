@@ -13,31 +13,18 @@
 
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: "Deadline",
-  props: [
-    "dbinfo"
-  ],
   data() { return {
 
   }},
   computed: {
-
+    ...mapState(['dbinfo'])
   },
   methods: {
 
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 </script>

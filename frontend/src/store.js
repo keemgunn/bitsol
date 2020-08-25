@@ -16,10 +16,9 @@ export default new Vuex.Store({
       id: '2018317024', accessLevel: 3, userName: "김건",
     },
 
-    modal: {
-      mode: 'search', 
-        // search, admin
-      },
+    dbinfo: {},
+    
+    mode: 'search', 
 
     searchArr: [],
     search: {
@@ -65,6 +64,14 @@ export default new Vuex.Store({
       state.auth.accessLevel = data.accessLevel;
     },
 
+    async DB_INFO (state) {
+      console.log('$$$ request ...$mutation/DB_INFO');
+      const {data} = await axios.get('db/info');
+      state.dbinfo = data;
+      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
+      console.log(data);
+    },
+
     RECOVER (state) {
       console.log('$$$ request ...$mutation/RECOVER');
       state.auth.id = localStorage.id;
@@ -92,10 +99,17 @@ export default new Vuex.Store({
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
 
+    indexChangeMode(state, set) {
+      state.mode = set;
+    },
+
     searchCoverBottom(state) {
       state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
     },
 
+    searchLoadingState(state, bool){
+      state.search.loadingState = bool
+    },
   
 
 
@@ -156,18 +170,6 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = undefined;
       commit('LOGOUT');
     },
-
-
-
-    //___________ UI METHODS __________
-
-    CHANGE_THEME({commit}, {color}) {
-      console.log('$$$ request ...$action/CHANGE_THEME');
-      commit('CHANGE_THEME', {color});
-      axios.post('/auth/theme/change', {id: localStorage.id, color:color});
-    },
-
-
 
 
   }

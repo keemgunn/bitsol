@@ -6,14 +6,9 @@
 <div id="content">
 
   <div id="option">
-    <Deadline 
-      v-if="recordHeight === 66" 
-      :dbinfo="dbinfo"
-    />
-
+    <Deadline v-if="!search.moreinfo" />
     <ScopeBtn/>
   </div>
-
 
   <div id="list">
 
@@ -36,8 +31,9 @@
 
 
 <script>
-import ScopeBtn from '@/components/search/ScopeBtn'
-import Deadline from '@/components/search/Deadline'
+import ScopeBtn from '@/components/search/ScopeBtn';
+import Deadline from '@/components/search/Deadline';
+import { mapState, mapMutations } from 'vuex';
 // import axios from 'axios';
 
 export default {
@@ -45,38 +41,14 @@ export default {
   components: {
     ScopeBtn, Deadline
   },
-  props: [
-    "dbinfo",
-    "searchArr",
-    "recordHeight",
-    "coverBottom",
-    "loadingState"
-  ],
   data() { return {
 
   }},
   computed: {
-
+    ...mapState(['search', 'searchArr']),
   },
   methods: {
-
-    //___________ UI ACTION __________
-    fitCoverBottom(count, height){
-      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
-    },
-    changeCoverBottom(state){
-      if(state){
-        this.recordHeight = 146;
-        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-      }else{
-        this.recordHeight = 66;
-        this.fitCoverBottom(this.searchArr.length, this.recordHeight);
-      }
-    },
-    loading(bool){
-      this.loadingState = bool;
-    },
-
+    ...mapMutations(['searchLoadingState']),
   },
   created() {
 
@@ -85,10 +57,10 @@ export default {
 
   },
   beforeUpdate() {
-    this.loading(1);
+    this.searchLoadingState(1);
   },
   updated() {
-    this.loading(1);
+    this.searchLoadingState(0);
   }
 }
 </script>

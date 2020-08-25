@@ -1,19 +1,19 @@
 <template>
 <div id="admin-btn"
-@click="modeChange()">
+@click="changeMode()">
 
   <div class="switch">
-    <svg :class="{'box':1, 'box-on':(this.$store.state.modal.mode === 'admin')}" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg :class="{'box':1, 'box-on':(mode === 'admin')}" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>관리자 페이지</title>
       <rect id="Rectangle-Copy" x="0" y="0" width="30" height="16" rx="8"></rect>
     </svg>
-    <svg :class="{'btn':1, 'btn-on':(this.$store.state.modal.mode === 'admin')}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg :class="{'btn':1, 'btn-on':(mode === 'admin')}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>관리자 페이지</title>
       <circle id="Oval" cx="6" cy="6" r="6"></circle>
     </svg>
   </div>
 
-  <div class="text" :class="{'text-on':(this.$store.state.modal.mode === 'admin')}">
+  <div class="text" :class="{'text-on':(mode === 'admin')}">
     관리자
   </div>
 
@@ -21,16 +21,24 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   name: "AdminBtn",
+  data() { return { 
+  }},
+  computed: {
+    ...mapState(['mode']),
+  },
   methods: {
-    modeChange(){
-      if(this.$store.state.modal.mode === 'search'){
-        this.$store.state.modal.mode = 'admin'
+    changeMode(){
+      if(this.mode === 'search'){
+        this.indexChangeMode('admin');
       }else{
-        this.$store.state.modal.mode = 'search'
+        this.indexChangeMode('search');
       }
     },
+    ...mapMutations(['indexChangeMode']),
   }
 }
 </script>

@@ -8,7 +8,7 @@
     placeholder="search..."
     type="text" 
     @input="keyword = $event.target.value"
-    @keyup="search()"
+    @keyup="searchStudent()"
   />
 
   <div id="icon">
@@ -21,7 +21,7 @@
   </div>
 
   <div id="indicator">
-    <div id="load-bar" v-if="loadingState"></div>
+    <div id="load-bar" v-if="search.loadingState"></div>
   </div>
 
 </form>
@@ -30,32 +30,25 @@
 
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import axios from 'axios';
-import {mapMutations} from 'vuex';
 
 export default {
   name: "SearchBox",
-  props: [
-    "searchArr",
-    "recordHeight",
-    "coverBottom",
-    "loadingState"
-  ],
   data() { return {
     keyword: '',
   }},
   computed: {
-
+    ...mapState(['searchArr', 'search'])
   },
   methods: {
     //___________ SEARCH __________
-    async search(){
+    async searchStudent(){
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
       this.searchCoverBottom();
     },
     ...mapMutations(['searchCoverBottom']),
-    
   },
   mounted() {
     this.$refs.searchField.focus();

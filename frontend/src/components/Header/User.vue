@@ -1,18 +1,18 @@
 <template>
 <div class="user"
 :class="{'user-expand':userBoxState>0, 'orb-shown':userBoxState===2}"
-@mouseenter="toggle('userBoxState', 1)"
-@mouseleave="toggle('userBoxState', 0);">
+@mouseenter="userBoxState = 1"
+@mouseleave="userBoxState = 0">
 
   <div id="name">
-    user:{{this.$store.state.auth.userName}}
+    user:{{auth.userName}}
   </div>
 
   <transition name="fade">
   <div class="menu"
   v-if="userBoxState"
   :class="{'menu-selected':userBoxState===2}"
-  @click="toggle('userBoxState',2)">
+  @click="userBoxState = 2">
     테마 변경
     <div class="icon">
       <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -43,7 +43,7 @@
   <div id="theme-list" 
   v-if="userBoxState === 2">
     <div :key="color" 
-    v-for="color in this.$store.state.theme.colorKeys">
+    v-for="color in theme.colorKeys">
       <Theme
         :color="color"
       />
@@ -56,8 +56,11 @@
 </template>
 
 
+
 <script>
-import Theme from '@/components/Theme'
+import Theme from '@/components/header/Theme'
+import { mapState } from 'vuex';
+
 
 export default {
   name: "User",
@@ -67,15 +70,15 @@ export default {
   data() { return {
     userBoxState: 0,
   }},
+  computed: {
+    ...mapState(['auth', 'theme'])
+  },
   methods: {
-    logout(){ this.$store.dispatch('LOGOUT');
-    },
-    toggle(target, config){
-      this[target] = config;
-    },
+    logout(){ this.$store.dispatch('LOGOUT'); }
   },
 }
 </script>
+
 
 
 <style lang="scss" scoped> .user {
