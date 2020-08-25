@@ -31,6 +31,7 @@
 
 <script>
 import axios from 'axios';
+import {mapMutations} from 'vuex';
 
 export default {
   name: "SearchBox",
@@ -51,14 +52,10 @@ export default {
     async search(){
       let {data} = await axios.post('/db/search', {keyword: this.keyword});
       this.searchArr = data.arg;
-      this.fitCoverBottom(this.searchArr.length, this.recordHeight);
+      this.searchCoverBottom();
     },
-
-    //___________ UI ACTION __________
-    fitCoverBottom(count, height){
-      this.coverBottom.height = "calc(100% - " + String(count * height) + "px)"
-    },
-
+    ...mapMutations(['searchCoverBottom']),
+    
   },
   mounted() {
     this.$refs.searchField.focus();
@@ -100,7 +97,7 @@ export default {
   font-size: 60px;
   letter-spacing: 0;
   text-align: right;
-  color: var(--i45);
+  color: var(--i30);
   background-color: transparent;
   transition: 500ms;
   &::placeholder {

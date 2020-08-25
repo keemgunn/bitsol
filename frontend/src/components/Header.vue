@@ -23,9 +23,9 @@
 
 
 <script>
-import User from '@/components/Header/User'
-import AdminBtn from '@/components/Header/AdminBtn'
-import SearchBox from '@/components/Header/SearchBox'
+import User from '@/components/header/User'
+import AdminBtn from '@/components/header/AdminBtn'
+import SearchBox from '@/components/header/SearchBox'
 import axios from 'axios'
 
 

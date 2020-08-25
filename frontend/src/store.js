@@ -19,12 +19,14 @@ export default new Vuex.Store({
     modal: {
       mode: 'search', 
         // search, admin
-      search: {
-        moreinfo: false,
-        recordHeight: 66,
-        coverBottom: { "height": "100%" },
-        loadingState: 0
-      }
+      },
+
+    searchArr: [],
+    search: {
+      moreinfo: false,
+      recordHeight: 66,
+      coverBottom: { "height": "100%" },
+      loadingState: 0
     },
     
     theme: {
@@ -40,6 +42,7 @@ export default new Vuex.Store({
 
   },
   mutations: {
+
     //___________ AUTHENTICATION METHODS _______
     async LOGIN (state, {data}) {
       console.log('$$$ request ...$mutation/LOGIN');
@@ -80,7 +83,7 @@ export default new Vuex.Store({
       localStorage.colorConfig = defaultColor;
     },
 
-    //___________ UI METHODS _______
+    //____________ UI METHODS ____________
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
       console.log(color);
@@ -88,6 +91,15 @@ export default new Vuex.Store({
       localStorage.colorConfig = color;
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
+
+    searchCoverBottom(state) {
+      state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
+    },
+
+  
+
+
+
 
 
     ALERT (state, msg) {

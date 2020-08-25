@@ -11,9 +11,7 @@
       :dbinfo="dbinfo"
     />
 
-    <ScopeBtn 
-      @change-scope="changeCoverBottom"
-    />
+    <ScopeBtn/>
   </div>
 
 
@@ -38,8 +36,8 @@
 
 
 <script>
-import ScopeBtn from '@/components/Search/ScopeBtn'
-import Deadline from '@/components/Search/Deadline'
+import ScopeBtn from '@/components/search/ScopeBtn'
+import Deadline from '@/components/search/Deadline'
 // import axios from 'axios';
 
 export default {

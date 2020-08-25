@@ -3,17 +3,17 @@
 @click="changeScope()">
 
   <div class="switch">
-    <svg :class="{'box':1, 'box-on':moreinfo}" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg :class="{'box':1, 'box-on':search.moreinfo}" viewBox="0 0 30 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>학생 정보 보기</title>
       <rect id="Rectangle-Copy" x="0" y="0" width="30" height="16" rx="8"></rect>
     </svg>
-    <svg :class="{'btn':1, 'btn-on':moreinfo}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg :class="{'btn':1, 'btn-on':search.moreinfo}" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>학생 정보 보기</title>
       <circle id="Oval" cx="6" cy="6" r="6"></circle>
     </svg>
   </div>
 
-  <div class="text" :class="{'text-on':moreinfo}">
+  <div class="text" :class="{'text-on':search.moreinfo}">
     학생 정보 보기
   </div>
 
@@ -21,16 +21,28 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   name: "AdminBtn",
   data() { return {
-    moreinfo: false,
   }},
+  computed: {
+    ...mapState(['search'])
+  },
   methods: {
-    changeScope() {
-      this.moreinfo = !this.moreinfo;
-      this.$emit('change-scope', this.moreinfo);
-    }
+    changeScope(){
+      if(this.search.moreinfo){
+        this.search.moreinfo = false;
+        this.search.recordHeight = 146;
+        this.searchCoverBottom();
+      }else{
+        this.search.moreinfo = true;
+        this.search.recordHeight = 66;
+        this.searchCoverBottom();
+      }
+    },
+    ...mapMutations(['searchCoverBottom']),
   }
 }
 </script>
