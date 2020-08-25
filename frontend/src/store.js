@@ -12,8 +12,8 @@ export default new Vuex.Store({
   state: {
 
     auth: {
-      // id:null, accessLevel:0, userName:null,
-      id: '2018317024', accessLevel: 3, userName: "김건",
+      id:null, accessLevel:0, userName:null,
+      // id: '2018317024', accessLevel: 3, userName: "김건",
     },
     dbinfo: {},
     mode: 'search', 
@@ -751,6 +751,7 @@ export default new Vuex.Store({
       }
     ],
     search: {
+      keyword: '',
       moreinfo: false,
       recordHeight: 66,
       coverBottom: { "height": "100%" },

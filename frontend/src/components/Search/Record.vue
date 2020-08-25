@@ -190,7 +190,7 @@ export default {
   width: 100%;
   height: 56px;
   transition: 600ms;
-  background-color: darksalmon;
+  // background-color: darksalmon;
 }.record:hover {
   transition: 150ms;
   background-color: var(--i100);

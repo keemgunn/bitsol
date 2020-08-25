@@ -12,13 +12,13 @@
     </transition>
 
     <ScopeBtn/>
-    
+
   </div>
 
   <div id="list-wrapper">
     <div id="list"
     :key="info.student_id"
-    v-for="info in testArr">
+    v-for="info in searchArr">
       <div class="records">
         <Record :info="info"/>
         <div class="record-cover-bottom"></div>
@@ -28,6 +28,10 @@
     <div id="cover-bottom" :style="search.coverBottom"></div>
   </div>
   <div class="cover-scroll-bottom"></div>
+
+  <transition name="appear">
+  <div class="no-result" v-if="!searchArr.length">{{msg}}</div>
+  </transition>
 
 </div>
 </div>
@@ -50,6 +54,13 @@ export default {
 
   }},
   computed: {
+    msg: function() {
+      if(this.search.keyword === ''){
+        return "호실 또는 이름으로 검색..."
+      }else{
+        return "검색결과가 없습니다..."
+      }
+    },
     ...mapState(['search', 'searchArr', 'testArr']),
   },
   methods: {
@@ -115,10 +126,6 @@ export default {
 }
 
 
-
-
-
-
 #option {
   position: absolute; top: 0; left: 0;
   width: 100%;
@@ -133,7 +140,7 @@ export default {
   height: calc(100% - 86px);
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: rgba(119, 119, 119, 0.24);
+  // background-color: rgba(119, 119, 119, 0.24);
 }
 
 #list {
@@ -142,7 +149,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: fit-content;
-  background-color: #24deff56;
+  // background-color: #24deff56;
 }
 
 .records {
@@ -154,15 +161,34 @@ export default {
     width: 100%;
     height: 10px;
     background-color: var(--i94);
-    background-color: rgba(121, 121, 121, 0.247);
+    // background-color: rgba(121, 121, 121, 0.247);
   }
 }
 
 #cover-bottom {
   width: 100%;
   background-color: var(--i94);
-  background-color: rgba(0, 100, 0, 0.404);
+  // background-color: rgba(0, 100, 0, 0.404);
 }
+
+.no-result {
+  position: absolute; top: 86px; left: 0;
+  width: 100%;
+  height: 100px;
+  font-family: 'Nanum Square';
+  font-weight: 200;
+  font-size: 35px;
+  color: var(--i45);
+  font-style: italic;
+  letter-spacing: 0.31px;
+  user-select: none;
+  -webkit-user-select: none;
+  // background-color: rgb(122, 216, 153);
+}
+
+
+
+
 
 /* --------------- SCROLL -------------- */
 /* width */

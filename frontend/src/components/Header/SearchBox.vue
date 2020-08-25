@@ -7,7 +7,7 @@
     ref="searchField" 
     placeholder="search..."
     type="text" 
-    @input="keyword = $event.target.value"
+    @input="search.keyword = $event.target.value"
     @keyup="searchStudent()"
   />
 
@@ -44,8 +44,8 @@ export default {
   methods: {
     //___________ SEARCH __________
     async searchStudent(){
-      let {data} = await axios.post('/db/search', {keyword: this.keyword});
-      this.searchArr = data.arg;
+      let {data} = await axios.post('/db/search', {keyword: this.search.keyword});
+      this.$store.state.searchArr = data.arg;
       this.searchCoverBottom();
     },
     ...mapMutations(['searchCoverBottom']),
