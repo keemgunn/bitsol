@@ -84,7 +84,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
-  // background-color: rgb(0, 224, 150);
+  background-color: rgb(0, 224, 150);
 }
 
 #option {
@@ -98,7 +98,7 @@ export default {
   position: absolute; top: 86px; left: 0;
   width: 100%;
   height: calc(100% - 86px);
-  background-color: rgba(255, 0, 191, 0.493);
+  // background-color: rgba(255, 0, 191, 0.493);
 }
 
 
@@ -110,21 +110,20 @@ export default {
   z-index: 2;
   height: 100vh;
   background-color: var(--i94);
-  // background-color: rgba(78, 78, 78, 0.295);
 }
 @media ( max-width: 2000px ) {
-    .cover-app-side {
-        width: calc( 50vw - 340px );
-    }   
+  .cover-app-side {
+      width: calc( 50vw - 355px );
+  }   
 }
-@media ( max-width: 800px ) {
-    .cover-app-side {
-        width: calc( 10vw );
-    } 
+@media ( max-width: 830px ) {
+  .cover-app-side {
+      width: 60px;
+  } 
 }
-@media ( max-width: 550px ) {
-    .cover-app-side {
-        width: calc( 7vw );
-    } 
+@media ( max-width: 610px ) {
+  .cover-app-side {
+      width: calc( 50vw - 245px );
+  } 
 }
 </style>
