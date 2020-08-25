@@ -46,7 +46,6 @@ export default {
   }
 }#deadline:hover {
   transition: 200ms;
-  cursor: pointer;
   color: var(--i30);
   #change {
   border: 2px solid var(--i45);
