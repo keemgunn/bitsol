@@ -25,7 +25,7 @@
     && (mode === 'search')"
   /></transition>
 
-  <!-- <Admin /> -->
+  <Admin />
 
   
   <div id="light" :style="lightening"
@@ -41,12 +41,12 @@
 import LoginBox from '@/components/LoginBox';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-// import Admin from '@/components/Admin'
+import Admin from '@/components/Admin'
 import { mapState } from 'vuex';
 
 export default {
   name: 'Index',
-  components: { LoginBox, Header, Search, },
+  components: { LoginBox, Header, Search, Admin, },
   data() { return {
     themeColor: {},
     lightening: {

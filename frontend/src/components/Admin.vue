@@ -37,12 +37,10 @@
 </template>
 
 <script>
-import AdminDbHeader from '@/components/AdminDbHeader'
 
 export default {
   name: "Admin",
   components: {
-    AdminDbHeader,
 
   },
   props: [

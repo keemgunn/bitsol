@@ -4,7 +4,6 @@ const router = express.Router();
 
 const mysql = require('../api/mysql');
 const version = require('../api/config');
-const { EWOULDBLOCK } = require('constants');
 
 // from XLSX module
 var worksheet;
