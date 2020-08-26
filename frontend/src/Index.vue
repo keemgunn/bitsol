@@ -115,7 +115,7 @@ export default {
   background-color: var(--i94);
 }
 ::selection {
-  color: var(--i30);
+  color: var(--accent00);
   background: var(--accent01);
 }
 

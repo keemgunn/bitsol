@@ -12,40 +12,16 @@
 </div>
 </template>
 
-
-
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: "AdminMenu",
-  props: [
-
-  ],
-  data() { return {
-
-  }},
   computed: {
     ...mapState(['admin'])
-  },
-  methods: {
-    ...mapMutations(['TOGGLE'])
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
-  },
+  }
 }
 </script>
-
 
 
 <style lang="scss" scoped> 
@@ -77,10 +53,6 @@ export default {
   cursor: default;
   color: var(--accent03);
 }
-
-
-
-
 
 
 </style>
