@@ -6,7 +6,11 @@ Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
-const defaultColor = "default"
+const defaultColor = "default";
+const DBoptions = {
+  showEmpty: false,
+  showForeign: false
+};
 
 export default new Vuex.Store({
   state: {
@@ -27,10 +31,16 @@ export default new Vuex.Store({
       coverBottom: { "height": "100%" },
       loadingState: 0
     },
-
+    
+    adminArr:[],
     admin: {
-      modal: 'db'
+      modal: 'db',
         // index  db  refg  user
+      db: {
+        options: DBoptions,
+        optionKeys: Object.keys(DBoptions),
+        keyword:'',
+      }
     },
     
     theme: {

@@ -1,8 +1,16 @@
 <template>
 <div id="sidecar">
 
+  <div class="sidecar left">
 
 
+  </div>
+
+
+  <div class="sidecar right">
+
+
+  </div>
 
 </div>
 </template>
@@ -42,7 +50,17 @@ export default {
 
 
 <style lang="scss" scoped> 
-.sidecar-wrapper {
+#sidecar {
+  position: absolute; top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  // background-color: aquamarine;
+}
+
+
+
+
+.sidecar {
   position: absolute;
   width: 200px;
   height: 100%;

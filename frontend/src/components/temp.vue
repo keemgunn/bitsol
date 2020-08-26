@@ -10,8 +10,11 @@
 
 
 <script>
+
+
 export default {
   name: "",
+  components: { },
   props: [
 
   ],

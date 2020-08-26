@@ -1,21 +1,37 @@
 <template>
 <div id="admin">
 
-  <DbSetting 
+  <transition name="appear"><DB 
     v-if="admin.modal==='db'"
-  />
+  /></transition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </div>
 </template>
 
+
 <script>
-import DbSetting from '@/components/admin/DbSetting'
+import DB from '@/components/admin/DB'
 
 import { mapState } from 'vuex'
 
 export default {
   name: "Admin",
-  components: { DbSetting, },
+  components: { DB, },
   props: [
     "adminMenu"
   ],
@@ -47,7 +63,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: deeppink;
+  // background-color: deeppink;
 }
 
 

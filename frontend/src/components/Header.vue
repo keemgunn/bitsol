@@ -72,7 +72,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
-  background-color: rgba(219, 126, 13, 0.24);
+  // background-color: rgba(219, 126, 13, 0.24);
 }
 
 #light-cover { 
