@@ -1,23 +1,12 @@
 <template>
 <div id="admin">
 
-  <div class="sidecar-wrapper left">
-    
-  </div>
-
-  <div class="sidecar-wrapper right">
-    
-  </div>
-
   <div id="content-wrapper">
 
     <div id="index-wrapper" v-if="adminMenu==='index'"></div>
     
-    <div id="db-wrapper" v-if="adminMenu==='db'">
-      <AdminDbHeader
-        :scope="scope"
-        :option="option"
-      />
+    <div id="db-wrapper" v-if="admin.modal==='db'">
+      <DbSetting />
 
 
 
@@ -33,16 +22,19 @@
 
 
 
+
+
 </div>
 </template>
 
 <script>
+import DbSetting from '@/components/Admin/DbSetting'
+
+import { mapState } from 'vuex'
 
 export default {
   name: "Admin",
-  components: {
-
-  },
+  components: { DbSetting, },
   props: [
     "adminMenu"
   ],
@@ -55,7 +47,7 @@ export default {
 
   }},
   computed: {
-
+    ...mapState(['admin'])
   },
   methods: {
 
@@ -81,32 +73,7 @@ export default {
   max-width: 710px;
   height: 100%;
 }
-.sidecar-wrapper {
-  position: absolute;
-  width: 200px;
-  height: 100%;
-  background-color: rgba(235, 15, 206, 0.288);
-}.left {
-  right: calc(50% + 355px);
-}.right {
-  left: calc(50% + 355px);
-}
-@media ( max-width: 830px ) {
-  .left {
-    right: calc(100% - 60px);
-  }
-  .right {
-    left: calc(100% - 60px);
-  }
-}
-@media ( max-width: 610px ) {
-  .left {
-    right: calc(50% + 245px);
-  } 
-  .right {
-    left: calc(50% + 245px);
-  } 
-}
+
 #index-wrapper {
   width: 100%;
   height: 100%;

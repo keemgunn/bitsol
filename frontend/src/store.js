@@ -17,7 +17,7 @@ export default new Vuex.Store({
     },
     dbinfo: {},
     mode: 'admin', 
-     // search / admin
+     // search  admin
 
     searchArr: [],
     search: {
@@ -26,6 +26,11 @@ export default new Vuex.Store({
       recordHeight: 66,
       coverBottom: { "height": "100%" },
       loadingState: 0
+    },
+
+    admin: {
+      modal: 'db'
+        // index  db  refg  user
     },
     
     theme: {
@@ -99,11 +104,11 @@ export default new Vuex.Store({
       axios.post('/auth/theme/change', {id: localStorage.id, color});
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
-
-    indexChangeMode(state, set) {
-      state.mode = set;
+    TOGGLE(state, {target, set}) {
+      state[target] = set;
     },
 
+    
     searchCoverBottom(state) {
       state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
     },

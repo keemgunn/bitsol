@@ -33,12 +33,12 @@ export default {
   methods: {
     changeMode(){
       if(this.mode === 'search'){
-        this.indexChangeMode('admin');
+        this.TOGGLE({target:'mode', set:'admin'});
       }else{
-        this.indexChangeMode('search');
+        this.TOGGLE({target:'mode', set:'search'});
       }
     },
-    ...mapMutations(['indexChangeMode']),
+    ...mapMutations(['TOGGLE']),
   }
 }
 </script>
