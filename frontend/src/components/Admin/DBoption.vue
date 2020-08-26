@@ -282,6 +282,7 @@ export default {
 
 #search-box {
   float: right;
+  
 }
 
 
