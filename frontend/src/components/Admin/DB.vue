@@ -11,6 +11,10 @@
       @toggle="toggle"
     />
 
+    <DBlist
+    />
+
+
 
 
 
@@ -28,11 +32,12 @@
 <script>
 import Sidecar from '@/components/admin/Sidecar'
 import DBoption from '@/components/admin/DBoption'
+import DBlist from '@/components/admin/DBlist'
 import { mapState } from 'vuex'
 
 export default {
   name: "DB",
-  components: { Sidecar, DBoption,  },
+  components: { Sidecar, DBoption, DBlist, },
   props: [
     
   ],

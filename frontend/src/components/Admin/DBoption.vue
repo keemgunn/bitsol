@@ -56,7 +56,7 @@
     ref="searchField" 
     placeholder="검색"
     type="text" 
-    @input="search.keyword = $event.target.value"
+    @input="admin.db.keyword = $event.target.value"
     @keyup="searchStudent()"
     />
     <div id="icon">
