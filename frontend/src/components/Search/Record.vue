@@ -205,9 +205,9 @@ export default {
   color: var(--i45);
   fill: var(--i45);
   background-color: var(--i94);
-  transition: 600ms;
+  // transition: 600ms;
 }.plate:hover {
-  transition: 150ms;
+  // transition: 150ms;
   color: var(--i30);
   fill: var(--i30);
   background-color: var(--i98);

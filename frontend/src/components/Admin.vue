@@ -1,28 +1,9 @@
 <template>
 <div id="admin">
 
-  <div id="content-wrapper">
-
-    <div id="index-wrapper" v-if="adminMenu==='index'"></div>
-    
-    <div id="db-wrapper" v-if="admin.modal==='db'">
-      <DbSetting />
-
-
-
-    </div>
-
-    <div id="user-wrapper" v-if="adminMenu==='user'"></div>
-
-    <div id="refg-wrapper" v-if="adminMenu==='refg'"></div>
-
-  </div>
-
-
-
-
-
-
+  <DbSetting 
+    v-if="admin.modal==='db'"
+  />
 
 </div>
 </template>
@@ -59,41 +40,17 @@ export default {
 </script>
 
 <style lang="scss" scoped> #admin {
-  position: absolute;
   z-index: 10;
-  left: 0;
+  position: absolute; top: 160px; left: 0;
   width: 100vw;
-  height: calc(100% - 200px);
+  height: calc(100% - 160px);
+  display: flex;
   justify-content: center;
-  // background-color: deeppink;
-}
-#content-wrapper {
-  margin: auto;
-  width: calc(100vw - 120px);
-  min-width: 490px;
-  max-width: 710px;
-  height: 100%;
+  align-items: center;
+  background-color: deeppink;
 }
 
-#index-wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 140, 0, 0.438);
-}
-#db-wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(43, 255, 0, 0.438);
-}
-#user-wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 162, 255, 0.438);
-}
-#refg-wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(119, 0, 255, 0.438);
-}
+
+
 
 </style>

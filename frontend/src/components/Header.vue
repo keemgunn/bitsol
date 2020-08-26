@@ -1,11 +1,15 @@
 <template>
-<div id="header">
+<div class="header" :class="{'header-expand':mode==='admin'}">
   <div id="light-cover"></div>
   <div id="content">
 
     <User/>
 
     <AdminBtn v-if="auth.accessLevel > 1" />
+
+    <transition name="appear">
+    <AdminMenu v-if="mode === 'admin'" />
+    </transition>
 
     <transition name="appear">
     <SearchBox v-if="mode === 'search'" />
@@ -19,14 +23,15 @@
 
 <script>
 import User from '@/components/header/User';
-import AdminBtn from '@/components/header/AdminBtn';
 import SearchBox from '@/components/header/SearchBox';
+import AdminBtn from '@/components/header/AdminBtn';
+import AdminMenu from '@/components/header/AdminMenu';
 import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: "Header",
   components: {
-    User, AdminBtn, SearchBox
+    User, AdminBtn, AdminMenu, SearchBox, 
   },
   computed: {
     ...mapState(['mode', 'auth'])
@@ -46,7 +51,7 @@ export default {
 
 
 
-<style lang="scss" scoped> #header {
+<style lang="scss" scoped> .header {
   position: absolute; top: 0; left: 0;
   width: 100vw;
   height: 180px;
@@ -54,6 +59,10 @@ export default {
   justify-content: center;
   align-items: center;
   user-select: none; -webkit-user-select: none;
+  transition: 300ms;
+}.header-expand {
+  transition: 300ms;
+  height: 160px;
 }
 
 #content {
@@ -63,7 +72,7 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
-  // background-color: rgba(219, 126, 13, 0.24);
+  background-color: rgba(219, 126, 13, 0.24);
 }
 
 #light-cover { 

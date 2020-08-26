@@ -86,7 +86,7 @@ export default {
   width: fit-content;
   height: 30px;
   font-family: 'Space Mono', 'Nanum Square', sans-serif;
-  font-weight:800;
+  font-weight:600;
   font-size: 16px;
   text-align: left;
   letter-spacing: 0.24px;

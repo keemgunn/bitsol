@@ -33,7 +33,7 @@ export default {
 
 <style lang="scss" scoped> 
 #deadline {
-  position: absolute; top: 13px; left: 18px;
+  position: absolute; top: 13px; left: 3px;
   width: fit-content;
   height: 35px;
   color: var(--i45);

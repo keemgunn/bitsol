@@ -175,7 +175,7 @@ export default {
   position: absolute; top: 86px; left: 0;
   width: 100%;
   height: 100px;
-  font-family: 'Nanum Square';
+  font-family: 'Nanum Square', sans-serif;
   font-weight: 200;
   font-size: 35px;
   color: var(--i45);
