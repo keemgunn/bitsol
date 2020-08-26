@@ -38,7 +38,7 @@ export default {
   ],
   data() { return {
     scope: 'room',
-    optionBox: true,
+    optionBox: false,
   }},
   computed: {
     ...mapState(['admin'])

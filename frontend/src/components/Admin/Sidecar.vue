@@ -64,7 +64,7 @@ export default {
   position: absolute;
   width: 200px;
   height: 100%;
-  background-color: rgba(235, 15, 206, 0.288);
+  // background-color: rgba(235, 15, 206, 0.288);
 }.left {
   right: calc(50% + 355px);
 }.right {
