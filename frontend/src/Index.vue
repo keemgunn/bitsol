@@ -6,6 +6,8 @@
   @mouseout="light_off"
 >
 
+  <div id="login-box-cover"></div>
+
   <transition name="login-box">
   <LoginBox 
     v-if="auth.accessLevel === 0"
@@ -25,10 +27,10 @@
 
   <!-- <Admin /> -->
 
-  <transition name="appear">
+  
   <div id="light" :style="lightening"
-  v-if="auth.accessLevel !== 0 && mode === ('search')"
-  ></div></transition>
+  v-if="auth.accessLevel > 0 && mode === ('search')"
+  ></div>
 
 <router-view></router-view>
 </div>
@@ -79,11 +81,14 @@ export default {
     },
   },
   created() {
-    this.verify(); // 바로 인증부터 시작
+    // this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", () => {
       this.sessionOut();
     });
-  }
+  },
+  mounted() {
+    this.verify();
+  },
 }
 </script>
 
@@ -115,8 +120,6 @@ export default {
 }
 
 
-// ------------------------- VISUAL EFFECT
-
 #light {
   z-index: 1;
   position: absolute;
@@ -134,7 +137,23 @@ export default {
   mask-repeat: no-repeat;
   mask-size: 260px 260px;
 
+  opacity: 0;
+  animation: fade-in 300ms  800ms forward;
+
   background-color: var(--i70);
+}
+
+
+
+// ------------------------- VISUAL EFFECT
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 
@@ -190,7 +209,15 @@ export default {
 .login-box-leave-active {
   transition: all 300ms;
 }
-
+#login-box-cover {
+  position: absolute;
+  pointer-events: none;
+  z-index: 6;
+  width: 300px;
+  height: 150px;
+  animation: fade-out 300ms ease-out 500ms forwards;
+  background-color: var(--i94);
+}
 
 
 

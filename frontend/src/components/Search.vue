@@ -29,7 +29,7 @@
   </div>
   <div class="cover-scroll-bottom"></div>
 
-  <transition name="appear">
+  <transition name="no-result">
   <div class="no-result" v-if="!searchArr.length">{{msg}}</div>
   </transition>
 
@@ -225,5 +225,27 @@ export default {
   width: 5px;
   height: 50px;
   background-color: var(--i94);
+}
+
+
+.no-result-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.no-result-enter-to {
+  opacity: 1;
+}
+.no-result-enter-active{
+  transition: all 200ms;
+  transition-delay: 300ms;
+}
+.no-result-leave {
+  opacity: 1;
+}
+.no-result-leave-to {
+  opacity: 0;
+}
+.no-result-leave-active {
+  transition: all 1ms;
 }
 </style>

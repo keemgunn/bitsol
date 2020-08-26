@@ -11,7 +11,7 @@ var worksheet;
 
 
 
-// LOAD DB INFO
+// ==== LOAD DB INFO
 router.get('/info', (req, res) => {
   const info = mysql.dbInfo();
   res.json({
