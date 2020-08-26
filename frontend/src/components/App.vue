@@ -154,6 +154,7 @@ export default {
     SearchList,
     Theme,
     Admin,
+
   },
   props: [],
   data() { return {
@@ -162,9 +163,9 @@ export default {
     dbinfo: {},
 
     // ------ UI ---
-    loadingState: 0,
+          loadingState: 0,
     userBoxState: 0,
-    adminMenu: 'index',
+          adminMenu: 'db',
 
     // ------ search-list ---
     recordHeight: 66,
@@ -239,7 +240,7 @@ export default {
 <style lang="scss" scoped> .app {
 // -------------------------------------------
 // -------------------------------------------
-  float: left;
+  position: relative;
   z-index: 10;
   width: calc(100vw - 120px);
   height: 100vh;

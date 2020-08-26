@@ -1,29 +1,36 @@
 <template>
 <div id="index" 
-  :style="this.$store.state.theme.applied"
+  :style="theme.applied"
   @mouseover="light_on"
   @mousemove="light_move"
   @mouseout="light_off"
 >
 
+  <div id="login-box-cover"></div>
+
+  <transition name="login-box">
   <LoginBox 
-    v-if="this.$store.state.auth.accessLevel === 0"
+    v-if="auth.accessLevel === 0"
     @verify="this.verify"
-  />
+  /></transition>
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'left':0}"></div>
+  <transition name="appear">
+  <Header 
+    v-if="auth.accessLevel > 0"
+  /></transition>
 
-  <App
-    v-if="this.$store.state.auth.accessLevel !== 0"
-    :accessLevel="this.$store.state.auth.accessLevel"
-    key="app"
-    @modal="setModal"
-  />
+  <transition name="appear">
+  <Search
+    v-if="(auth.accessLevel > 0)
+    && (mode === 'search')"
+  /></transition>
 
-  <div class="cover-app-side" v-if="this.$store.state.modal.mode === ('search-list')" :style="{'right':0}"></div>
+  <!-- <Admin /> -->
 
+  
   <div id="light" :style="lightening"
-  v-if="this.$store.state.auth.accessLevel !== 0 && this.$store.state.modal.mode === ('search-list')"></div>
+  v-if="auth.accessLevel > 0 && mode === ('search')"
+  ></div>
 
 <router-view></router-view>
 </div>
@@ -31,13 +38,15 @@
 
 
 <script>
-
-import App from '@/components/App'
-import LoginBox from '@/components/LoginBox'
+import LoginBox from '@/components/LoginBox';
+import Header from '@/components/Header';
+import Search from '@/components/Search';
+// import Admin from '@/components/Admin'
+import { mapState } from 'vuex';
 
 export default {
   name: 'Index',
-  components: { App, LoginBox },
+  components: { LoginBox, Header, Search, },
   data() { return {
     themeColor: {},
     lightening: {
@@ -46,26 +55,22 @@ export default {
       "background-color": "var(--i94)"
     },
   }},
+  computed: {
+    ...mapState(['auth', 'mode', 'theme']),
+  },
   methods: {
     //___________ AUTHENTICATION METHODS ____________
     verify(){ 
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      if(this.$store.state.auth.accessLevel) { // 이미 인증이 되어있다면 
+      if(this.auth.accessLevel) { // 이미 인증이 되어있다면 
         this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');
       }
     },
-
     //______________ UI METHODS _____________
-
-    setModal(property, state){
-      this.$store.dispatch('SET_MODAL', {property, state});
-      console.log('### modal set ...@Index/setModal');
-    },
-    
     light_on(){
       this["lightening"]["background-color"] = "var(--i70)";
     },light_off(){
@@ -73,35 +78,35 @@ export default {
     },light_move(e){
       this.lightening.top = String(e.pageY) + "px";
       this.lightening.left = String(e.pageX) + "px";
-    }
-
-  }, 
-  
+    },
+  },
   created() {
-    // this.setColor();
-    this.verify(); // 바로 인증부터 시작
+    // this.verify(); // 바로 인증부터 시작
     window.addEventListener("beforeunload", () => {
       this.sessionOut();
     });
-  }
+  },
+  mounted() {
+    this.verify();
+  },
 }
 </script>
 
 
 
 <style lang="scss">
-//------------------------------------------------
-//------------------------------------------------
 @import "assets/fonts/NanumSquare/nanumsquare.css";
 @import "assets/fonts/CoreGothicD/coregothicd.css";
 #index {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 0;
   display: flex;
   width: 100vw;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  position: absolute;
   overflow: hidden;
   font-family: 'Space Mono', 'Barlow', 'Nanum Square', 'Core Gothic D', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -115,33 +120,6 @@ export default {
 }
 
 
-// ------------------------- APP WRAPPER
-.cover-app-side {
-  z-index: 2;
-  position: absolute;
-  height: 100vh;
-  background-color: var(--i94);
-  // background-color: fuchsia;
-}
-
-@media ( max-width: 2000px ) {
-    .cover-app-side {
-        width: calc( 50vw - 340px );
-    }   
-}
-@media ( max-width: 800px ) {
-    .cover-app-side {
-        width: calc( 10vw );
-    } 
-}
-@media ( max-width: 550px ) {
-    .cover-app-side {
-        width: calc( 7vw );
-    } 
-}
-
-
-// ------------------------- VISUAL EFFECT
 #light {
   z-index: 1;
   position: absolute;
@@ -159,8 +137,88 @@ export default {
   mask-repeat: no-repeat;
   mask-size: 260px 260px;
 
+  opacity: 0;
+  animation: fade-in 300ms  800ms forward;
+
   background-color: var(--i70);
 }
+
+
+
+// ------------------------- VISUAL EFFECT
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 300ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+.appear-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.appear-enter-to {
+  opacity: 1;
+}
+.appear-enter-active{
+  transition: all 200ms;
+  transition-delay: 300ms;
+}
+.appear-leave {
+  opacity: 1;
+}
+.appear-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.appear-leave-active {
+  transition: all 300ms;
+}
+
+
+.login-box-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+} 
+.login-box-enter-to {
+  opacity: 1;
+}
+.login-box-enter-active{
+  transition: all 200ms;
+  transition-delay: 300ms;
+}
+.login-box-leave {
+  opacity: 1;
+}
+.login-box-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.login-box-leave-active {
+  transition: all 300ms;
+}
+#login-box-cover {
+  position: absolute;
+  pointer-events: none;
+  z-index: 6;
+  width: 300px;
+  height: 150px;
+  animation: fade-out 300ms ease-out 500ms forwards;
+  background-color: var(--i94);
+}
+
 
 
 </style>

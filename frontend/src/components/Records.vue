@@ -2,7 +2,7 @@
 <div :class="{'records':1, 'records-expand':moreinfo}">
 <div :class="{'content':1, 'content-expand':moreinfo}">
 
-  <div :class="{'room-name':1, 'room-name-expand':moreinfo}">{{record.room_name}}</div>
+  <div :class="{'room-name':1, 'room-name-expand':moreinfo}">{{record.room_name}}</div>d
 
   <div :class="{'student-name':1, 'student-name-expand':moreinfo}">{{record.student_name}}</div>
 

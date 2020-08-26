@@ -56,7 +56,7 @@ export default {
 <style lang="scss" scoped> #loginBox {
 // -----------------------------------
 // -----------------------------------
-  z-index: 10;
+  z-index: 5;
   width: 262px;
   height: 38px;
   color: inherit;
