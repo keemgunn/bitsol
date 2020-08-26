@@ -46,11 +46,18 @@
         <div class="opt-text">외국인 학생</div>
       </div>
 
-
-
     </div></transition>
 
   </div>
+
+  <div id="search-box">
+
+
+  </div>
+
+
+
+
 
 </div>
 </template>
@@ -273,7 +280,9 @@ export default {
   }
 }
 
-
+#search-box {
+  float: right;
+}
 
 
 
