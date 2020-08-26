@@ -108,7 +108,7 @@ export default new Vuex.Store({
       state[target] = set;
     },
 
-    
+
     searchCoverBottom(state) {
       state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
     },

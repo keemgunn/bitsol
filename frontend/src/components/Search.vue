@@ -85,6 +85,7 @@ export default {
 
 <style lang="scss" scoped> 
 #search {
+  z-index: 10;
   position: absolute; top: 180px; left: 0;
   width: 100%;
   height: calc(100% - 180px);
@@ -96,7 +97,6 @@ export default {
 
 #content {
   position: relative; top: 0; left: 0;
-  z-index: 10;
   width: calc(100vw - 120px);
     min-width: 490px;
     max-width: 710px;

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import DbSetting from '@/components/Admin/DbSetting'
+import DbSetting from '@/components/admin/DbSetting'
 
 import { mapState } from 'vuex'
 
@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss" scoped> #admin {
   position: absolute;
+  z-index: 10;
   left: 0;
   width: 100vw;
   height: calc(100% - 200px);

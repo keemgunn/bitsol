@@ -77,22 +77,6 @@ export default {
 
 // ================== ANIMATION =================
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 300ms;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
 @keyframes blink {
   0% {
     opacity: 0;

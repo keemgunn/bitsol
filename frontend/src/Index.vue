@@ -8,24 +8,24 @@
 
   <div id="login-box-cover"></div>
 
-  <transition name="login-box">
-  <LoginBox 
+  <transition name="login-box"><LoginBox 
     v-if="auth.accessLevel === 0"
     @verify="this.verify"
   /></transition>
 
-  <transition name="appear">
-  <Header 
+  <transition name="appear"><Header 
     v-if="auth.accessLevel > 0"
   /></transition>
 
-  <transition name="appear">
-  <Search
+  <transition name="appear"><Search
     v-if="(auth.accessLevel > 0)
     && (mode === 'search')"
   /></transition>
 
-  <Admin />
+  <transition name="appear"><Admin 
+    v-if="(auth.accessLevel > 0)
+    && (mode === 'admin')"
+  /></transition>
 
   
   <div id="light" :style="lightening"
