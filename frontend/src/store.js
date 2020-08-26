@@ -826,6 +826,7 @@ export default new Vuex.Store({
       console.log(color);
       state.theme.applied = styles["colors"][color];
       localStorage.colorConfig = color;
+      axios.post('/auth/theme/change', {id: localStorage.id, color});
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
 
