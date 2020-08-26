@@ -1,6 +1,6 @@
 <template>
 <div id="db-list">
-
+{{adminArr}}
 
 
 
@@ -10,6 +10,7 @@
 
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 
 
 export default {
@@ -22,13 +23,13 @@ export default {
 
   }},
   computed: {
-
+    ...mapState(['adminArr'])
   },
   methods: {
-
+    ...mapMutations(['LOAD_ROOM_LIST'])
   },
   created() {
-
+    this.LOAD_ROOM_LIST();
   },
   mounted() {
     
@@ -49,6 +50,9 @@ export default {
   position: relative;
   width: 100%;
   height: calc(100% - 83px);
+  overflow-x: hidden;
+  overflow-y: auto;
+
   background-color: rgba(0, 140, 255, 0.534);
 }
 

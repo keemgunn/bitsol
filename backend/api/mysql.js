@@ -97,7 +97,6 @@ function firstData(worksheet, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
-  
   use(currentSchema);
   
   var def = "DEFAULT";
@@ -170,7 +169,6 @@ function updateRefg(student_id, update, res){
   // resumeConnection();
   logRefresh();
   addMonitor(monitor, res);
-  
   use(currentSchema);
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
@@ -209,6 +207,23 @@ function searchStudent(keyword, res){
     
       select(query);
     }
+  }
+}
+
+function loadRoomList(res){
+  console.log('@@@@@@ processing:', processing);
+  if(processing > 0){
+    console.log("### request-jam-error .../mysql.js/searchStudent");
+    processing = 0;
+  }else{
+    processing += 1;
+    logRefresh();
+    addMonitor(monitor, res);
+    use(currentSchema);
+
+    let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_id, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM room r LEFT JOIN students s USING (student_id);"
+
+    select(query);
   }
 }
 
@@ -431,6 +446,7 @@ module.exports.use = use;
 module.exports.searchStudent = searchStudent;
 module.exports.updateRefg = updateRefg;
 module.exports.dbInfo = dbInfo;
+module.exports.loadRoomList = loadRoomList;
 
 // pauseConnection();
 // reConnect();

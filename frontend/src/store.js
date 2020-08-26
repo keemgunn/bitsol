@@ -16,8 +16,8 @@ export default new Vuex.Store({
   state: {
 
     auth: {
-      // id:null, accessLevel:0, userName:null,
-      id: '2018317024', accessLevel: 3, userName: "김건",
+      id:null, accessLevel:0, userName:null,
+      // id: '2018317024', accessLevel: 3, userName: "김건",
     },
     dbinfo: {},
     mode: 'admin', 
@@ -105,6 +105,19 @@ export default new Vuex.Store({
       localStorage.colorConfig = defaultColor;
     },
 
+    //____________ ADMIN METHODS ____________
+    async LOAD_ROOM_LIST (state) {
+      console.log('$$$ request ...$mutation/LOAD_ROOM_LIST');
+      let {data} = await axios.get('/db/admin/all-room');
+      state.adminArr = data.arg;
+    },
+
+
+
+
+
+
+
     //____________ UI METHODS ____________
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
@@ -118,7 +131,6 @@ export default new Vuex.Store({
       state[target] = set;
     },
 
-
     searchCoverBottom(state) {
       state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
     },
@@ -127,18 +139,13 @@ export default new Vuex.Store({
       state.search.loadingState = bool
     },
   
-
-
-
-
-
     ALERT (state, msg) {
       console.log(msg);
       state.alert = msg;
     },
 
 
-    
+
   },
   actions: {
     //___________ AUTHENTICATION METHODS _______

@@ -81,9 +81,12 @@ router.post('/update/refg', (req, res) => {
 });
 
 
+// ============= LOAD ROOM LIST
 
-
-
+router.get('/admin/all-room', (req, res) => {
+  console.log("data request for admin ... @api/db/admin/all-room");
+  mysql.loadRoomList(res);
+})
 
 
 
