@@ -171,9 +171,7 @@ function updateRefg(student_id, update, res){
 }
 
 function searchStudent(keyword, res){
-  logRefresh();
   const queryID = SearchMonitor(monitor, res);
-  use(currentSchema);
 
   let joiResult = searchKeySchema.validate({keyword});
   if(joiResult.error){
