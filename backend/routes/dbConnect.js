@@ -56,9 +56,18 @@ router.post('/init/dataforming', (req, res) => {
 
 // ============= SEARCH API
 
+router.get('/student-list', (req, res) => {
+  console.log("data request for user ... @api/db/student-list");
+  mysql.loadRoomList(res);
+})
+
+
+
+
+
+
 let searchKey;
 let student_id, refgTerm, update;
-
 router.post('/search', (req, res) => {
     console.log("search request for refg .../db/search");
     searchKey = req.body.keyword;
@@ -81,7 +90,7 @@ router.post('/update/refg', (req, res) => {
 });
 
 
-// ============= LOAD ROOM LIST
+// ============= ADMIN METHODS
 
 router.get('/admin/all-room', (req, res) => {
   console.log("data request for admin ... @api/db/admin/all-room");

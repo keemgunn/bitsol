@@ -64,10 +64,10 @@ export default {
     ...mapState(['search', 'searchArr', 'testArr']),
   },
   methods: {
-    ...mapMutations(['searchLoadingState']),
+    ...mapMutations(['LOAD_STUDENT_LIST', 'searchLoadingState',]),
   },
   created() {
-
+    this.LOAD_STUDENT_LIST();
   },
   mounted() {
 

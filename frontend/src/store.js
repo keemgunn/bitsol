@@ -20,9 +20,10 @@ export default new Vuex.Store({
       // id: '2018317024', accessLevel: 3, userName: "김건",
     },
     dbinfo: {},
-    mode: 'admin', 
+    mode: 'search', 
      // search  admin
 
+    studentList: [],
     searchArr: [],
     search: {
       keyword: '',
@@ -105,6 +106,15 @@ export default new Vuex.Store({
       localStorage.colorConfig = defaultColor;
     },
 
+    //____________ SEARCH METHODS ___________
+    async LOAD_STUDENT_LIST (state) {
+      console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
+      let {data} = await axios.get('/db/student-list');
+      state.studentList = data.arg;
+    },
+
+
+
     //____________ ADMIN METHODS ____________
     async LOAD_ROOM_LIST (state) {
       console.log('$$$ request ...$mutation/LOAD_ROOM_LIST');
@@ -136,6 +146,7 @@ export default new Vuex.Store({
     },
 
     searchLoadingState(state, bool){
+      console.log('loading: ', bool);
       state.search.loadingState = bool
     },
   

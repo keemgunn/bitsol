@@ -210,21 +210,24 @@ function searchStudent(keyword, res){
   }
 }
 
+function loadStudentList(res){
+  logRefresh();
+  addMonitor(monitor, res);
+  use(currentSchema);
+
+  let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id);"
+
+  select(query);
+}
+
 function loadRoomList(res){
-  console.log('@@@@@@ processing:', processing);
-  if(processing > 0){
-    console.log("### request-jam-error .../mysql.js/searchStudent");
-    processing = 0;
-  }else{
-    processing += 1;
-    logRefresh();
-    addMonitor(monitor, res);
-    use(currentSchema);
+  logRefresh();
+  addMonitor(monitor, res);
+  use(currentSchema);
 
-    let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_id, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM room r LEFT JOIN students s USING (student_id);"
+  let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_id, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM room r LEFT JOIN students s USING (student_id);"
 
-    select(query);
-  }
+  select(query);
 }
 
 // ######## QUERY METHODS #########
@@ -440,12 +443,15 @@ function dbInfo() {
   return versionInfo
 }
 
+module.exports.use = use;
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
-module.exports.use = use;
-module.exports.searchStudent = searchStudent;
-module.exports.updateRefg = updateRefg;
 module.exports.dbInfo = dbInfo;
+
+module.exports.searchStudent = searchStudent;
+module.exports.loadStudentList = loadStudentList;
+module.exports.updateRefg = updateRefg;
+
 module.exports.loadRoomList = loadRoomList;
 
 // pauseConnection();
