@@ -107,7 +107,7 @@ export default new Vuex.Store({
 
     async DB_INFO (state) {
       console.log('$$$ request ...$mutation/DB_INFO');
-      let {data} = await axios.get('db/info');
+      let {data} = await axios.get('/db/info');
       state.dbinfo = data;
       console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
       console.log(data);
@@ -115,7 +115,7 @@ export default new Vuex.Store({
 
     async DB_COMMIT (state) {
       console.log('$$$ request ... $mutation/DB_COMMIT');
-      let {data} = await axios.get('db/info/commit');
+      let {data} = await axios.get('/db/info/commit');
       state.info.commit = data.commit;
     },
 

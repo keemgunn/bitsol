@@ -1,6 +1,6 @@
 <template>
 <div id="db-list">
-
+{{roomList}}
 
 
 </div>

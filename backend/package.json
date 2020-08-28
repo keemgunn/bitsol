@@ -20,6 +20,8 @@
     "nedb": "^1.8.0",
     "node": "^14.5.0",
     "nodemon": "^2.0.4",
+    "randomstring": "^1.1.5",
+    "uuid": "^8.3.0",
     "xlsx": "^0.16.4"
   },
   "devDependencies": {}

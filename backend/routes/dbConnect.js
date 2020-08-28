@@ -13,6 +13,7 @@ const dbconfig_root = path.join(__dirname, '../data/db.json');
 const info = version.readSync(dbconfig_root);
 
 router.get('/info', (req, res) => {
+  console.log("data request ... /db/info");
   res.json({
     "schema": info.schema,
     "build": info.build,
@@ -48,12 +49,12 @@ router.post('/worksheet', (req, res) => {
 
 router.post('/init', (req, res) => {
     const year = req.body.givenYear;
-    console.log("givenYear:", year, " ... @api/db/init");
+    console.log("givenYear:", year, " ... /db/init");
     mysql.makeTables(year, res);
 });
 
 router.post('/init/dataforming', (req, res) => {
-    console.log("initial data request ... @api/db/init/dataforming");
+    console.log("initial data request ... /db/init/dataforming");
     mysql.firstData(worksheet, res);
 });
 
@@ -62,12 +63,12 @@ router.post('/init/dataforming', (req, res) => {
 // ================== LOAD DATABASE
 
 router.get('/room-list', (req, res) => {
-  console.log("data request for admin ... @api/db/admin/all-room");
+  console.log("data request ... /db/room-list");
   mysql.loadRoomList(res);
 })
 
 router.get('/student-list', (req, res) => {
-  console.log("data request for user ... @api/db/student-list");
+  console.log("data request ... /db/student-list");
   mysql.loadStudentList(res);
 })
 

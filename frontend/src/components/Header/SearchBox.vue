@@ -51,7 +51,7 @@ export default {
     ...mapMutations(['searchCoverBottom']),
   },
   mounted() {
-    this.$refs.searchField.focus();
+    // this.$refs.searchField.focus(); // 이거 하면 창 뜨자마자 자동으로 검색메서드 실행됨
   },
 }
 </script>

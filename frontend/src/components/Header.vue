@@ -37,15 +37,24 @@ export default {
     ...mapState(['mode', 'auth'])
   },
   methods: {
-    ...mapMutations(['DB_INFO', 'LOAD_ROOM_LIST'])
+    ...mapMutations(['DB_INFO', 'LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST'])
   },
   created() { //_____________________________
-    if(this.$store.state.auth.id === null){
+    if(this.auth.id === null){
       this.$store.dispatch('RECOVER');
       console.log('### configuration recovered ... @Header');
+      this.DB_INFO();
+      this.LOAD_ROOM_LIST();
+      if(this.auth.accessLevel > 1){
+        this.LOAD_STUDENT_LIST();
+      }
+    }else{
+      this.DB_INFO();
+      this.LOAD_ROOM_LIST();
+      if(this.auth.accessLevel > 1){
+        this.LOAD_STUDENT_LIST();
+      }
     }
-    this.DB_INFO();
-    this.LOAD_ROOM_LIST();
   },
 }
 </script>
