@@ -17,8 +17,8 @@ export default new Vuex.Store({
   state: {
 
     auth: {
-      id:null, accessLevel:0, userName:null,
-      // id: '2018317024', accessLevel: 3, userName: "김건",
+      // id:null, accessLevel:0, userName:null,
+      id: '2018317024', accessLevel: 3, userName: "김건",
     },
     mode: 'search', // search  admin
     dbinfo: {},
@@ -131,6 +131,7 @@ export default new Vuex.Store({
     
     async SEARCH (state, keyword) {
       console.log('$$$ request ...$mutation/SEARCH');
+      state.search.loadingState = 1;
       let {data} = await axios.post('/db/search', {keyword});
       state.searchArr = data.arg;
     },
@@ -163,8 +164,8 @@ export default new Vuex.Store({
     },
 
     searchLoadingState(state, bool){
+      state.search.loadingState = bool;
       console.log('loading: ', bool);
-      state.search.loadingState = bool
     },
   
     ALERT (state, msg) {

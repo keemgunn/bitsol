@@ -21,7 +21,7 @@
   </div>
 
   <div id="indicator">
-    <div id="load-bar" v-if="search.loadingState"></div>
+    <div id="load-bar" v-if="search.loadingState === 1"></div>
   </div>
 
 </form>
