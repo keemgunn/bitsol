@@ -70,7 +70,7 @@ export default {
     this.LOAD_STUDENT_LIST();
   },
   mounted() {
-
+    
   },
   beforeUpdate() {
     this.searchLoadingState(1);

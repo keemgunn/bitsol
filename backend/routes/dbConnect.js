@@ -35,8 +35,7 @@ router.get('/info/commit', (req, res) => {
 
 
 
-
-// ============= load from .xlsx
+// ================== INITIATING DATABASE
 
 router.post('/worksheet', (req, res) => {
     worksheet = req.body;
@@ -47,10 +46,6 @@ router.post('/worksheet', (req, res) => {
         "data": worksheet
     });
 });
-
-
-
-// ============= INITIATING DATABASE
 
 router.post('/init', (req, res) => {
     const year = req.body.givenYear;
@@ -65,17 +60,21 @@ router.post('/init/dataforming', (req, res) => {
 
 
 
-// ============= SEARCH API
+// ================== LOAD DATABASE
+
+router.get('/room-list', (req, res) => {
+  console.log("data request for admin ... @api/db/admin/all-room");
+  mysql.loadRoomList(res);
+})
 
 router.get('/student-list', (req, res) => {
   console.log("data request for user ... @api/db/student-list");
-  mysql.loadRoomList(res);
+  mysql.loadStudentList(res);
 })
 
 
 
-
-
+// ============= SEARCH API
 
 let searchKey;
 let student_id, refgTerm, update;
@@ -103,10 +102,7 @@ router.post('/update/refg', (req, res) => {
 
 // ============= ADMIN METHODS
 
-router.get('/admin/all-room', (req, res) => {
-  console.log("data request for admin ... @api/db/admin/all-room");
-  mysql.loadRoomList(res);
-})
+
 
 
 

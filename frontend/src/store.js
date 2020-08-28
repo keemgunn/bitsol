@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import Joi from 'joi';
 
 Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
@@ -12,6 +13,14 @@ const DBoptions = {
   showForeign: false
 };
 
+const searchKeySchema = Joi.object({
+  keyword: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
+    .min(2)
+    .required()
+    .trim(true)
+});
+
 export default new Vuex.Store({
   state: {
 
@@ -19,12 +28,13 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
       // id: '2018317024', accessLevel: 3, userName: "김건",
     },
-    dbinfo: {},
-    mode: 'search', 
-     // search  admin
+    mode: 'search', // search  admin
 
+    dbinfo: {},
+    roomList: [],
     studentList: [],
     searchArr: [],
+    
     search: {
       keyword: '',
       moreinfo: false,
@@ -117,28 +127,44 @@ export default new Vuex.Store({
       state.info.commit = data.commit;
     },
 
+    async LOAD_ROOM_LIST (state) {
+      console.log('$$$ request ...$mutation/LOAD_ROOM_LIST');
+      let {data} = await axios.get('/db/room-list');
+      state.roomList = data.arg;
+    },
 
-
-
-
-
-
-    //____________ SEARCH METHODS ___________
     async LOAD_STUDENT_LIST (state) {
       console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
       let {data} = await axios.get('/db/student-list');
       state.studentList = data.arg;
     },
+    
+    
+    
+    
+    
+    
+    //____________ SEARCH METHODS ___________
+    
+    SEARCH (state) {
+      console.log('$$$ search: ', state.search.keyword);
+      let joiResult = searchKeySchema.validate({keyword:state.search.keyword});
+      if(joiResult.error){
+        console.log('joiResult.error');
+        state.searchArr = [];
+      }else{
 
-
-
-
-    //____________ ADMIN METHODS ____________
-    async LOAD_ROOM_LIST (state) {
-      console.log('$$$ request ...$mutation/LOAD_ROOM_LIST');
-      let {data} = await axios.get('/db/admin/all-room');
-      state.adminArr = data.arg;
+        console.log('bla');
+       
+      }
     },
+    
+
+
+
+
+
+
 
 
 

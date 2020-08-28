@@ -31,21 +31,21 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import axios from 'axios';
+// import axios from 'axios';
+
+
 
 export default {
   name: "SearchBox",
   data() { return {
-    keyword: '',
   }},
   computed: {
-    ...mapState(['searchArr', 'search'])
+    ...mapState(['search', 'studentList', 'searchArr'])
   },
   methods: {
-    //___________ SEARCH __________
     async searchStudent(){
-      let {data} = await axios.post('/db/search', {keyword: this.search.keyword});
-      this.$store.state.searchArr = data.arg;
+
+
       this.searchCoverBottom();
     },
     ...mapMutations(['searchCoverBottom']),
