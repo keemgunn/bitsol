@@ -31,7 +31,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-// import axios from 'axios';
+import axios from 'axios';
 
 
 
@@ -40,12 +40,12 @@ export default {
   data() { return {
   }},
   computed: {
-    ...mapState(['search', 'studentList', 'searchArr'])
+    ...mapState(['search', 'searchArr'])
   },
   methods: {
     async searchStudent(){
-
-
+      let {data} = await axios.post('/db/search', {keyword:this.search.keyword});
+      this.searchArr = data.arg
       this.searchCoverBottom();
     },
     ...mapMutations(['searchCoverBottom']),

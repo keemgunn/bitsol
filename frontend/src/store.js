@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import Joi from 'joi';
+// import Joi from 'joi';
 
 Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
@@ -12,14 +12,6 @@ const DBoptions = {
   showEmpty: false,
   showForeign: false
 };
-
-const searchKeySchema = Joi.object({
-  keyword: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
-    .min(2)
-    .required()
-    .trim(true)
-});
 
 export default new Vuex.Store({
   state: {
@@ -34,7 +26,7 @@ export default new Vuex.Store({
     roomList: [],
     studentList: [],
     searchArr: [],
-    
+
     search: {
       keyword: '',
       moreinfo: false,
@@ -141,27 +133,6 @@ export default new Vuex.Store({
     
     
     
-    
-    
-    
-    //____________ SEARCH METHODS ___________
-    
-    SEARCH (state) {
-      console.log('$$$ search: ', state.search.keyword);
-      let joiResult = searchKeySchema.validate({keyword:state.search.keyword});
-      if(joiResult.error){
-        console.log('joiResult.error');
-        state.searchArr = [];
-      }else{
-
-        console.log('bla');
-       
-      }
-    },
-    
-
-
-
 
 
 

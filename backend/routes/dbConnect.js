@@ -5,8 +5,6 @@ const router = express.Router();
 const mysql = require('../api/mysql');
 const version = require('../api/config');
 
-// from XLSX module
-var worksheet;
 
 
 
@@ -36,6 +34,7 @@ router.get('/info/commit', (req, res) => {
 
 
 // ================== INITIATING DATABASE
+let worksheet;
 
 router.post('/worksheet', (req, res) => {
     worksheet = req.body;
@@ -75,18 +74,18 @@ router.get('/student-list', (req, res) => {
 
 
 // ============= SEARCH API
-
 let searchKey;
-let student_id, refgTerm, update;
+
 router.post('/search', (req, res) => {
-    console.log("search request for refg .../db/search");
-    searchKey = req.body.keyword;
-    mysql.searchStudent(searchKey, res);
+  searchKey = req.body.keyword;
+  console.log("search request keyword: ", searchKey, " .../db/search");
+  mysql.searchStudent(searchKey, res);
 })
 
 
 
 // ============= UPDATE REFG DATA
+let student_id, refgTerm, update;
 
 router.post('/update/refg', (req, res) => {
   console.log("update request for refg ... @api/db/update/refg");

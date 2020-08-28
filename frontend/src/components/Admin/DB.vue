@@ -52,11 +52,9 @@ export default {
     toggle(target, set){
       this[target] = set;
     },
-  ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST'])
+  ...mapMutations([])
   },
   created() {
-    this.LOAD_STUDENT_LIST();
-    this.LOAD_ROOM_LIST();
   },
   mounted() {
     
