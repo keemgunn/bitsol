@@ -1,4 +1,17 @@
+const path = require('path');
 const fs = require('fs');
+
+const db_root = path.join(__dirname, '../data/db.json');
+let dbinfo = readSync(db_root);
+console.log('DB-INFO:\n',dbinfo);
+
+const user_root = path.join(__dirname, '../data/users.json');
+let user = readSync(user_root);  
+console.log('AUTHORIZED USERS:\n',user);
+
+const access_log_root = path.join(__dirname, '../data/access_log.json');
+
+
 
 
 function read(file){
@@ -42,3 +55,9 @@ module.exports.read = read;
 module.exports.readSync = readSync;
 module.exports.write = write;
 module.exports.update = update;
+
+module.exports.db_root = db_root;
+module.exports.dbinfo = dbinfo;
+module.exports.user_root = user_root;
+module.exports.user = user;
+module.exports.access_log_root = access_log_root;

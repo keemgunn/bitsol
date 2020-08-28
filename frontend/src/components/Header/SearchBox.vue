@@ -21,7 +21,7 @@
   </div>
 
   <div id="indicator">
-    <div id="load-bar" v-if="search.loadingState"></div>
+    <div id="load-bar" v-if="search.loadingState === 1"></div>
   </div>
 
 </form>
@@ -31,27 +31,23 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import axios from 'axios';
 
 export default {
   name: "SearchBox",
   data() { return {
-    keyword: '',
   }},
   computed: {
-    ...mapState(['searchArr', 'search'])
+    ...mapState(['search', 'searchArr'])
   },
   methods: {
-    //___________ SEARCH __________
-    async searchStudent(){
-      let {data} = await axios.post('/db/search', {keyword: this.search.keyword});
-      this.$store.state.searchArr = data.arg;
+    searchStudent(){
+      this.SEARCH(this.search.keyword);
       this.searchCoverBottom();
     },
-    ...mapMutations(['searchCoverBottom']),
+    ...mapMutations(['SEARCH', 'searchCoverBottom']),
   },
   mounted() {
-    this.$refs.searchField.focus();
+    // this.$refs.searchField.focus(); // 이거 하면 창 뜨자마자 자동으로 검색메서드 실행됨
   },
 }
 </script>

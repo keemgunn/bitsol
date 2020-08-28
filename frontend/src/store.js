@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+// import Joi from 'joi';
 
 Vue.use(Vuex)
 // const resourceHost = 'http://localhost:3000'
@@ -16,12 +17,11 @@ export default new Vuex.Store({
   state: {
 
     auth: {
-      id:null, accessLevel:0, userName:null,
-      // id: '2018317024', accessLevel: 3, userName: "김건",
+      // id:null, accessLevel:0, userName:null,
+      id: '2018317024', accessLevel: 3, userName: "김건",
     },
+    mode: 'search', // search  admin
     dbinfo: {},
-    mode: 'admin', 
-     // search  admin
 
     searchArr: [],
     search: {
@@ -32,7 +32,8 @@ export default new Vuex.Store({
       loadingState: 0
     },
     
-    adminArr:[],
+    roomList: [],
+    studentList: [],
     admin: {
       modal: 'db',
         // index  db  refg  user
@@ -79,13 +80,7 @@ export default new Vuex.Store({
       state.auth.accessLevel = data.accessLevel;
     },
 
-    async DB_INFO (state) {
-      console.log('$$$ request ...$mutation/DB_INFO');
-      const {data} = await axios.get('db/info');
-      state.dbinfo = data;
-      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
-      console.log(data);
-    },
+
 
     RECOVER (state) {
       console.log('$$$ request ...$mutation/RECOVER');
@@ -105,12 +100,45 @@ export default new Vuex.Store({
       localStorage.colorConfig = defaultColor;
     },
 
-    //____________ ADMIN METHODS ____________
+
+    //______________ DB METHODS ____________
+
+    async DB_INFO (state) {
+      console.log('$$$ request ...$mutation/DB_INFO');
+      let {data} = await axios.get('/db/info');
+      state.dbinfo = data;
+      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
+      console.log(data);
+    },
+
+    async DB_COMMIT (state) {
+      console.log('$$$ request ... $mutation/DB_COMMIT');
+      let {data} = await axios.get('/db/info/commit');
+      state.info.commit = data.commit;
+    },
+
     async LOAD_ROOM_LIST (state) {
       console.log('$$$ request ...$mutation/LOAD_ROOM_LIST');
-      let {data} = await axios.get('/db/admin/all-room');
-      state.adminArr = data.arg;
+      let {data} = await axios.get('/db/room-list');
+      state.roomList = data.arg;
     },
+
+    async LOAD_STUDENT_LIST (state) {
+      console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
+      let {data} = await axios.get('/db/student-list');
+      state.studentList = data.arg;
+    },
+    
+    async SEARCH (state, keyword) {
+      console.log('$$$ request ...$mutation/SEARCH');
+      state.search.loadingState = 1;
+      let {data} = await axios.post('/db/search', {keyword});
+      state.searchArr = data.arg;
+    },
+    
+
+
+
 
 
 
@@ -136,7 +164,8 @@ export default new Vuex.Store({
     },
 
     searchLoadingState(state, bool){
-      state.search.loadingState = bool
+      state.search.loadingState = bool;
+      console.log('loading: ', bool);
     },
   
     ALERT (state, msg) {

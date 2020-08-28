@@ -2,6 +2,7 @@
   "schema": "bitsolDB_2019_test04",
   "version": "19.156",
   "build": 156,
+  "commit": 0,
   "date": "2020-07-27T12:53:49.009Z",
   "refgTerm": "19_1",
   "deadline": "8/24",

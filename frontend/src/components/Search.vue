@@ -61,13 +61,12 @@ export default {
         return "검색결과가 없습니다..."
       }
     },
-    ...mapState(['search', 'searchArr', 'testArr']),
+    ...mapState(['search', 'searchArr']),
   },
   methods: {
-    ...mapMutations(['searchLoadingState']),
+    ...mapMutations(['searchLoadingState',]),
   },
   created() {
-
   },
   mounted() {
 

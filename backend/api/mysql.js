@@ -1,19 +1,13 @@
 const EventEmitter = require('events');
-const fs = require('fs');
-const path = require('path');
 const mysql = require('mysql');
-const version = require('./config.js');
+const config = require('./config.js');
 const Joi = require('joi');
+const randomstring = require("randomstring");
+const { response } = require('express');
 
-let versionFile = path.join(__dirname, '../data/db.json');
-  let versionInfo = version.readSync(versionFile);
-let logFile = path.join(__dirname, '../data/db_log.json');
-let userFile = path.join(__dirname, '../data/users.json');
-  let user = version.readSync(userFile);//users.json
-
-const hostName = versionInfo.connection.host || 'localhost';
-const userName = versionInfo.connection.user || 'root';
-const pw = versionInfo.connection.password || 'qwerty123';
+const hostName = config.dbinfo.connection.host || 'localhost';
+const userName = config.dbinfo.connection.user || 'root';
+const pw = config.dbinfo.connection.password || 'qwerty123';
 const connection = mysql.createConnection({
   host: hostName,
   user: userName,
@@ -29,16 +23,14 @@ let deadline = versionCheck('deadline');
 let refgLimit = versionCheck('refgLimit');
 
 function versionCheck(prop){
-  if(prop){
-    console.log('###versionCheck__', String(prop), ': ', versionInfo[prop]);
-    return versionInfo[prop]
+  if(config.dbinfo.hasOwnProperty(prop)){
+    console.log('###versionCheck__', prop, ': ', config["dbinfo"][prop]);
+    return config["dbinfo"][prop]
   }else {
     console.log("###versionCheck__: NO PROPERTY NAMED:", String(prop));
     return undefined
   }
 }
-
-let processing = 0;
 
 // ################# QUERIES ####################
 use(currentSchema);
@@ -47,16 +39,17 @@ let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
 
+
 function makeTables(year, res) {
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
 
   currentSchema = 'bitsolDB_20' + String(year) + '_test04';
   currentVersion = String(year) + ".0";
   currentBuild = 0;
   serials = [];
-  versionInfo = {
+  config.dbinfo = {
     "schema": currentSchema,
     "version": currentVersion,
     "build": currentBuild,
@@ -96,7 +89,7 @@ function makeTables(year, res) {
 function firstData(worksheet, res){
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
   use(currentSchema);
   
   var def = "DEFAULT";
@@ -168,7 +161,7 @@ function firstData(worksheet, res){
 function updateRefg(student_id, update, res){
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
   use(currentSchema);
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
@@ -178,53 +171,34 @@ function updateRefg(student_id, update, res){
 }
 
 function searchStudent(keyword, res){
-  console.log('@@@@@@ processing:', processing);
-  if(processing > 0){
-    console.log("### request-jam-error .../mysql.js/searchStudent");
-    processing = 0;
-  }else{
-    processing += 1;
+  const queryID = SearchMonitor(monitor, res);
 
-    // resumeConnection();
-    logRefresh();
-    addMonitor(monitor, res);
-    
-    use(currentSchema);
-  
-    let joiResult = searchKeySchema.validate({keyword});
-    if(joiResult.error){
-      console.log('joiResult.error');
-      res.json({
-        arg: []
-      });
-      processing = 0;
-    }else{
-      let key = quote(joiResult.value.keyword);
-  
-      let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
-      query = query.concat("r.room_name REGEXP ", key, " || ");
-      query = query.concat("s.student_name REGEXP ", key, ");");
-    
-      select(query);
-    }
+  let joiResult = searchKeySchema.validate({keyword});
+  if(joiResult.error){
+    console.log('joiResult.error');
+    res.json({
+      arg: []
+    });
+  }else{
+    let key = quote(joiResult.value.keyword);
+    let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+    query = query.concat("r.room_name REGEXP ", key, " || ");
+    query = query.concat("s.student_name REGEXP ", key, ");");
+    select(query, queryID);
   }
 }
 
+function loadStudentList(res){
+  const queryID = SearchMonitor(monitor, res);
+  let query = "SELECT s.student_id,  s.student_name, r.room_id, r.room_name, r.building, r.room_number, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM students s LEFT JOIN room r USING (student_id);"
+  select(query, queryID);
+}
+
 function loadRoomList(res){
-  console.log('@@@@@@ processing:', processing);
-  if(processing > 0){
-    console.log("### request-jam-error .../mysql.js/searchStudent");
-    processing = 0;
-  }else{
-    processing += 1;
-    logRefresh();
-    addMonitor(monitor, res);
-    use(currentSchema);
+  const queryID = SearchMonitor(monitor, res);
 
-    let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_id, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM room r LEFT JOIN students s USING (student_id);"
-
-    select(query);
-  }
+  let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number, rf.* FROM room r LEFT JOIN students s USING (student_id) LEFT JOIN refg rf USING (student_id);"
+  select(query, queryID);
 }
 
 // ######## QUERY METHODS #########
@@ -250,7 +224,7 @@ function logRefresh(){
 function versionUp(){
   currentBuild += 1;
   currentVersion = currentVersion[0] + currentVersion[1] + "." + String(currentBuild);
-  versionInfo = {
+  config.dbinfo = {
     "schema": currentSchema,
     "version": currentVersion,
     "build": currentBuild,
@@ -269,24 +243,20 @@ const searchKeySchema = Joi.object({
 
 
 
+
 // ========================= MONITOR SETTING
 
-function addMonitor(monitor, res){
-  monitor.on('query error', (arg) => {
-    console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
-    console.log(arg);
-  });
+function Monitor(monitor, res) {
   monitor.on('query success', (arg) => {
     console.log('$$$ QUERY SUCCESS ... @mysql.js/monitor\n   affected: ', arg.affectedRows);
     affected += arg.affectedRows;
     log.push(arg);
   });
-  monitor.on('select', (arg) => {
-    console.log('$$$ SEARCH REQUEST ... @mysql.js/monitor');
+  monitor.on(queryID, (arg) => {
+    console.log('$$$ SELECT REQUEST ... @mysql.js/monitor');
     res.json({
       arg
     });
-    processing = 0;
   });
   monitor.on('query end', (arg) => {
     // ----------- response methods
@@ -296,28 +266,36 @@ function addMonitor(monitor, res){
       log
     })
     console.log('### FUNCTION COMPLETE ... @mysql.js/monitor\n   affected:', affected);
-
     // ----------- update version config file
-    version.update(versionFile, versionInfo);
-    console.log("### version updated:", versionInfo.version);
+    config.update(config.db_root, config.dbinfo);
+    console.log("### version updated:", config["dbinfo"]["version"]);
     console.log('### total', serials.length, 'records in students ... @mysql.js');
-
     // ----------- update log file
-    // let timestamp = String(versionInfo.date.getTime());
-    // let author = "gunn"
-    // var logInfo = new Object;
-    // logInfo[timestamp] = {
-    //   "schema": versionInfo.schema,
-    //   "version": versionInfo.version,
-    //   author,
-    //   "time": versionInfo.date,
-    //   affected,
-    //   log
-    // };  version.update(logFile, logInfo);
-
-    // pauseConnection();
+    // ~~~~~~~~~
   });
 }
+
+function SearchMonitor(monitor, res) {
+  const queryID = randomstring.generate(4);
+  monitor.on(queryID, (arg) => {
+    console.log(arg);
+    res.json({arg});
+    console.log('responsed... queryID: ', queryID);
+  });
+  return queryID
+}
+
+monitor.on('query error', (arg) => {
+  console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
+  console.log(arg);
+});
+
+monitor.on('delete-listener', (name) => {
+  monitor.removeAllListeners(name);
+});
+
+
+
 
 
 
@@ -332,8 +310,13 @@ function quote(string){
   return converted
 }
 function use(schema){
-  var convertedStr = backTick(schema);
-  goQuery(`USE ${convertedStr};`);
+  const SCHEMA = backTick(schema);
+  let query = `USE ${SCHEMA}`;
+  connection.query(query, (error, results, fields) => {
+    if(error) {
+      monitor.emit('query error', error);
+    }
+  })
   console.log('$$$ USING', schema, ' ... @mysql.js/use');
 }
 function close(){
@@ -391,13 +374,14 @@ function updateQuery(tableName, condition, match, columnName, data){
   query = query.concat(";");
   goQuery(query);
 }
-function select(query){
+function select(query, queryID){
   connection.query(query, (error, results, fields) =>{
-    if(error) {
+    if(error){
       monitor.emit('query error', error);
     }
-    monitor.emit('select', results);
-    console.log(results);
+    monitor.emit(queryID, results);
+    console.log('result: ', results.length, ' ... @/mysql.js/select');
+    monitor.emit('delete-listener', queryID);
   });
 }
 
@@ -436,17 +420,17 @@ function resumeConnection(){
 
 // ========================= EXPORT SETTING
 
-function dbInfo() {
-  return versionInfo
-}
-
+module.exports.use = use;
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
-module.exports.use = use;
+
 module.exports.searchStudent = searchStudent;
+module.exports.loadStudentList = loadStudentList;
 module.exports.updateRefg = updateRefg;
-module.exports.dbInfo = dbInfo;
+
 module.exports.loadRoomList = loadRoomList;
+
+module.exports.monitor = monitor;
 
 // pauseConnection();
 // reConnect();

@@ -4,18 +4,21 @@ const router = express.Router();
 
 const mysql = require('../api/mysql');
 const version = require('../api/config');
-
-// from XLSX module
-var worksheet;
+const randomstring = require("randomstring");
 
 
 
-// ==== LOAD DB INFO
+
+// ============== DATABASE CONFIGURATIONS
+const dbconfig_root = path.join(__dirname, '../data/db.json');
+const info = version.readSync(dbconfig_root);
+
 router.get('/info', (req, res) => {
-  const info = mysql.dbInfo();
+  console.log("data request ... /db/info");
   res.json({
     "schema": info.schema,
     "build": info.build,
+    "commit": info.commit,
     "date": info.date,
     "refgTerm": info.refgTerm,
     "deadline": info.deadline,
@@ -24,8 +27,16 @@ router.get('/info', (req, res) => {
   })
 })
 
+router.get('/info/commit', (req, res) => {
+  info.commit = info.commit + 1 ;
+  version.update(dbconfig_root, info);
+  res.json({ "commit": info.commit });
+})
 
-// ============= load from .xlsx
+
+
+// ================== INITIATING DATABASE
+let worksheet;
 
 router.post('/worksheet', (req, res) => {
     worksheet = req.body;
@@ -37,38 +48,42 @@ router.post('/worksheet', (req, res) => {
     });
 });
 
-
-
-// ============= INITIATING DATABASE
-
 router.post('/init', (req, res) => {
     const year = req.body.givenYear;
-    console.log("givenYear:", year, " ... @api/db/init");
+    console.log("givenYear:", year, " ... /db/init");
     mysql.makeTables(year, res);
 });
 
 router.post('/init/dataforming', (req, res) => {
-    console.log("initial data request ... @api/db/init/dataforming");
+    console.log("initial data request ... /db/init/dataforming");
     mysql.firstData(worksheet, res);
 });
 
 
 
+// ================== LOAD DATABASE
+router.get('/room-list', (req, res) => {
+  console.log("data request ... /db/room-list");
+  mysql.loadRoomList(res);
+})
+router.get('/student-list', (req, res) => {
+  console.log("data request ... /db/student-list");
+  mysql.loadStudentList(res);
+})
+
+
 // ============= SEARCH API
-
 let searchKey;
-let student_id, refgTerm, update;
-
 router.post('/search', (req, res) => {
-    console.log("search request for refg .../db/search");
-    searchKey = req.body.keyword;
-    mysql.searchStudent(searchKey, res);
+  searchKey = req.body.keyword;
+  console.log("search request keyword: ", searchKey, " .../db/search");
+  mysql.searchStudent(searchKey, res);
 })
 
 
 
 // ============= UPDATE REFG DATA
-
+let student_id, refgTerm, update;
 router.post('/update/refg', (req, res) => {
   console.log("update request for refg ... @api/db/update/refg");
   console.log(req.body);
@@ -81,12 +96,9 @@ router.post('/update/refg', (req, res) => {
 });
 
 
-// ============= LOAD ROOM LIST
+// ============= ADMIN METHODS
 
-router.get('/admin/all-room', (req, res) => {
-  console.log("data request for admin ... @api/db/admin/all-room");
-  mysql.loadRoomList(res);
-})
+
 
 
 

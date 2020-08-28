@@ -44,7 +44,7 @@ export default {
 
   }},
   computed: {
-    ...mapState(['admin'])
+    ...mapState(['dbinfo', 'admin'])
   },
   methods: {
 

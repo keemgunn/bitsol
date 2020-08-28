@@ -1,7 +1,6 @@
 <template>
 <div id="db-list">
-{{adminArr}}
-
+{{roomList}}
 
 
 </div>
@@ -23,13 +22,13 @@ export default {
 
   }},
   computed: {
-    ...mapState(['adminArr'])
+    ...mapState(['roomList', 'studentList', 'searchArr'])
   },
   methods: {
-    ...mapMutations(['LOAD_ROOM_LIST'])
+    ...mapMutations([])
   },
   created() {
-    this.LOAD_ROOM_LIST();
+
   },
   mounted() {
     

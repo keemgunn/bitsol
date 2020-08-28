@@ -40,11 +40,13 @@ export default {
     ...mapMutations(['DB_INFO'])
   },
   created() { //_____________________________
-    if(this.$store.state.auth.id === null){
+    if(this.auth.id === null){
       this.$store.dispatch('RECOVER');
       console.log('### configuration recovered ... @Header');
+      this.DB_INFO();
+    }else{
+      this.DB_INFO();  
     }
-    this.DB_INFO();
   },
 }
 </script>
