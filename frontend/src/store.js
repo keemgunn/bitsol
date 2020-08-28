@@ -21,12 +21,9 @@ export default new Vuex.Store({
       // id: '2018317024', accessLevel: 3, userName: "김건",
     },
     mode: 'search', // search  admin
-
     dbinfo: {},
-    roomList: [],
-    studentList: [],
-    searchArr: [],
 
+    searchArr: [],
     search: {
       keyword: '',
       moreinfo: false,
@@ -35,7 +32,8 @@ export default new Vuex.Store({
       loadingState: 0
     },
     
-    adminArr:[],
+    roomList: [],
+    studentList: [],
     admin: {
       modal: 'db',
         // index  db  refg  user
@@ -131,7 +129,11 @@ export default new Vuex.Store({
       state.studentList = data.arg;
     },
     
-    
+    async SEARCH (state, keyword) {
+      console.log('$$$ request ...$mutation/SEARCH');
+      let {data} = await axios.post('/db/search', {keyword});
+      state.searchArr = data.arg;
+    },
     
 
 

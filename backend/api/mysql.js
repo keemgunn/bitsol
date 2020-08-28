@@ -278,6 +278,7 @@ function Monitor(monitor, res) {
 function SearchMonitor(monitor, res) {
   const queryID = randomstring.generate(4);
   monitor.on(queryID, (arg) => {
+    console.log(arg);
     res.json({arg});
     console.log('responsed... queryID: ', queryID);
   });
@@ -378,8 +379,8 @@ function select(query, queryID){
     if(error){
       monitor.emit('query error', error);
     }
-    console.log('result: ', results.length, ' ... @/mysql.js/select');
     monitor.emit(queryID, results);
+    console.log('result: ', results.length, ' ... @/mysql.js/select');
     monitor.emit('delete-listener', queryID);
   });
 }

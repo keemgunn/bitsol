@@ -31,9 +31,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import axios from 'axios';
-
-
 
 export default {
   name: "SearchBox",
@@ -43,12 +40,11 @@ export default {
     ...mapState(['search', 'searchArr'])
   },
   methods: {
-    async searchStudent(){
-      let {data} = await axios.post('/db/search', {keyword:this.search.keyword});
-      this.searchArr = data.arg
+    searchStudent(){
+      this.SEARCH(this.search.keyword);
       this.searchCoverBottom();
     },
-    ...mapMutations(['searchCoverBottom']),
+    ...mapMutations(['SEARCH', 'searchCoverBottom']),
   },
   mounted() {
     // this.$refs.searchField.focus(); // 이거 하면 창 뜨자마자 자동으로 검색메서드 실행됨

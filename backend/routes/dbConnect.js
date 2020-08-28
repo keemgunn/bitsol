@@ -62,22 +62,18 @@ router.post('/init/dataforming', (req, res) => {
 
 
 // ================== LOAD DATABASE
-
 router.get('/room-list', (req, res) => {
   console.log("data request ... /db/room-list");
   mysql.loadRoomList(res);
 })
-
 router.get('/student-list', (req, res) => {
   console.log("data request ... /db/student-list");
   mysql.loadStudentList(res);
 })
 
 
-
 // ============= SEARCH API
 let searchKey;
-
 router.post('/search', (req, res) => {
   searchKey = req.body.keyword;
   console.log("search request keyword: ", searchKey, " .../db/search");
@@ -88,7 +84,6 @@ router.post('/search', (req, res) => {
 
 // ============= UPDATE REFG DATA
 let student_id, refgTerm, update;
-
 router.post('/update/refg', (req, res) => {
   console.log("update request for refg ... @api/db/update/refg");
   console.log(req.body);
