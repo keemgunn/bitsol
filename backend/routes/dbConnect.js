@@ -10,12 +10,15 @@ var worksheet;
 
 
 
-// ==== LOAD DB INFO
+// ============== DATABASE CONFIGURATIONS
+const dbconfig_root = path.join(__dirname, '../data/db.json');
+const info = version.readSync(dbconfig_root);
+
 router.get('/info', (req, res) => {
-  const info = mysql.dbInfo();
   res.json({
     "schema": info.schema,
     "build": info.build,
+    "commit": info.commit,
     "date": info.date,
     "refgTerm": info.refgTerm,
     "deadline": info.deadline,
@@ -23,6 +26,14 @@ router.get('/info', (req, res) => {
     "studentCount": info["serial-list"].length
   })
 })
+
+router.get('/info/commit', (req, res) => {
+  info.commit = info.commit + 1 ;
+  version.update(dbconfig_root, info);
+  res.json({ "commit": info.commit });
+})
+
+
 
 
 // ============= load from .xlsx

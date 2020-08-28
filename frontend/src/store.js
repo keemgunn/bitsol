@@ -80,13 +80,7 @@ export default new Vuex.Store({
       state.auth.accessLevel = data.accessLevel;
     },
 
-    async DB_INFO (state) {
-      console.log('$$$ request ...$mutation/DB_INFO');
-      const {data} = await axios.get('db/info');
-      state.dbinfo = data;
-      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
-      console.log(data);
-    },
+
 
     RECOVER (state) {
       console.log('$$$ request ...$mutation/RECOVER');
@@ -106,12 +100,36 @@ export default new Vuex.Store({
       localStorage.colorConfig = defaultColor;
     },
 
+
+    //______________ DB METHODS ____________
+
+    async DB_INFO (state) {
+      console.log('$$$ request ...$mutation/DB_INFO');
+      let {data} = await axios.get('db/info');
+      state.dbinfo = data;
+      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
+      console.log(data);
+    },
+
+    async DB_COMMIT (state) {
+      console.log('$$$ request ... $mutation/DB_COMMIT');
+      let {data} = await axios.get('db/info/commit');
+      state.info.commit = data.commit;
+    },
+
+
+
+
+
+
+
     //____________ SEARCH METHODS ___________
     async LOAD_STUDENT_LIST (state) {
       console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
       let {data} = await axios.get('/db/student-list');
       state.studentList = data.arg;
     },
+
 
 
 
