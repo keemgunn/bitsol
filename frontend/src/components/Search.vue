@@ -18,7 +18,7 @@
   <div id="list-wrapper">
     <div id="list"
     :key="info.student_id"
-    v-for="info in searchArr">
+    v-for="info in testArr">
       <div class="records">
         <Record :info="info"/>
         <div class="record-cover-bottom"></div>
@@ -61,7 +61,7 @@ export default {
         return "검색결과가 없습니다..."
       }
     },
-    ...mapState(['search', 'searchArr']),
+    ...mapState(['search', 'searchArr', 'testArr']),
   },
   methods: {
     ...mapMutations(['searchLoadingState',]),

@@ -1,10 +1,14 @@
 <template>
-<div :class="{'record':1, 'record-expand':search.moreinfo}">
-<div :class="{'plate':1, 'plate-expand':search.moreinfo}">
+<div class="record" :class="{'record-expand':search.moreinfo}">
+<div class="plate" :class="{'plate-expand':search.moreinfo}">
 
-  <div :class="{'room':1, 'room-expand':search.moreinfo}">{{info.room_name}}</div>
+  <transition>
+  <div class="room" :class="{'room-expand':search.moreinfo}">{{info.room_name}}</div>
+  </transition>
 
-  <div :class="{'name':1, 'name-expand':search.moreinfo}">{{info.student_name}}</div>
+  <transition>
+  <div class="name" :class="{'name-expand':search.moreinfo}">{{info.student_name}}</div>
+  </transition>
 
   <transition name="refg">
   <svg class="pack-icon" v-if="!search.moreinfo" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -62,7 +66,7 @@
   </div>
   </transition>
 
-  <transition name="info">
+  <transition name="more-info">
   <div class="info" v-if="search.moreinfo">
     <div class="info-text-box">
       <div class="info-text-index">입사일:</div>
@@ -165,26 +169,17 @@ export default {
         this.alert("already submitted")
       }
     },
-
-  },
-  created() {
-
   },
   mounted() {
     this.alert("~~ record mounted ~~");
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
-  },
+  }
 }
 </script>
 
 
 
 <style lang="scss" scoped> 
+
 .record {
   position: relative; top: 0; left: 0;
   width: 100%;
@@ -198,6 +193,7 @@ export default {
   height: 126px;
   background-color: var(--i90);
 }
+
 .plate {
   position: relative; top: 3px; left: 3px;
   width: calc(100% - 6px);
@@ -205,9 +201,9 @@ export default {
   color: var(--i45);
   fill: var(--i45);
   background-color: var(--i94);
-  // transition: 600ms;
+  transition: 600ms;
 }.plate:hover {
-  // transition: 150ms;
+  transition: 150ms;
   color: var(--i30);
   fill: var(--i30);
   background-color: var(--i98);
@@ -220,33 +216,28 @@ export default {
 .room {
   float: left; width: fit-content; height: 40px;
   margin-top: 5px; margin-left: 12px;
-  font-family: 'Barlow';
+  font-family: 'Barlow', sans-serif;
   font-size: 32px;
   letter-spacing: 0.84px;
   line-height: 34px;
   transition: 400ms;
   // background-color: cornflowerblue;
 }.room-expand {
-  transition: 400ms;
   font-weight: 500;
   font-size: 28px;
   letter-spacing: 0px;
 }
 
-
-// -------------------------------------
 .name {
   float: left; width: fit-content; height: 40px;
   margin: 5px 6px 0px 4px;
-  font-family: 'Core Gothic D';
+  font-family: 'Core Gothic D', sans-serif;
   font-size: 26px;
   letter-spacing: -0.45px;
   line-height: 39px;
   transition: 400ms;
   // background-color: darkkhaki;
 }.name-expand {
-  transform: 400ms;
-
   font-weight: 500;
   font-size: 22px;
   letter-spacing: -0.5px;
@@ -401,10 +392,9 @@ export default {
 
 .alert-cover {
   pointer-events: none;
-  position: relative;
-  bottom: 100%;
-  height: calc(100%);
-  width: calc(100%);
+  position: absolute; bottom: 0; left: 0;
+  height: 100%;
+  width: 100%;
   background-color: var(--i100);
   opacity: 0.8;
 }.alert-enter {
@@ -447,25 +437,25 @@ export default {
 }
 
 
-.info-enter {
+.more-info-enter {
   opacity: 0;
   transform: translateY(-8px);
 } 
-.info-enter-to {
+.more-info-enter-to {
   opacity: 1;
 }
-.info-enter-active{
+.more-info-enter-active{
   transition: all 200ms;
   transition-delay: 300ms;
 }
-.info-leave {
+.more-info-leave {
   opacity: 1;
 }
-.info-leave-to {
+.more-info-leave-to {
   opacity: 0;
   transform: translateY(-8px);
 }
-.info-leave-active {
+.more-info-leave-active {
   transition: all 300ms;
 }
 
