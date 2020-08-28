@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const config = require('./config.js');
 const Joi = require('joi');
 const randomstring = require("randomstring");
+const { response } = require('express');
 
 const hostName = config.dbinfo.connection.host || 'localhost';
 const userName = config.dbinfo.connection.user || 'root';
@@ -38,10 +39,11 @@ let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
 
+
 function makeTables(year, res) {
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
 
   currentSchema = 'bitsolDB_20' + String(year) + '_test04';
   currentVersion = String(year) + ".0";
@@ -87,7 +89,7 @@ function makeTables(year, res) {
 function firstData(worksheet, res){
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
   use(currentSchema);
   
   var def = "DEFAULT";
@@ -159,7 +161,7 @@ function firstData(worksheet, res){
 function updateRefg(student_id, update, res){
   // resumeConnection();
   logRefresh();
-  addMonitor(monitor, res);
+  Monitor(monitor, res);
   use(currentSchema);
 
   updateQuery("refg", "student_id", student_id, refgTerm, update);
@@ -170,7 +172,7 @@ function updateRefg(student_id, update, res){
 
 function searchStudent(keyword, res){
   logRefresh();
-  const queryID = addMonitor(monitor, res);
+  const queryID = SearchMonitor(monitor, res);
   use(currentSchema);
 
   let joiResult = searchKeySchema.validate({keyword});
@@ -189,17 +191,14 @@ function searchStudent(keyword, res){
 }
 
 function loadStudentList(res){
-  logRefresh();
-  const queryID = addMonitor(monitor, res);
-  use(currentSchema);
+  const queryID = SearchMonitor(monitor, res);
   let query = "SELECT s.student_id,  s.student_name, r.room_id, r.room_name, r.building, r.room_number, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM students s LEFT JOIN room r USING (student_id);"
   select(query, queryID);
 }
 
 function loadRoomList(res){
-  logRefresh();
-  const queryID = addMonitor(monitor, res);
-  use(currentSchema);
+  const queryID = SearchMonitor(monitor, res);
+
   let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number, rf.* FROM room r LEFT JOIN students s USING (student_id) LEFT JOIN refg rf USING (student_id);"
   select(query, queryID);
 }
@@ -246,14 +245,10 @@ const searchKeySchema = Joi.object({
 
 
 
+
 // ========================= MONITOR SETTING
 
-function addMonitor(monitor, res){
-  let queryID = randomstring.generate(8);
-  monitor.on('query error', (arg) => {
-    console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
-    console.log(arg);
-  });
+function Monitor(monitor, res) {
   monitor.on('query success', (arg) => {
     console.log('$$$ QUERY SUCCESS ... @mysql.js/monitor\n   affected: ', arg.affectedRows);
     affected += arg.affectedRows;
@@ -280,9 +275,28 @@ function addMonitor(monitor, res){
     // ----------- update log file
     // ~~~~~~~~~
   });
-  console.log('queryID: ', queryID);
+}
+
+function SearchMonitor(monitor, res) {
+  const queryID = randomstring.generate(4);
+  monitor.on(queryID, (arg) => {
+    res.json({arg});
+    console.log('responsed... queryID: ', queryID);
+  });
   return queryID
 }
+
+monitor.on('query error', (arg) => {
+  console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
+  console.log(arg);
+});
+
+monitor.on('delete-listener', (name) => {
+  monitor.removeAllListeners(name);
+});
+
+
+
 
 
 
@@ -363,11 +377,12 @@ function updateQuery(tableName, condition, match, columnName, data){
 }
 function select(query, queryID){
   connection.query(query, (error, results, fields) =>{
-    if(error) {
+    if(error){
       monitor.emit('query error', error);
     }
+    console.log('result: ', results.length, ' ... @/mysql.js/select');
     monitor.emit(queryID, results);
-    console.log('result: ', results.length, ' ... @/mysql.js/select-',queryID);
+    monitor.emit('delete-listener', queryID);
   });
 }
 
@@ -415,6 +430,8 @@ module.exports.loadStudentList = loadStudentList;
 module.exports.updateRefg = updateRefg;
 
 module.exports.loadRoomList = loadRoomList;
+
+module.exports.monitor = monitor;
 
 // pauseConnection();
 // reConnect();
