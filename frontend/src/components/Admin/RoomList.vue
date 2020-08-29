@@ -1,7 +1,9 @@
 <template>
-<div id="db-list">
-{{roomList}}
+<div id="room-list">
 
+<!-- {{roomTest}} -->
+
+{{roomList}}
 
 </div>
 </template>
@@ -13,7 +15,7 @@ import { mapState, mapMutations } from 'vuex'
 
 
 export default {
-  name: "DBlist",
+  name: "RoomList",
   components: { },
   props: [
 
@@ -22,13 +24,15 @@ export default {
 
   }},
   computed: {
-    ...mapState(['roomList', 'studentList', 'searchArr'])
+    ...mapState(['roomList', 'studentList', 'searchArr', 'roomTest', 'studentTest', 'testArr'])
   },
   methods: {
-    ...mapMutations([])
+    ...mapMutations(['LOAD_ROOM_LIST'])
   },
   created() {
-
+    if(this.roomList !== null){
+      this.LOAD_ROOM_LIST();
+    }
   },
   mounted() {
     
@@ -45,8 +49,8 @@ export default {
 
 
 <style lang="scss" scoped> 
-#db-list {
-  position: relative;
+#room-list {
+  position: absolute; top: 83px; left: 0;
   width: 100%;
   height: calc(100% - 83px);
   overflow-x: hidden;

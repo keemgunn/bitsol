@@ -11,11 +11,13 @@
       @toggle="toggle"
     />
 
-    <DBlist
+    <RoomList
     />
 
 
 
+    <StudentList
+    />
 
 
 
@@ -32,12 +34,13 @@
 <script>
 import Sidecar from '@/components/admin/Sidecar'
 import DBoption from '@/components/admin/DBoption'
-import DBlist from '@/components/admin/DBlist'
+import RoomList from '@/components/admin/RoomList'
+import StudentList from '@/components/admin/StudentList'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: "DB",
-  components: { Sidecar, DBoption, DBlist, },
+  components: { Sidecar, DBoption, RoomList, StudentList },
   props: [
     
   ],
@@ -52,11 +55,9 @@ export default {
     toggle(target, set){
       this[target] = set;
     },
-  ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST'])
+  ...mapMutations([])
   },
   created() {
-    this.LOAD_ROOM_LIST();
-    this.LOAD_STUDENT_LIST();
   },
   mounted() {
     
@@ -74,6 +75,7 @@ export default {
 
 <style lang="scss" scoped> 
 #db {
+  z-index: 10;
   position: absolute; top: 0; left: 0;
   width: 100%;
   height: 100%;

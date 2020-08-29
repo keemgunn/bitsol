@@ -13,7 +13,7 @@
 
   <div class="option-box" 
   :class="{'option-box-expand':optionBox}"
-  v-click-outside="onClickOutside">
+  @mouseleave="$emit('toggle', 'optionBox', false)">
 
     <div class="title" 
     :class="{'title-expand':optionBox, 'title-checked':option}"
@@ -53,7 +53,6 @@
   <div id="search-box">
     <input
     id = "search-field"
-    ref="searchField" 
     placeholder="검색"
     type="text" 
     @input="admin.db.keyword = $event.target.value"
@@ -81,7 +80,6 @@
 
 
 <script>
-import vClickOutside from 'v-click-outside'
 import { mapState } from 'vuex'
 
 export default {
@@ -109,16 +107,9 @@ export default {
     ...mapState(['admin'])
   },
   methods: {
-    onClickOutside (event) {
-      console.log('Clicked outside. Event: ', event);
-      this.$emit('toggle','optionBox',false);
-    },
     optionCheck(opt) {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
     }
-  },
-  directives: {
-    clickOutside: vClickOutside.directive
   },
   created() {
 
@@ -177,6 +168,7 @@ export default {
 
 
 .option-box { // ================================
+z-index: 20;
   position: absolute; top: 0px; left: 244px;
   width: 120px;
   height: 29px;
@@ -249,7 +241,7 @@ export default {
 .options {
   position: relative;
   width: fit-content;
-  margin: 2px 0px 5px 5px;
+  margin: 4px 0px 5px 5px;
   height: 24px;
   font-family: 'Nanum Square', sans-serif;
   font-weight: 600;

@@ -18,7 +18,7 @@
   <div id="list-wrapper">
     <div id="list"
     :key="info.student_id"
-    v-for="info in testArr">
+    v-for="info in searchArr">
       <div class="records">
         <Record :info="info"/>
         <div class="record-cover-bottom"></div>
