@@ -30,7 +30,7 @@ export default {
     ...mapMutations(['LOAD_ROOM_LIST'])
   },
   created() {
-    if(this.roomList !== null){
+    if(this.roomList.length === 0){
       this.LOAD_ROOM_LIST();
     }
   },

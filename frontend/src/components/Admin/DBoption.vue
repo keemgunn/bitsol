@@ -70,7 +70,9 @@
 
   </div>
 
-
+  <div id="count-box">
+    {{recordCount}}
+  </div>
 
 
 
@@ -88,12 +90,28 @@ export default {
   props: [
     'scope',
     'optionBox',
-
   ],
-  data() { return {
-
-  }},
   computed: {
+    ...mapState(['admin', 'roomList', 'studentList', 'dbSearch']),
+    recordCount: function () {
+      if(this.scope === 'room') {
+          if(this.dbSearch.length){
+            return this.dbsearch.length
+          }else if(this.roomList){
+            return this.roomList.length
+          }else{
+            return 0
+          }
+      }else{
+        if(this.dbSearch.length){
+          return this.dbsearch.length
+        }else if(this.studentList){
+          return this.StudentList.length
+        }else{
+          return 0
+        }
+      }
+    },
     option: function () {
       let bool = 0;
       if(this.admin.db.options.showEmpty){
@@ -103,8 +121,7 @@ export default {
         bool ++ ; 
       }
       return bool
-    },
-    ...mapState(['admin'])
+    }
   },
   methods: {
     optionCheck(opt) {
@@ -351,6 +368,25 @@ z-index: 20;
   transition: 200ms;
 }
 
+
+#count-box {
+  position: absolute; left: 0px; bottom: 14px;
+  padding-bottom: 3px;
+  width: 97px;
+  height: fit-content;
+  border-bottom: 2px solid var(--i70);
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--i60);
+  letter-spacing: 0;
+  transition: 300ms;
+}#count-box:hover {
+  transition: 300ms;
+  color: var(--i45);
+  border-bottom: 2px solid var(--i60);
+}
 
 
 
