@@ -893,6 +893,13 @@ export default new Vuex.Store({
       let {data} = await axios.post('/db/search', {keyword});
       state.searchArr = data.arg;
     },
+
+    async SEARCH_admin (state, keyword) {
+      console.log('$$$ request ...$mutation/SEARCH');
+      state.search.loadingState = 1;
+      let {data} = await axios.post('/db/search', {keyword});
+      state.searchArr = data.arg;
+    },
     
 
 

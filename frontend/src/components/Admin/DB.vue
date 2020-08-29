@@ -11,15 +11,13 @@
       @toggle="toggle"
     />
 
-    <RoomList
-    />
+    <transition name="appear"><RoomList
+      v-if="scope === 'room'"
+    /></transition>
 
-
-
-    <StudentList
-    />
-
-
+    <transition name="appear"><StudentList
+      v-if="scope === 'student'"
+    /></transition>
 
 
   </div>

@@ -106,7 +106,7 @@ export default {
         if(this.dbSearch.length){
           return this.dbsearch.length
         }else if(this.studentList){
-          return this.StudentList.length
+          return this.studentList.length
         }else{
           return 0
         }

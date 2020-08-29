@@ -1,6 +1,6 @@
 <template>
 <div id="student-list">
-<!-- {{studentList}} -->
+{{studentList}}
 
 
 </div>
@@ -25,10 +25,12 @@ export default {
     ...mapState(['roomList', 'studentList', 'searchArr', 'roomTest', 'studentTest', 'testArr' ])
   },
   methods: {
-    ...mapMutations([])
+    ...mapMutations(['LOAD_STUDENT_LIST'])
   },
   created() {
-
+    if(this.studentList.length === 0){
+      this.LOAD_STUDENT_LIST();
+    }
   },
   mounted() {
     
@@ -45,15 +47,15 @@ export default {
 
 
 <style lang="scss" scoped> 
-// #student-list {
-//   position: relative;
-//   width: 100%;
-//   height: calc(100% - 83px);
-//   overflow-x: hidden;
-//   overflow-y: auto;
+#student-list {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 83px);
+  overflow-x: hidden;
+  overflow-y: auto;
 
-//   background-color: rgba(0, 140, 255, 0.534);
-// }
+  background-color: rgba(0, 140, 255, 0.534);
+}
 
 
 

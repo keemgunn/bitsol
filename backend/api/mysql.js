@@ -181,7 +181,7 @@ function searchStudent(keyword, res){
     });
   }else{
     let key = quote(joiResult.value.keyword);
-    let query = "SELECT r.room_id, r.room_name, s.student_name, r.building, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+    let query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
@@ -190,13 +190,13 @@ function searchStudent(keyword, res){
 
 function loadStudentList(res){
   const queryID = SearchMonitor(monitor, res);
-  let query = "SELECT s.student_id,  s.student_name, r.room_id, r.room_name, r.building, r.room_number, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number FROM students s LEFT JOIN room r USING (student_id);"
+  let query = "SELECT s.student_id,  s.student_name, r.room_id, r.room_name, r.seat, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate FROM students s LEFT JOIN room r USING (student_id);"
   select(query, queryID);
 }
 
 function loadRoomList(res){
   const queryID = SearchMonitor(monitor, res);
-  let query = "SELECT r.room_id, r.room_name, r.building, r.floor, r.room_number, r.seat, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, s.serial_number, rf.* FROM room r LEFT JOIN students s USING (student_id) LEFT JOIN refg rf USING (student_id);"
+  let query = "SELECT r.room_id, r.room_name, r.seat, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate FROM room r LEFT JOIN students s USING (student_id);"
   select(query, queryID);
 }
 
