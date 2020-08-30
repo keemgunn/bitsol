@@ -85,12 +85,8 @@ export default {
   width: calc(100vw - 120px);
     min-width: 490px;
     max-width: 710px;
+  height: 96%;
   // background-color: rgba(235, 142, 30, 0.253);
 }
-
-
-
-
-
 
 </style>

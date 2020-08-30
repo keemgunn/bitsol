@@ -1,7 +1,7 @@
 <template>
 <div id="room-record">
 
-
+{{index}}
 
 
 </div>
@@ -16,7 +16,7 @@ export default {
   name: "RoomRecord",
   components: { },
   props: [
-
+    'index'
   ],
   data() { return {
 
@@ -45,7 +45,12 @@ export default {
 
 
 <style lang="scss" scoped> 
-
+#room-record {
+  position: relative; top: 0; left: 0;
+  width: 100%;
+  height: 90px;
+  background-color: aqua;
+}
 
 
 

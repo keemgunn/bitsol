@@ -776,6 +776,7 @@ export default new Vuex.Store({
       roomArr: [],
       studentArr: []
     },
+    testIndex: [],
     dbSearch: [],
     admin: {
       modal: 'db',
@@ -947,6 +948,18 @@ export default new Vuex.Store({
         state.dbSearch = Arr;
       }
     },
+
+    SEARCH_test (state) {
+      let Arr = [];
+      for(var i=0; i<state.roomTest.length; i++){
+        Arr.push(i);
+      }
+      state.testIndex = Arr;
+    },
+
+
+
+
 
     //____________ UI METHODS ____________
     CHANGE_THEME (state, {color}) {
