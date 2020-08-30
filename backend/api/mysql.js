@@ -170,9 +170,8 @@ function updateRefg(student_id, update, res){
   close();
 }
 
-function searchStudent(keyword, res){
+function search(keyword, res){
   const queryID = SearchMonitor(monitor, res);
-
   let joiResult = searchKeySchema.validate({keyword});
   if(joiResult.error){
     console.log('joiResult.error');
@@ -182,6 +181,40 @@ function searchStudent(keyword, res){
   }else{
     let key = quote(joiResult.value.keyword);
     let query = "SELECT r.room_id, r.room_name, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate, rf.* FROM room r JOIN students s USING (student_id) JOIN refg rf USING (student_id) WHERE ( ";
+    query = query.concat("r.room_name REGEXP ", key, " || ");
+    query = query.concat("s.student_name REGEXP ", key, ");");
+    select(query, queryID);
+  }
+}
+
+function search_room(keyword, res){
+  const queryID = SearchMonitor(monitor, res);
+  let joiResult = searchKeySchema.validate({keyword});
+  if(joiResult.error){
+    console.log('joiResult.error');
+    res.json({
+      arg: []
+    });
+  }else{
+    let key = quote(joiResult.value.keyword);
+    let query = "SELECT  r.room_id FROM room r LEFT JOIN students s USING (student_id) WHERE ( ";
+    query = query.concat("r.room_name REGEXP ", key, " || ");
+    query = query.concat("s.student_name REGEXP ", key, ");");
+    select(query, queryID);
+  }
+}
+
+function search_student(keyword, res){
+  const queryID = SearchMonitor(monitor, res);
+  let joiResult = searchKeySchema.validate({keyword});
+  if(joiResult.error){
+    console.log('joiResult.error');
+    res.json({
+      arg: []
+    });
+  }else{
+    let key = quote(joiResult.value.keyword);
+    let query = "SELECT  s.student_id FROM students s LEFT JOIN room r USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
@@ -423,7 +456,9 @@ module.exports.use = use;
 module.exports.makeTables = makeTables;
 module.exports.firstData = firstData;
 
-module.exports.searchStudent = searchStudent;
+module.exports.search = search;
+module.exports.search_room = search_room;
+module.exports.search_student = search_student;
 module.exports.loadStudentList = loadStudentList;
 module.exports.updateRefg = updateRefg;
 

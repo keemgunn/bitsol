@@ -72,11 +72,17 @@ router.get('/student-list', (req, res) => {
 
 
 // ============= SEARCH API
-let searchKey;
 router.post('/search', (req, res) => {
-  searchKey = req.body.keyword;
-  console.log("search request keyword: ", searchKey, " .../db/search");
-  mysql.searchStudent(searchKey, res);
+  console.log("search request keyword: ", req.body.keyword, " .../db/search");
+  mysql.search(req.body.keyword, res);
+})
+router.post('/search/room', (req, res) => {
+  console.log("search request keyword: ", req.body.keyword, " .../db/search/admin");
+  mysql.search_room(req.body.keyword, res);
+})
+router.post('/search/student', (req, res) => {
+  console.log("search request keyword: ", req.body.keyword, " .../db/search/admin");
+  mysql.search_student(req.body.keyword, res);
 })
 
 
