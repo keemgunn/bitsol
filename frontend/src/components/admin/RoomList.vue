@@ -1,9 +1,11 @@
 <template>
 <div id="room-list">
 
-<div id="list"></div>
-
+<div id="list">
 <RoomRecord />
+
+</div>
+
 
 </div>
 </template>
