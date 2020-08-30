@@ -16,7 +16,7 @@
 
 
 <script>
-import RoomRecord from '@/components/admin/RoomRecord'
+import RoomRecord from './RoomRecord'
 import { mapState, mapMutations } from 'vuex';
 
 

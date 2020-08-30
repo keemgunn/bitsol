@@ -30,10 +30,10 @@
 
 
 <script>
-import Sidecar from '@/components/admin/Sidecar'
-import DBoption from '@/components/admin/DBoption'
-import RoomList from '@/components/admin/RoomList'
-import StudentList from '@/components/admin/StudentList'
+import Sidecar from './Sidecar'
+import DBoption from './db/DBoption'
+import RoomList from './db/RoomList'
+import StudentList from './db/StudentList'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
