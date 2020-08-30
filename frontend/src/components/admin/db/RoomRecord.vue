@@ -1,7 +1,25 @@
 <template>
 <div id="room-record">
 
-{{index}}
+{{roomTest[index]["room"]}}
+<br>
+
+
+{{roomTest[index]["A"]["seat"]}}
+{{roomTest[index]["A"]["student_name"]}}
+{{roomTest[index]["A"]["faculty"]}}
+{{roomTest[index]["A"]["major"]}}
+({{roomTest[index]["A"]["student_number"]}})
+{{roomTest[index]["A"]["indate"]}}
+
+<br>
+
+{{roomTest[index]["B"]["seat"]}}
+{{roomTest[index]["B"]["student_name"]}}
+{{roomTest[index]["B"]["faculty"]}}
+{{roomTest[index]["B"]["major"]}}
+({{roomTest[index]["B"]["student_number"]}})
+{{roomTest[index]["B"]["indate"]}}
 
 
 </div>
@@ -10,7 +28,7 @@
 
 
 <script>
-
+import { mapState } from 'vuex';
 
 export default {
   name: "RoomRecord",
@@ -22,7 +40,7 @@ export default {
 
   }},
   computed: {
-
+    ...mapState(['roomList', 'roomTest'])
   },
   methods: {
 
@@ -31,7 +49,7 @@ export default {
 
   },
   mounted() {
-    
+
   },
   beforeUpdate() {
     
@@ -50,6 +68,8 @@ export default {
   width: 100%;
   height: 90px;
   background-color: aqua;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
