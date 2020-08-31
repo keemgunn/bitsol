@@ -11,12 +11,14 @@
       @toggle="toggle"
     />
 
-    <transition name="appear"><RoomList
-      v-if="scope === 'room'"
+    <transition name="appear"><List
+      :scope="scope"
+      v-if="scope==='room'"
     /></transition>
 
-    <transition name="appear"><StudentList
-      v-if="scope === 'student'"
+    <transition name="appear"><List
+      :scope="scope"
+      v-if="scope==='student'"
     /></transition>
 
     <div class="cover-scroll-bottom"></div>
@@ -32,13 +34,12 @@
 <script>
 import Sidecar from './Sidecar'
 import DBoption from './db/DBoption'
-import RoomList from './db/RoomList'
-import StudentList from './db/StudentList'
+import List from './db/List'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: "DB",
-  components: { Sidecar, DBoption, RoomList, StudentList },
+  components: { Sidecar, DBoption, List },
   props: [
     
   ],

@@ -22,6 +22,20 @@
   "B": { 
     "same as before": true
   }
+},
+
+"studentList": { 
+  "student_id": 1, 
+  "student_name": " 안희범", 
+  "room_id": 31, 
+  "room_name": "A0116A", 
+  "seat": "A", 
+  "term": "YY", 
+  "student_number": "711150374", 
+  "faculty": "경영대학", 
+  "major": "경영학부", 
+  "phone": "010-4917-0346", 
+  "indate": "2020/02/29" 
 }
 
 

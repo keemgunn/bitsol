@@ -1,39 +1,39 @@
 <template>
 <div id="room-record">
 
-<div id="room">{{roomTest[index]["room"]}}</div>
+<div id="room">{{ROOM_LIST["room"]}}</div>
 
 <div class="seat">
   <div class="text-seat">
-    {{roomTest[index]["A"]["seat"]}}
+    {{ROOM_LIST["A"]["seat"]}}
   </div>
   <div class="text-name">
-    {{roomTest[index]["A"]["student_name"]}}
+    {{ROOM_LIST["A"]["student_name"]}}
   </div>
-  <div class="text-major" v-if="roomTest[index]['A']['student_id']">
-    {{roomTest[index]["A"]["faculty"]}} {{roomTest[index]["A"]["major"]}} ({{roomTest[index]["A"]["student_number"]}})
-  </div>
-
-  <div class="text-info" v-if="roomTest[index]['A']['student_id']">
-    입주일: {{roomTest[index]["A"]["indate"]}}
+  <div class="text-major" v-if="ROOM_LIST['A']['student_id']">
+    {{ROOM_LIST["A"]["faculty"]}} {{ROOM_LIST["A"]["major"]}} ({{ROOM_LIST["A"]["student_number"]}})
   </div>
 
-  <div class="text-info" v-if="roomTest[index]['A']['student_id']">
-    유형: {{roomTest[index]["A"]["term"]}}
+  <div class="text-info" v-if="ROOM_LIST['A']['student_id']">
+    입주일: {{ROOM_LIST["A"]["indate"]}}
   </div>
 
-  <div class="text-info" v-if="roomTest[index]['A']['student_id']">
-    전화번호: {{roomTest[index]["A"]["phone"]}}
+  <div class="text-info" v-if="ROOM_LIST['A']['student_id']">
+    유형: {{ROOM_LIST["A"]["term"]}}
   </div>
 
-  <div class="checkbox" v-if="roomTest[index]['A']['student_id']">
+  <div class="text-info" v-if="ROOM_LIST['A']['student_id']">
+    전화번호: {{ROOM_LIST["A"]["phone"]}}
+  </div>
+
+  <div class="checkbox" v-if="ROOM_LIST['A']['student_id']">
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
     </svg>
   </div>
 
-  <div class="delete-btn" v-if="roomTest[index]['A']['student_id']">
+  <div class="delete-btn" v-if="ROOM_LIST['A']['student_id']">
     <svg viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <polygon transform="translate(13,-5) rotate(45)" points="22.8994949 14.4142136 14.4142136 14.4142136 14.4142136 22.8994949 11.5857864 22.8994949 11.5857864 14.4142136 3.10050506 14.4142136 3.10050506 11.5857864 11.5857864 11.5857864 11.5857864 3.10050506 14.4142136 3.10050506 14.4142136 11.5857864 22.8994949 11.5857864"></polygon>
     </svg>
@@ -44,35 +44,35 @@
 
 <div class="seat">
   <div class="text-seat">
-    {{roomTest[index]["B"]["seat"]}}
+    {{ROOM_LIST["B"]["seat"]}}
   </div>
   <div class="text-name">
-    {{roomTest[index]["B"]["student_name"]}}
+    {{ROOM_LIST["B"]["student_name"]}}
   </div>
-  <div class="text-major" v-if="roomTest[index]['B']['student_id']">
-    {{roomTest[index]["B"]["faculty"]}} {{roomTest[index]["B"]["major"]}} ({{roomTest[index]["B"]["student_number"]}})
-  </div>
-
-  <div class="text-info" v-if="roomTest[index]['B']['student_id']">
-    입주일: {{roomTest[index]["B"]["indate"]}}
+  <div class="text-major" v-if="ROOM_LIST['B']['student_id']">
+    {{ROOM_LIST["B"]["faculty"]}} {{ROOM_LIST["B"]["major"]}} ({{ROOM_LIST["B"]["student_number"]}})
   </div>
 
-  <div class="text-info" v-if="roomTest[index]['B']['student_id']">
-    유형: {{roomTest[index]["B"]["term"]}}
+  <div class="text-info" v-if="ROOM_LIST['B']['student_id']">
+    입주일: {{ROOM_LIST["B"]["indate"]}}
   </div>
 
-  <div class="text-info" v-if="roomTest[index]['B']['student_id']">
-    전화번호: {{roomTest[index]["B"]["phone"]}}
+  <div class="text-info" v-if="ROOM_LIST['B']['student_id']">
+    유형: {{ROOM_LIST["B"]["term"]}}
   </div>
 
-  <div class="checkbox" v-if="roomTest[index]['B']['student_id']">
+  <div class="text-info" v-if="ROOM_LIST['B']['student_id']">
+    전화번호: {{ROOM_LIST["B"]["phone"]}}
+  </div>
+
+  <div class="checkbox" v-if="ROOM_LIST['B']['student_id']">
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
     </svg>
   </div>
 
-  <div class="delete-btn" v-if="roomTest[index]['B']['student_id']">
+  <div class="delete-btn" v-if="ROOM_LIST['B']['student_id']">
     <svg viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <polygon transform="translate(13,-5) rotate(45)" points="22.8994949 14.4142136 14.4142136 14.4142136 14.4142136 22.8994949 11.5857864 22.8994949 11.5857864 14.4142136 3.10050506 14.4142136 3.10050506 11.5857864 11.5857864 11.5857864 11.5857864 3.10050506 14.4142136 3.10050506 14.4142136 11.5857864 22.8994949 11.5857864"></polygon>
     </svg>
@@ -88,7 +88,7 @@
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: "RoomRecord",
@@ -100,16 +100,21 @@ export default {
 
   }},
   computed: {
-    ...mapState(['roomList', 'roomTest'])
+    ROOM_LIST: function () {
+      if(this.test){
+        return this["$store"]["state"]["roomTest"][this.index]
+      }else{
+        return this["$store"]["state"]["roomList"][this.index]
+      }
+    },
+    ...mapState(['test', 'roomList', 'roomTest'])
   },
   methods: {
-
+    ...mapMutations(['SEARCH_room'])
   },
   created() {
-
   },
   mounted() {
-
   },
   beforeUpdate() {
     

@@ -9,9 +9,9 @@
       "colorConfig": "default"
     },
     "state": {
-      "isOnline": false,
-      "device": "",
-      "last-access": "2020-08-28T13:57:26.358Z"
+      "isOnline": true,
+      "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36 Edg/85.0.564.41",
+      "last-access": "2020-08-31T11:13:26.175Z"
     }
   },
   "2018317025": {

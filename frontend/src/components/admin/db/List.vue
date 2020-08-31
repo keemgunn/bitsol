@@ -1,14 +1,21 @@
 <template>
-<div id="room-list">
+<div id="list-wrapper">
 
-<div id="list"
-  v-for="index in testIndex"
-  :key="index"
-  >
-  <RoomRecord :index="index" />
+<div v-if="scope==='room'">
+  <div id="list"
+    v-for="index in INDEX"
+    :key="index">
+    <RoomRecord :index="index" />
+  </div>
 </div>
 
-
+<div v-if="scope==='student'">
+  <div id="list"
+    v-for="index in INDEX"
+    :key="index">
+    <StudentRecord :index="index" />
+  </div>
+</div>
 
 </div>
 </template>
@@ -17,35 +24,51 @@
 
 <script>
 import RoomRecord from './RoomRecord'
+import StudentRecord from './StudentRecord'
 import { mapState, mapMutations } from 'vuex';
 
 
 export default {
-  name: "RoomList",
-  components: {RoomRecord},
+  name: "List",
+  components: {RoomRecord, StudentRecord},
   props: [
-
+    "scope"
   ],
   data() { return {
 
   }},
   computed: {
-    ...mapState(['admin', 'roomList', 'roomTest', 'dbSearch', 'testIndex'])
+    INDEX: function(){
+      if(this.test){
+        return this["$store"]["state"]["testIndex"]
+      }else{
+        return this["$store"]["state"]["dbSearch"]
+      }      
+    },
+    ...mapState(['test', 'admin', 'roomList', 'studentList'])
   },
   methods: {
-    ...mapMutations(['LOAD_ROOM_LIST', 'SEARCH_room', 'SEARCH_test'])
+    ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST', 'SEARCH_room', 'SEARCH_student', 'SEARCH_test'])
   },
   created() {
-    if(this.roomList.length === 0){
-      this.LOAD_ROOM_LIST();
-    }
     this.SEARCH_test();
+
+    if(this.scope.room === 'room'){
+      if(this.roomList.length === 0){
+        this.LOAD_ROOM_LIST();
+      }
+        this.SEARCH_room(''); 
+    }else{
+      if(this.studentList.length === 0){
+        this.LOAD_STUDENT_LIST();
+      }
+      this.SEARCH_student('');
+    }
   },
   mounted() {
     
-  },
+    },
   beforeUpdate() {
-    
   },
   beforeCreate() {
     
@@ -56,7 +79,7 @@ export default {
 
 
 <style lang="scss" scoped> 
-#room-list {
+#list-wrapper {
   position: absolute; top: 83px; left: -20px;
   width: calc(100% + 40px);
   height: calc(100% - 83px);

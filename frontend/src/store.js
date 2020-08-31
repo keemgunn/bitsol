@@ -15,12 +15,13 @@ const DBoptions = {
 
 export default new Vuex.Store({
   state: {
+    test: false,
 
     auth: {
-      // id:null, accessLevel:0, userName:null,
-      id: '2018317024', accessLevel: 3, userName: "김건",
+      id:null, accessLevel:0, userName:null,
+      // id: '2018317024', accessLevel: 3, userName: "김건",
     },
-    mode: 'admin', // search  admin
+    mode: 'search', // search  admin
     dbinfo: {},
 
     searchArr: [],

@@ -3,12 +3,12 @@
 
   <div class="scope" 
   :class="{'scope-selected':scope === 'room'}"
-  @click="$emit('toggle','scope','room')"
+  @click="scopeChange('room')"
   >호실 목록</div>
       
   <div class="scope"
   :class="{'scope-selected':scope === 'student'}"
-  @click="$emit('toggle','scope','student')"
+  @click="scopeChange('student')"
   >전체 학생</div>
 
   <div class="option-box" 
@@ -82,7 +82,7 @@
 
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: "DBoption",
@@ -126,7 +126,16 @@ export default {
   methods: {
     optionCheck(opt) {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
-    }
+    },
+    scopeChange(scope){
+      if(scope === 'room'){
+        this.SEARCH_room('');
+      }else{
+        this.SEARCH_student('');
+      }
+      this.$emit('toggle', 'scope', scope);
+    },
+    ...mapMutations(['SEARCH_room', 'SEARCH_student'])
   },
   created() {
 
