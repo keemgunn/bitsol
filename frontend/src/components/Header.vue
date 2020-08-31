@@ -1,7 +1,8 @@
 <template>
 <div class="header" :class="{'header-expand':mode==='admin'}">
   <div id="light-cover"></div>
-  <div id="content">
+  <div class="content"
+  :class="{'admin':mode==='admin'}">
 
     <User/>
 
@@ -67,7 +68,7 @@ export default {
   height: 160px;
 }
 
-#content {
+.content {
   position: relative; top: 0; left: 0;
   z-index: 10;
   width: calc(100vw - 120px);
@@ -75,6 +76,8 @@ export default {
     max-width: 710px;
   height: 100%;
   // background-color: rgba(219, 126, 13, 0.24);
+}.admin {
+  width: 710px;
 }
 
 #light-cover { 

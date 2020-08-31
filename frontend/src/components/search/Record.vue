@@ -187,7 +187,7 @@ export default {
   transition: 600ms;
   // background-color: darksalmon;
 }.record:hover {
-  transition: 150ms;
+  transition: 100ms;
   background-color: var(--i100);
 }.record-expand {
   height: 126px;
@@ -203,7 +203,7 @@ export default {
   background-color: var(--i94);
   transition: 600ms;
 }.plate:hover {
-  transition: 150ms;
+  transition: 100ms;
   color: var(--i30);
   fill: var(--i30);
   background-color: var(--i98);

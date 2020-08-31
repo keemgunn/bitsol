@@ -9,7 +9,7 @@
 </div>
 
 
-<div class="cover-scroll-bottom"></div>
+
 </div>
 </template>
 
@@ -63,17 +63,15 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
 
-  background-color: rgba(0, 140, 255, 0.534);
+  // background-color: rgba(0, 140, 255, 0.534);
 }
 #list {
   position: relative; top: 0; left: 20px;
   padding-bottom: 13px;
-  width: calc(100vw - 120px);
-    min-width: 490px;
-    max-width: 710px;
+  width: 710px;
   height: fit-content;
 
-  background-color: aquamarine;
+  // background-color: aquamarine;
 }
 
 
@@ -107,15 +105,7 @@ export default {
 }
 ::-webkit-scrollbar-track-piece:end {
   background: transparent;
-  margin-bottom: 0px; 
+  margin-bottom: 13px; 
 }
-.cover-scroll-bottom {
-  position: absolute; bottom: 0px; right: -20px;
-  float: right;
-  width: 5px;
-  height: 50px;
-  background-color: var(--i94);
-}
-
 
 </style>

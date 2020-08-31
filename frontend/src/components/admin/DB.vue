@@ -19,7 +19,7 @@
       v-if="scope === 'student'"
     /></transition>
 
-
+    <div class="cover-scroll-bottom"></div>
   </div>
 
   
@@ -80,13 +80,19 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 #content {
   position: relative; top: 0; left: 0;
-  width: calc(100vw - 120px);
-    min-width: 490px;
-    max-width: 710px;
+  width: 710px;
   height: 96%;
   // background-color: rgba(235, 142, 30, 0.253);
 }
 
+.cover-scroll-bottom {
+  position: absolute; bottom: 0px; right: -20px;
+  float: right;
+  width: 5px;
+  height: 13px;
+  background-color: var(--i94);
+}
 </style>
