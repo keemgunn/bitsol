@@ -48,14 +48,15 @@ export default new Vuex.Store({
         options: DBoptions,
         optionKeys: Object.keys(DBoptions),
         keyword:'',
+        selected: []
       },
       loadingState: 0
     },
-    roomList: [],
-    studentList: [],
+
+     // ---- DB ----
+    roomList: [], studentList: [],
     defIndex: { roomArr: [], studentArr: [] },
-    roomIndex: [],
-    studentIndex: [],
+    roomIndex: [], studentIndex: [],
 
     //============================
     alert: null,
