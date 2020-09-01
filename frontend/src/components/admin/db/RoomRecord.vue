@@ -93,9 +93,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   name: "RoomRecord",
   components: { },
-  props: [
-    'index'
-  ],
+  props: ['index'],
   data() { return {
 
   }},
@@ -107,7 +105,7 @@ export default {
         return this["$store"]["state"]["roomList"][this.index]
       }
     },
-    ...mapState(['test', 'roomList', 'roomTest'])
+    ...mapState(['admin', 'roomList', 'test', 'roomTest'])
   },
   methods: {
     ...mapMutations([])

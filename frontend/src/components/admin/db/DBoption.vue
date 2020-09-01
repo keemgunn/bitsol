@@ -52,7 +52,7 @@
 
   <div id="search-box">
     <input
-    id = "search-field"
+    id = "admin-search-field"
     placeholder="검색"
     type="text" 
     @input="admin.db.keyword = $event.target.value"
@@ -330,7 +330,7 @@ z-index: 20;
     fill: var(--i30);
   }
 }
-#search-field {
+#admin-search-field {
   display: block;
   position: absolute; bottom: 2px; right: 28px;
   padding: 0;
@@ -350,7 +350,7 @@ z-index: 20;
   color: var(--i60);
   font-size: 15px;
   }
-}#search-field:hover {
+}#admin-search-field:hover {
   transition: 200ms;
   color: var(--i30);
 }
