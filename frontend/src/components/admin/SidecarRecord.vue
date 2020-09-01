@@ -111,13 +111,14 @@ export default {
 .selection {
   height: 59px;
   color: var(--i45);
+  border-bottom: 1px solid var(--i30);
   background-color: transparent;
   transition: 200ms;
 
   .name {
     float: left;
     position: relative; top: 9px; left: 1px;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 15px;
     line-height: 19px;
     // background-color: fuchsia;
@@ -143,7 +144,7 @@ export default {
     height: 17px;
     fill: var(--i45);
   }.delete:hover {
-    
+
     cursor: pointer;
     fill: var(--i20);
   }

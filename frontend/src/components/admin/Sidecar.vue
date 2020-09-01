@@ -4,8 +4,9 @@
   <transition name="appear">
   <div class="sidecar left" v-if="admin.db.selected.length">
     <div class="content selection">
-      <div class="title">선택된 항목</div>
-      <div class="division _2px"></div>
+      <div class="title-box">
+        <div class="title">선택된 항목</div>
+      </div>
       <div class="list-wrapper">
         <div class="record"
         v-for="index in admin.db.selected"
@@ -13,18 +14,25 @@
           <SidecarRecord :type="toStr('selection')" :index="index" />
         </div>
       </div>
-      <div class="division _1px"></div>
-
-
-
+      <div class="menu">
+        <div class="count">{{admin.db.selected.length}}개 항목</div>
+        <div class="btn"
+          :class="{'action':1, 'disabled':(admin.db.selected.length !== 2)}">
+          자리교체</div>
+        <div class="btn"
+          :class="{'delete':1}">
+          퇴실처리</div>
+      </div>
     </div>
   </div></transition>
 
-
-  <div class="sidecar right">
-    <div class="content updated"></div>
-
+  <transition name="appear">
+  <div class="sidecar right" v-if="admin.db.updated.length">
+    <div class="content updated">
+      
+    </div>
   </div>
+  </transition>
 
 </div>
 </template>
@@ -107,12 +115,11 @@ export default {
 }
 .content {
   position: absolute; top: 0;
-  padding-top: 56px;
-  width: 160px;
-  height: calc(100% - 82px);
+  width: 170px;
+  height: 96%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: bisque;
+  // background-color: bisque;
 }.selection {
   left: 0;
 }.updated {
@@ -120,7 +127,7 @@ export default {
 }
 
 .division {
-  width: 100%;
+  width: 160px;
   background-color: var(--i30);
 }._2px {
   height: 2px;
@@ -128,9 +135,17 @@ export default {
   height: 1px;
 }
 
+.title-box {
+  z-index: 25;
+  position: sticky; top: 0;
+  width: 160px;
+  height: 83px;
+  border-bottom: 2px solid var(--i30);
+  background-color: var(--i94);
+}
 .title {
-  position: relative;
-  width: 100%;
+  position: absolute; bottom: 0px; left: 0px;
+  width: fit-content;
   height: fit-content;
   margin-bottom: 9px;
   font-family: 'Nanum Square', sans-serif;
@@ -141,15 +156,74 @@ export default {
 
 .list-wrapper {
   position: relative;
-  width: 100%;
+  width: 160px;
   height: fit-content;
-}
-.record {
+}.record {
   position: relative;
   width: 100%;
   height: fit-content;
-  border-bottom: solid 1px var(--i30);
 }
+
+
+.menu {
+  z-index: 25;
+  position: sticky; bottom: 0;
+  width: 160px;
+  height: 76px;
+  border-top: 2px solid var(--i30);
+  border-bottom: 2px solid var(--i30);
+  background-color: var(--i94);
+}
+.count {
+  position: relative; top: 12px; left: 1px;
+  width: fit-content;
+  height: fit-content;
+  font-family: 'Nanum Square', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.btn {
+  float: left;
+  position: relative; top: 20px; left: 1px;
+  margin-left: 3px;
+  margin-right: 4px;
+  width: 70px;
+  height: 26px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.19px;
+  text-align: center;
+  line-height: 25px;
+  color: var(--i30);
+  border: solid 1px var(--i30);
+  background-color: var(--i94);
+  transition: 300ms;
+}.btn:hover {
+  transition: 200ms;
+  cursor: pointer;
+}
+
+.delete:hover {
+  color: var(--accent00);
+  border: solid 1px transparent;
+  background-color: var(--alert01);
+}
+.action:hover {
+  color: var(--accent00);
+  border: solid 1px transparent;
+  background-color: var(--accent01);
+}
+.disabled {
+  transition: 300ms;
+  color: var(--i80);
+  pointer-events: none;
+  border: solid 1px transparent;
+  background-color: var(--i90);
+}
+
+
 
 
 

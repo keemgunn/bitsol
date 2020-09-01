@@ -30,6 +30,7 @@ export default new Vuex.Store({
       colors: styles.colors
     },
     
+
     //============================
     searchArr: [],
     search: {
@@ -40,6 +41,7 @@ export default new Vuex.Store({
       loadingState: 0
     },
     
+
     //============================
     admin: {
       modal: 'db',
@@ -48,15 +50,16 @@ export default new Vuex.Store({
         options: DBoptions,
         optionKeys: Object.keys(DBoptions),
         keyword:'',
-        selected: [0, 3]
+        selected: [0, 3],
+        updated: []
       },
       loadingState: 0
     },
-
      // ---- DB ----
     roomList: [], studentList: [],
     defIndex: { roomArr: [], studentArr: [] },
     roomIndex: [], studentIndex: [],
+
 
     //============================
     alert: null,
