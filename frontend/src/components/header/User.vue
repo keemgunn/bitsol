@@ -5,7 +5,7 @@
 @mouseleave="userBoxState = 0">
 
   <div id="name">
-    user:{{auth.userName}}
+    user:{{AUTHOR.userName}}
   </div>
 
   <transition name="fade">
@@ -71,7 +71,14 @@ export default {
     userBoxState: 0,
   }},
   computed: {
-    ...mapState(['auth', 'theme'])
+    AUTHOR: function(){
+      if(this.test){
+        return this['$store']['state']['authTest']
+      }else{
+        return this['$store']['state']['auth']
+      }
+    },
+    ...mapState(['auth', 'theme', 'test', 'authTest'])
   },
   methods: {
     logout(){ this.$store.dispatch('LOGOUT'); }

@@ -92,24 +92,12 @@ export default {
     'optionBox',
   ],
   computed: {
-    ...mapState(['admin', 'roomList', 'studentList', 'dbSearch']),
+    ...mapState(['admin', 'roomIndex', 'studentIndex']),
     recordCount: function () {
       if(this.scope === 'room') {
-          if(this.dbSearch.length){
-            return this.dbsearch.length
-          }else if(this.roomList){
-            return this.roomList.length
-          }else{
-            return 0
-          }
+        return this.roomIndex.length
       }else{
-        if(this.dbSearch.length){
-          return this.dbsearch.length
-        }else if(this.studentList){
-          return this.studentList.length
-        }else{
-          return 0
-        }
+        return this.studentIndex.length
       }
     },
     option: function () {
@@ -128,11 +116,13 @@ export default {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
     },
     scopeChange(scope){
+      //____ initialize
       if(scope === 'room'){
-        this.SEARCH_room('');
-      }else{
         this.SEARCH_student('');
+      }else{
+        this.SEARCH_room('');
       }
+      //____ modal change
       this.$emit('toggle', 'scope', scope);
     },
     ...mapMutations(['SEARCH_room', 'SEARCH_student'])

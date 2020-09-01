@@ -1,7 +1,7 @@
 <template>
 <div id="room-record">
 
-<div id="room">{{ROOM_LIST["room"]}}</div>
+<div id="room">{{ROOM_LIST["name"]}}</div>
 
 <div class="seat">
   <div class="text-seat">
@@ -110,7 +110,7 @@ export default {
     ...mapState(['test', 'roomList', 'roomTest'])
   },
   methods: {
-    ...mapMutations(['SEARCH_room'])
+    ...mapMutations([])
   },
   created() {
   },
@@ -222,7 +222,7 @@ export default {
 
 
 .text-major {
-  position: absolute; top: 42px; left: 30px;
+  position: absolute; top: 42px; left: 29px;
   width: 92%;
   height: 20px;
   font-family: 'Core Gothic D', sans-serif;

@@ -9,27 +9,26 @@
   <div id="login-box-cover"></div>
 
   <transition name="login-box"><LoginBox 
-    v-if="auth.accessLevel === 0"
+    v-if="AUTHOR.accessLevel === 0"
     @verify="this.verify"
   /></transition>
 
   <transition name="appear"><Header 
-    v-if="auth.accessLevel > 0"
+    v-if="AUTHOR.accessLevel > 0"
   /></transition>
 
   <transition name="appear"><Search
-    v-if="(auth.accessLevel > 0)
+    v-if="(AUTHOR.accessLevel > 0)
     && (mode === 'search')"
   /></transition>
 
   <transition name="appear"><Admin 
-    v-if="(auth.accessLevel > 0)
+    v-if="(AUTHOR.accessLevel > 0)
     && (mode === 'admin')"
   /></transition>
 
-  
   <div id="light" :style="lightening"
-  v-if="auth.accessLevel > 0 && mode === ('search')"
+  v-if="AUTHOR.accessLevel > 0 && mode === ('search')"
   ></div>
 
 <router-view></router-view>
@@ -56,7 +55,14 @@ export default {
     },
   }},
   computed: {
-    ...mapState(['auth', 'mode', 'theme']),
+    AUTHOR: function(){
+      if(this.test){
+        return this['$store']['state']['authTest']
+      }else{
+        return this['$store']['state']['auth']
+      }
+    },
+    ...mapState(['auth', 'mode', 'theme', 'test', 'authTest']),
   },
   methods: {
     //___________ AUTHENTICATION METHODS ____________
@@ -64,7 +70,7 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      if(this.auth.accessLevel) { // 이미 인증이 되어있다면 
+      if(this.AUTHOR.accessLevel) { // 이미 인증이 되어있다면 
         this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');

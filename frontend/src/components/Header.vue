@@ -6,14 +6,14 @@
 
     <User/>
 
-    <AdminBtn v-if="auth.accessLevel > 1" />
+    <AdminBtn v-if="AUTHOR.accessLevel > 1" />
 
-    <transition name="appear">
-    <AdminMenu v-if="mode === 'admin'" />
+    <transition name="appear"><AdminMenu 
+    v-if="mode === 'admin'" />
     </transition>
 
-    <transition name="appear">
-    <SearchBox v-if="mode === 'search'" />
+    <transition name="appear"><SearchBox 
+    v-if="mode === 'search'" />
     </transition>
 
   </div>
@@ -35,13 +35,20 @@ export default {
     User, AdminBtn, AdminMenu, SearchBox, 
   },
   computed: {
-    ...mapState(['mode', 'auth'])
+    AUTHOR: function(){
+      if(this.test){
+        return this['$store']['state']['authTest']
+      }else{
+        return this['$store']['state']['auth']
+      }
+    },
+    ...mapState(['mode', 'auth', 'test', 'authTest'])
   },
   methods: {
     ...mapMutations(['DB_INFO'])
   },
   created() { //_____________________________
-    if(this.auth.id === null){
+    if(this.AUTHOR.id === null){
       this.$store.dispatch('RECOVER');
       console.log('### configuration recovered ... @Header');
       this.DB_INFO();
@@ -75,8 +82,10 @@ export default {
     min-width: 490px;
     max-width: 710px;
   height: 100%;
+  transition: 200ms;
   // background-color: rgba(219, 126, 13, 0.24);
 }.admin {
+  transition: 300ms;
   width: 710px;
 }
 

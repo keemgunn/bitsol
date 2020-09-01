@@ -1,21 +1,21 @@
 <template>
 <div id="list-wrapper">
 
-<div v-if="scope==='room'">
+<transition name="appear"><div v-if="scope==='room'">
   <div id="list"
-    v-for="index in INDEX"
+    v-for="index in ROOM_INDEX"
     :key="index">
     <RoomRecord :index="index" />
   </div>
-</div>
+</div></transition>
 
-<div v-if="scope==='student'">
+<transition name="appear"><div v-if="scope==='student'">
   <div id="list"
-    v-for="index in INDEX"
+    v-for="index in STUDENT_INDEX"
     :key="index">
     <StudentRecord :index="index" />
   </div>
-</div>
+</div></transition>
 
 </div>
 </template>
@@ -38,32 +38,27 @@ export default {
 
   }},
   computed: {
-    INDEX: function(){
+    ROOM_INDEX: function(){
       if(this.test){
         return this["$store"]["state"]["testIndex"]
       }else{
-        return this["$store"]["state"]["dbSearch"]
+        return this["$store"]["state"]["roomIndex"]
       }      
     },
-    ...mapState(['test', 'admin', 'roomList', 'studentList'])
+    STUDENT_INDEX: function(){
+      if(this.test){
+        return this["$store"]["state"]["testIndex"]
+      }else{
+        return this["$store"]["state"]["studentIndex"]
+      }      
+    },
+    ...mapState(['test'])
   },
   methods: {
-    ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST', 'SEARCH_room', 'SEARCH_student', 'SEARCH_test'])
+    ...mapMutations(['SEARCH_test'])
   },
   created() {
     this.SEARCH_test();
-
-    if(this.scope.room === 'room'){
-      if(this.roomList.length === 0){
-        this.LOAD_ROOM_LIST();
-      }
-        this.SEARCH_room(''); 
-    }else{
-      if(this.studentList.length === 0){
-        this.LOAD_STUDENT_LIST();
-      }
-      this.SEARCH_student('');
-    }
   },
   mounted() {
     

@@ -229,7 +229,7 @@ function loadStudentList(res){
 
 function loadRoomList(res){
   const queryID = SearchMonitor(monitor, res);
-  let query = "SELECT r.room_id, r.room_name, r.seat, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate FROM room r LEFT JOIN students s USING (student_id);"
+  let query = "SELECT r.room_id, r.room_name, r.seat, s.student_id, s.student_name, s.term, s.student_number, s.faculty, s.major, s.phone, s.indate FROM room r LEFT JOIN students s USING (student_id);"
   select(query, queryID);
 }
 
