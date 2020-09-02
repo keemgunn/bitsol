@@ -57,7 +57,13 @@
 
   <div class="text-info">환불계좌: 이름 은행 000000000000</div>
 
-  <div class="checkbox">
+  <div class="checkbox"
+  :class="{
+    'none':!STUDENT_LIST['student_id'],
+    'selected':admin.db.selected.includes(STUDENT_LIST['student_id']-1)
+  }"
+  @click="selectStudent()"
+  >
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
@@ -90,7 +96,10 @@ export default {
     ...mapState(['admin', 'studentList', 'test', 'studentTest'])
   },
   methods: {
-    ...mapMutations(['SEARCH_student'])
+    selectStudent(){
+      this.adminStudentSelect( this['STUDENT_LIST']['student_id'] - 1 );
+    },
+    ...mapMutations(['adminStudentSelect'])
   },
   created() {
   },
@@ -122,6 +131,10 @@ export default {
   }.checkbox:hover{
     fill: var(--i100);
     background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.none {
+    display: none;
   }.delete-btn{
     fill: var(--i70);
   }.delete-btn:hover{
@@ -137,10 +150,16 @@ export default {
     background-color: var(--i70);
   }.checkbox:hover{
     background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.selected:hover {
+  background-color: var(--accent02);
   }.delete-btn{
     fill: var(--i60);
   }.delete-btn:hover{
     fill: var(--i20);
+  }.none {
+    display: none;
   }
 }
 
