@@ -34,14 +34,14 @@ export default {
     changeMode(){
       if(this.mode === 'search'){
         this.TOGGLE({target:'mode', set:'admin'});
+        this.INITIALIZE('search');
       }else{
         this.TOGGLE({target:'mode', set:'search'});
         this.admin.modal = 'index';
-        this.admin.db.keyword = '';
-        this.admin.db.selected = [];
+        this.INITIALIZE('db');
       }
     },
-    ...mapMutations(['TOGGLE']),
+    ...mapMutations(['TOGGLE', 'INITIALIZE']),
   }
 }
 </script>

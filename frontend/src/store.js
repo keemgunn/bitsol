@@ -16,8 +16,8 @@ let defIndex= { roomArr: [], studentArr: [] };
 
 export default new Vuex.Store({
   state: {
-    // test: false, 
-    test: true, 
+    test: false, 
+    // test: true, 
 
     //============================
     auth: {
@@ -1873,6 +1873,22 @@ export default new Vuex.Store({
         state.admin.db.selected.splice(position, 1);
       }else{
         state.admin.db.selected.push(student_id);
+      }
+    },
+
+    INITIALIZE(state, target){
+      if(target === 'db'){
+        state.admin.db.options = DBoptions;
+        state.admin.db.keyword = '';
+        state.admin.db.selected = [];
+        state.roomList = [];
+        state.studentList = [];
+        state.roomIndex = [];
+        state.studentIndex = [];
+      }
+      if(target === 'search'){
+        state.searchArr = [];
+        state.search.keyword = '';
       }
     },
 
