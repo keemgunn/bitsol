@@ -27,7 +27,7 @@
 <script>
 import DB from '@/components/admin/DB'
 
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: "Admin",
@@ -45,16 +45,16 @@ export default {
   }},
   computed: {
     ...mapState(['dbinfo', 'admin', 'roomList', 'studentList']),
-    ...mapGetters([])
+    ...mapGetters(['ROOM_LIST_ALL', 'STUDENT_LIST_ALL'])
   },
   methods: {
     ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST'])
   },
   created() {
-    if(this.roomList.length === 0){
+    if(this.ROOM_LIST_ALL.length === 0){
       this.LOAD_ROOM_LIST();
     }
-    if(this.studentList.length === 0){
+    if(this.STUDENT_LIST_ALL.length === 0){
       this.LOAD_STUDENT_LIST();
     }
   },

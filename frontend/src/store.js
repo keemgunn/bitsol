@@ -79,17 +79,13 @@ export default new Vuex.Store({
         return state.auth
       }
     },
-    ROOM_LIST(state, index){
-      if(state.test){
-        return test['roomTest'][index]
-      }else{
-        if(index === '*'){
-          return adminDB.roomList
-        }else{
-          return adminDB['roomList'][index]
-        }
-      }
+    ROOM_LIST_ALL(){
+      return adminDB.roomList
+    },
+    STUDENT_LIST_ALL(){
+      return adminDB.studentList
     }
+
 
 
     
@@ -174,8 +170,7 @@ export default new Vuex.Store({
           };
           count = 1;
         }
-      }
-      let indexArr = [];
+      } let indexArr = [];
       for(var j=0; j < data.arg.length/2; j++) {
         indexArr.push(j);
       }
@@ -183,7 +178,6 @@ export default new Vuex.Store({
       state.admin.db.roomIndex = indexArr;
       adminDB.roomList = dataArr;
     },
-
     async LOAD_STUDENT_LIST (state) {
       state.admin.loadingState = 1;
       console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
@@ -196,7 +190,23 @@ export default new Vuex.Store({
       state.admin.db.studentIndex = indexArr;
       adminDB.studentList = data.arg;
     },
-    
+
+    ROOM_LIST(state, index){
+      if(state.test){
+        return test['roomTest'][index]
+      }else{
+        return adminDB['roomList'][index]
+      }
+    },
+    STUDENT_LIST(state, index){
+      if(state.test){
+        return test['studentTest'][index]
+      }else{
+        return adminDB['studentList'][index]
+      }
+    },
+
+
 
     //______________ SEARCH METHODS ____________
 
