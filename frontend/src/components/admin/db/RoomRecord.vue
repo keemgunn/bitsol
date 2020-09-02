@@ -1,7 +1,7 @@
 <template>
 <div id="room-record">
 
-<div id="room">{{ROOM_LIST["name"]}}</div>
+<div id="room">{{ROOM_LIST(index)["name"]}}</div>
 
 <div class="seat">
   <div class="text-seat">
@@ -98,7 +98,7 @@
 
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: "RoomRecord",
@@ -107,14 +107,8 @@ export default {
   data() { return {
   }},
   computed: {
-    ROOM_LIST: function () {
-      if(this.test){
-        return this["$store"]["state"]["roomTest"][this.index]
-      }else{
-        return this["$store"]["state"]["roomList"][this.index]
-      }
-    },
-    ...mapState(['admin', 'roomList', 'test', 'roomTest'])
+    ...mapState(['admin', 'roomList', 'test', 'roomTest']),
+    ...mapGetters(['ROOM_LIST'])
   },
   methods: {
     selectStudent(seat){
