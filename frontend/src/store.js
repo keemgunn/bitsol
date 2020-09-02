@@ -12,6 +12,7 @@ const DBoptions = {
   showEmpty: false,
   showForeign: false
 };
+let defIndex= { roomArr: [], studentArr: [] };
 
 export default new Vuex.Store({
   state: {
@@ -23,7 +24,7 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'admin', // search  admin
+    mode: 'search', // search  admin
     theme: {
       applied: styles["colors"][defaultColor],
       colorKeys: Object.keys(styles.colors),
@@ -44,20 +45,19 @@ export default new Vuex.Store({
 
     //============================
     admin: {
-      modal: 'db',
+      modal: 'index',
         // index  db  refg  user
       db: {
         options: DBoptions,
         optionKeys: Object.keys(DBoptions),
         keyword:'',
-        selected: [0, 3],
+        selected: [],
         updated: []
       },
       loadingState: 0
     },
      // ---- DB ----
     roomList: [], studentList: [],
-    defIndex: { roomArr: [], studentArr: [] },
     roomIndex: [], studentIndex: [],
 
 
@@ -1765,7 +1765,7 @@ export default new Vuex.Store({
       for(var j=0; j < data.arg.length/2; j++) {
         indexArr.push(j);
       }
-      state.defIndex.roomArr = indexArr;
+      defIndex.roomArr = indexArr;
       state.roomIndex = indexArr;
       state.roomList = dataArr;
     },
@@ -1778,7 +1778,7 @@ export default new Vuex.Store({
       for(var i=0; i < data.arg.length; i++){
         indexArr.push(i);
       }
-      state.defIndex.studentArr = indexArr;
+      defIndex.studentArr = indexArr;
       state.studentIndex = indexArr;
       state.studentList = data.arg;
     },
@@ -1797,7 +1797,7 @@ export default new Vuex.Store({
       state.admin.loadingState = 1;
       if(keyword === ''){
         console.log('$$$ ALL ROOM LIST ...$mutation/SEARCH_room');
-        state.roomIndex = state.defIndex.roomArr;
+        state.roomIndex = defIndex.roomArr;
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
@@ -1818,7 +1818,7 @@ export default new Vuex.Store({
       state.admin.loadingState = 1;
       if(keyword === ''){
         console.log('$$$ ALL STUDENT LIST ...$mutation/SEARCH_student');
-        state.studentIndex = state.defIndex.studentArr;
+        state.studentIndex = defIndex.studentArr;
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
@@ -1848,6 +1848,7 @@ export default new Vuex.Store({
       axios.post('/auth/theme/change', {id: localStorage.id, color});
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
     },
+
     TOGGLE(state, {target, set}) {
       state[target] = set;
     },
@@ -1855,19 +1856,32 @@ export default new Vuex.Store({
     searchCoverBottom(state) {
       state.search.coverBottom.height = "calc(100% - " + String(state.searchArr.length * state.search.recordHeight) + "px)";
     },
-
     searchLoadingState(state, bool){
       state.search.loadingState = bool;
       console.log('loading: ', bool);
     },
-  
+
+    adminLoadingState(state, bool){
+      state.db.loadingState = bool;
+      console.log('loading: ', bool);
+    },
+
+    adminStudentSelect(state, student_id){
+      console.log("$$$ ad/st-Select: ", student_id);
+      if(state.admin.db.selected.includes(student_id)){
+        let position = state.admin.db.selected.indexOf(student_id);
+        state.admin.db.selected.splice(position, 1);
+      }else{
+        state.admin.db.selected.push(student_id);
+      }
+    },
+
+
     ALERT (state, msg) {
       console.log(msg);
       state.alert = msg;
     },
-
-
-
+    
   },
   actions: {
     //___________ AUTHENTICATION METHODS _______

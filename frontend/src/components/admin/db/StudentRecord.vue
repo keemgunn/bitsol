@@ -9,7 +9,7 @@
 
   <div class="text-major">{{STUDENT_LIST["faculty"]}} {{STUDENT_LIST["major"]}} ({{STUDENT_LIST["student_number"]}})</div>
 
-  <div class="text-room" v-if="'STUDENT_LIST'['room_name']">
+  <div class="text-room" v-if="STUDENT_LIST['room_name']">
 
     <div class="num">
       {{STUDENT_LIST["room_name"]}}
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="text-room" v-if="!'STUDENT_LIST'['room_name']">
+  <div class="text-room" v-if="!STUDENT_LIST['room_name']">
 
     <div class="han">
       퇴실
@@ -116,7 +116,7 @@ export default {
   color: var(--i45);
   background-color: var(--i94);
   border: solid 2px var(--i80);
-  transition: 600ms;
+  // transition: 600ms;
    .checkbox{
     background-color: var(--i80);
   }.checkbox:hover{
@@ -129,7 +129,7 @@ export default {
   }
   // background-color: rgba(0, 255, 255, 0.445);
 }#student-record:hover {
-  transition: 100ms;
+  // transition: 100ms;
   color: var(--i30);
   background-color: var(--i98);
   border: solid 2px var(--i45);
@@ -175,7 +175,7 @@ export default {
   }
 }.text-room:hover{
   .room-manage-btn{
-    transition: 200ms;
+    // transition: 200ms;
     .icon{
       fill: var(--i30);
     }.x{
@@ -190,15 +190,15 @@ export default {
   }
   .room-manage-btn:hover{
     cursor: pointer;
-    transition: 200ms;
+    // transition: 200ms;
     .icon{
-      transition: 150ms;
+      // transition: 150ms;
       fill: var(--accent00);
     }.x{
-      transition: 150ms;
+      // transition: 150ms;
       background-color: var(--alert01);
     }.plus{
-      transition: 150ms;
+      // transition: 150ms;
       background-color: var(--accent01);
     }
   }.x-text:hover{
@@ -240,7 +240,7 @@ export default {
   font-size: 14px;
   text-align: right;
   line-height: 26px;
-  transition: 400ms;
+  // transition: 400ms;
   // background-color: palegoldenrod;
 }
 
@@ -249,14 +249,14 @@ export default {
   position: absolute; top: 3px; left: 5px;
   width: 18px;
   height: 18px;
-  transition: 400ms;
+  // transition: 400ms;
   fill: transparent;
 }.circle {
   position: absolute; top: 1px; left: 3px;
   border-radius: 14px;
   width: 22px;
   height: 22px;
-  transition: 400ms;
+  // transition: 400ms;
   background-color: transparent;
 }
 
@@ -286,9 +286,9 @@ export default {
   width: 20px;
   height: 20px;
   fill: var(--i94);
-  transition: 300ms;
+  // transition: 300ms;
 }.checkbox:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
 
@@ -296,10 +296,10 @@ export default {
   position: absolute; top: 8px; right: 8px;
   width: 24px;
   height: 24px;
-  transition: 300ms;
+  // transition: 300ms;
   // background-color: rgb(80, 214, 255);
 }.delete-btn:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
 

@@ -4,21 +4,24 @@
   <Sidecar />
 
   <div id="content">
-
     <DBoption 
       :scope="scope"
       :optionBox="optionBox"
       @toggle="toggle"
     />
 
-    <List
+    <transition name="appear"><List
+      v-if="scope==='room'"
       :scope="scope"
-    />
+    /></transition>
+
+    <transition name="appear"><List
+      v-if="scope==='student'"
+      :scope="scope"
+    /></transition>
 
     <div class="cover-scroll-bottom"></div>
   </div>
-
-  
 
 </div>
 </template>

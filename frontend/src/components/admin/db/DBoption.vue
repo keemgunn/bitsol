@@ -95,9 +95,9 @@ export default {
     ...mapState(['admin', 'roomIndex', 'studentIndex']),
     recordCount: function () {
       if(this.scope === 'room') {
-        return this.roomIndex.length
+        return '호실: ' + this.roomIndex.length
       }else{
-        return this.studentIndex.length
+        return '학생: ' + this.studentIndex.length
       }
     },
     option: function () {

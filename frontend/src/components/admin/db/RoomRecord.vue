@@ -26,7 +26,12 @@
     전화번호: {{ROOM_LIST["A"]["phone"]}}
   </div>
 
-  <div class="checkbox" v-if="ROOM_LIST['A']['student_id']">
+  <div class="checkbox" 
+  :class="{
+    'none':!ROOM_LIST['A']['student_id'],
+    'selected':admin.db.selected.includes(ROOM_LIST['A']['student_id']-1)
+  }"
+  @click="selectStudent('A')">
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
@@ -65,7 +70,12 @@
     전화번호: {{ROOM_LIST["B"]["phone"]}}
   </div>
 
-  <div class="checkbox" v-if="ROOM_LIST['B']['student_id']">
+  <div class="checkbox"
+  :class="{
+    'none':!ROOM_LIST['B']['student_id'],
+    'selected':admin.db.selected.includes(ROOM_LIST['B']['student_id']-1)
+  }"
+  @click="selectStudent('B')">
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
@@ -95,7 +105,6 @@ export default {
   components: { },
   props: ['index'],
   data() { return {
-
   }},
   computed: {
     ROOM_LIST: function () {
@@ -108,7 +117,10 @@ export default {
     ...mapState(['admin', 'roomList', 'test', 'roomTest'])
   },
   methods: {
-    ...mapMutations([])
+    selectStudent(seat){
+      this.adminStudentSelect( this['ROOM_LIST'][seat]['student_id'] - 1 );
+    },
+    ...mapMutations(['adminStudentSelect'])
   },
   created() {
   },
@@ -132,11 +144,11 @@ export default {
   height: fit-content;
   background-color: var(--i94);
   border: solid 2px var(--i80);
-  transition: 600ms;
+  // transition: 600ms;
    #room{
     color: var(--i45);
   }.division{
-    transition: 600ms;
+    // transition: 600ms;
     position: absolute; top: 50%; right: 0;
     width: calc(100% - 104px);
     height: 1px;
@@ -144,13 +156,13 @@ export default {
   }
   // background-color: rgba(0, 255, 255, 0.445);
 }#room-record:hover {
-  transition: 100ms;
+  // transition: 100ms;
   background-color: var(--i98);
   border: solid 2px var(--i45);
    #room{
     color: var(--i30);
   }.division{
-    transition: 100ms;
+    // transition: 100ms;
     background-color: var(--i45);
   }
 }
@@ -173,24 +185,34 @@ export default {
   height: 69px;
   color: var(--i45);
   background-color: var(--i94);
-  transition: 300ms;
+  // transition: 300ms;
    .checkbox{
     background-color: var(--i80);
   }.delete-btn{
     fill: var(--i70);
+  }.selected {
+  background-color: var(--accent01);
+  }.none {
+    display: none;
   }
 }.seat:hover {
-  transition: 100ms;
+  // transition: 100ms;
   color: var(--i30);
   background-color: var(--i98);
    .checkbox{
     background-color: var(--i70);
   }.checkbox:hover{
     background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.selected:hover {
+  background-color: var(--accent02);
   }.delete-btn{
     fill: var(--i60);
   }.delete-btn:hover{
     fill: var(--i20);
+  }.none {
+    display: none;
   }
 }
 
@@ -235,20 +257,21 @@ export default {
   width: 20px;
   height: 20px;
   fill: var(--i100);
-  transition: 300ms;
+  // transition: 300ms;
 }.checkbox:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
+
 
 .delete-btn {
   position: absolute; top: 6px; right: 6px;
   width: 24px;
   height: 24px;
-  transition: 300ms;
+  // transition: 300ms;
   // background-color: rgb(80, 214, 255);
 }.delete-btn:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
 

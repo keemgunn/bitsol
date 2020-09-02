@@ -1,21 +1,21 @@
 <template>
 <div id="list-wrapper">
 
-<transition name="appear"><div v-if="scope==='room'">
+<div v-if="scope==='room'">
   <div id="list"
     v-for="index in ROOM_INDEX"
     :key="index">
     <RoomRecord :index="index" />
   </div>
-</div></transition>
+</div>
 
-<transition name="appear"><div v-if="scope==='student'">
+<div v-if="scope==='student'">
   <div id="list"
     v-for="index in STUDENT_INDEX"
     :key="index">
     <StudentRecord :index="index" />
   </div>
-</div></transition>
+</div>
 
 </div>
 </template>

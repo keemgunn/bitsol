@@ -28,7 +28,7 @@ export default {
   data() { return { 
   }},
   computed: {
-    ...mapState(['mode']),
+    ...mapState(['mode', 'admin']),
   },
   methods: {
     changeMode(){
@@ -36,6 +36,9 @@ export default {
         this.TOGGLE({target:'mode', set:'admin'});
       }else{
         this.TOGGLE({target:'mode', set:'search'});
+        this.admin.modal = 'index';
+        this.admin.db.keyword = '';
+        this.admin.db.selected = [];
       }
     },
     ...mapMutations(['TOGGLE']),
