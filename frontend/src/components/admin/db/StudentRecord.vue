@@ -10,11 +10,9 @@
   <div class="text-major">{{STUDENT["faculty"]}} {{STUDENT["major"]}} ({{STUDENT["student_number"]}})</div>
 
   <div class="text-room" v-if="STUDENT['room_name']">
-
     <div class="num">
       {{STUDENT["room_name"]}}
     </div>
-
     <div class="room-manage-btn x-text">
       <div class="circle x"></div>
       <div class="icon">
@@ -24,15 +22,12 @@
       </div>
       퇴실처리
     </div>
-
   </div>
 
   <div class="text-room" v-if="!STUDENT['room_name']">
-
     <div class="han">
       퇴실
     </div>
-
     <div class="room-manage-btn plus-text">
       <div class="circle plus"></div>
       <div class="icon">
@@ -42,7 +37,6 @@
       </div>
       호실배정
     </div>
-
   </div>
 
   <div class="text-info">입사일: {{STUDENT["indate"]}}</div>
@@ -140,6 +134,15 @@ export default {
   }.none {
     display: none;
   }
+  .x-text {
+    color: var(--i70);
+  }.plus-text {
+    color: var(--i70);
+  }.x-text:hover{
+    color: var(--alert01);
+  }.plus-text:hover{
+    color: var(--accent01);
+  }
 }
 
 .text-name {
@@ -166,10 +169,12 @@ export default {
   width: fit-content;
   height: 30px;
   // background-color: whitesmoke;
-  .x-text {
-  color: transparent;
+  .icon{
+    fill: var(--i60);
+  }.x-text {
+    color: transparent;
   }.plus-text {
-  color: transparent;
+    color: transparent;
   }
 }.text-room:hover{
   .room-manage-btn{
@@ -230,7 +235,7 @@ export default {
 
 .room-manage-btn {
   float: left;
-  position: relative; top: 3px; left: 7px;
+  position: relative; top: 3px; left: 3px;
   width: 80px;
   height: 26px;
   font-family: 'Nanum Square', sans-serif;
