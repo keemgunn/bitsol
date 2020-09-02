@@ -29,7 +29,16 @@
   <transition name="appear">
   <div class="sidecar right" v-if="admin.db.updated.length">
     <div class="content updated">
-      
+      <div class="title-box">
+        <div class="title">업데이트 기록</div>
+      </div>
+      <div class="list-wrapper">
+        <div class="record"
+        v-for="index in admin.db.updated"
+        :key="index.id">
+          <SidecarRecord :type="toStr('updated')" :index="index" />
+        </div>
+      </div>
     </div>
   </div>
   </transition>
@@ -93,26 +102,11 @@ export default {
   height: 100%;
   // background-color: rgba(235, 15, 206, 0.288);
 }.left {
-  right: calc(50% + 355px);
+  right: calc(50% + 350px);
 }.right {
-  left: calc(50% + 355px);
+  left: calc(50% + 365px);
 }
-@media ( max-width: 830px ) {
-  .left {
-    right: calc(100% - 60px);
-  }
-  .right {
-    left: calc(100% - 60px);
-  }
-}
-@media ( max-width: 610px ) {
-  .left {
-    right: calc(50% + 245px);
-  } 
-  .right {
-    left: calc(50% + 245px);
-  } 
-}
+
 .content {
   position: absolute; top: 0;
   width: 170px;
@@ -140,7 +134,7 @@ export default {
   position: sticky; top: 0;
   width: 160px;
   height: 83px;
-  border-bottom: 2px solid var(--i30);
+  border-bottom: 3px solid var(--i30);
   background-color: var(--i94);
 }
 .title {

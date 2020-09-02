@@ -102,7 +102,7 @@ export default {
    .checkbox{
     background-color: var(--i80);
   }.checkbox:hover{
-    fill: var(--i100);
+    fill: var(--accent00);
     background-color: var(--accent01);
   }.selected {
   background-color: var(--accent01);

@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from './assets/styles.json';
 import test from './test.json';
 
-const defaultColor = "default";
+const defaultColor = "purple";
 const DBoptions = {
   showEmpty: false,
   showForeign: false
@@ -25,7 +25,7 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'search', // search  admin
+    mode: 'admin', // search  admin
     theme: {
       applied: styles["colors"][defaultColor],
       colorKeys: Object.keys(styles.colors),
@@ -44,7 +44,7 @@ export default new Vuex.Store({
 
     //-------------------------
     admin: {
-      modal: 'index',
+      modal: 'db',
         // index  db  refg  user
       db: {
         options: DBoptions,

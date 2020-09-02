@@ -1619,5 +1619,31 @@
   "testIndex": [
     0,1,2,3,4,5,6,7,8,9,10,
     11,12,13,14,15
+  ],
+  
+  "updated": [
+    {
+      "id": "Xasd",
+      "adjust": "change",
+      "rooms": [
+        [ 1, "A0101A"],
+        [ 2, "A0101B"]
+      ],
+      "before": [11, 12],
+      "after": [12, 11]
+    },{
+      "id": "Xa4d",
+      "adjust": "out",
+      "from": [ 32, "A202A" ],
+      "target": 10
+    },{
+      "id": "X1sd",
+      "adjust": "in",
+      "to": [ 33, "A222A" ],
+      "target": 10
+    }
   ]
+
+
+
 }

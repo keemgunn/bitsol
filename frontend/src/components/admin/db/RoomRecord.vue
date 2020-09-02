@@ -237,7 +237,7 @@ export default {
   position: absolute; top: 8px; right: 35px;
   width: 20px;
   height: 20px;
-  fill: var(--i100);
+  fill: var(--accent00);
   // transition: 300ms;
 }.checkbox:hover {
   // transition: 150ms;
