@@ -28,29 +28,9 @@
       </svg>
     </div>
 
-    <transition name="appear">
-    <div class="option-wrapper"
-    v-if="optionBox">
-
-      <div class="options"
-      :class="{'options-checked':admin.db.options.showEmpty}"
-      @click="optionCheck('showEmpty')">
-        <div class="opt-checkbox"></div>
-        <div class="opt-text">공실만 표시</div>
-      </div>
-
-      <div class="options"
-      :class="{'options-checked':admin.db.options.showForeign}"
-      @click="optionCheck('showForeign')">
-        <div class="opt-checkbox"></div>
-        <div class="opt-text">외국인 학생</div>
-      </div>
-
-    </div></transition>
-
   </div>
 
-  <div id="search-box">
+  <form id="search-box" @submit.prevent autocomplete="off">
     <input
     id = "admin-search-field"
     placeholder="검색"
@@ -68,7 +48,7 @@
     </div>
     <div id="border"></div>
 
-  </div>
+  </form>
 
   <div id="count-box">
     {{recordCount}}
