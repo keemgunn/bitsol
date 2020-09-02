@@ -2,17 +2,17 @@
 <div id="student-record">
 
   <div class="text-name">
-    {{STUDENT_LIST["student_name"]}}
+    {{STUDENT["student_name"]}}
   </div>
 
-  <div class="text-id">{{STUDENT_LIST["student_id"]}}</div>
+  <div class="text-id">{{STUDENT["student_id"]}}</div>
 
-  <div class="text-major">{{STUDENT_LIST["faculty"]}} {{STUDENT_LIST["major"]}} ({{STUDENT_LIST["student_number"]}})</div>
+  <div class="text-major">{{STUDENT["faculty"]}} {{STUDENT["major"]}} ({{STUDENT["student_number"]}})</div>
 
-  <div class="text-room" v-if="STUDENT_LIST['room_name']">
+  <div class="text-room" v-if="STUDENT['room_name']">
 
     <div class="num">
-      {{STUDENT_LIST["room_name"]}}
+      {{STUDENT["room_name"]}}
     </div>
 
     <div class="room-manage-btn x-text">
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="text-room" v-if="!STUDENT_LIST['room_name']">
+  <div class="text-room" v-if="!STUDENT['room_name']">
 
     <div class="han">
       퇴실
@@ -45,13 +45,13 @@
 
   </div>
 
-  <div class="text-info">입사일: {{STUDENT_LIST["indate"]}}</div>
+  <div class="text-info">입사일: {{STUDENT["indate"]}}</div>
 
-  <div class="text-info">입사유형: {{STUDENT_LIST["term"]}}</div>
+  <div class="text-info">입사유형: {{STUDENT["term"]}}</div>
 
   <br>
 
-  <div class="text-info">전화번호: {{STUDENT_LIST["phone"]}}</div>
+  <div class="text-info">전화번호: {{STUDENT["phone"]}}</div>
 
   <br>
 
@@ -59,8 +59,8 @@
 
   <div class="checkbox"
   :class="{
-    'none':!STUDENT_LIST['student_id'],
-    'selected':admin.db.selected.includes(STUDENT_LIST['student_id']-1)
+    'none':!STUDENT['student_id'],
+    'selected':admin.db.selected.includes(STUDENT['student_id']-1)
   }"
   @click="selectStudent()"
   >
@@ -81,36 +81,15 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   name: "RoomRecord",
   components: { },
-  props: ['index'],
-  data() { return {
-
-  }},
+  props: ['index', 'STUDENT'],
   computed: {
-    STUDENT_LIST: function () {
-      if(this.test){
-        return this["$store"]["state"]["studentTest"][this.index]
-      }else{
-        return this["$store"]["state"]["studentList"][this.index]
-      }
-    },
     ...mapState(['admin', 'studentList', 'test', 'studentTest'])
   },
   methods: {
+    ...mapMutations(['adminStudentSelect']),
     selectStudent(){
-      this.adminStudentSelect( this['STUDENT_LIST']['student_id'] - 1 );
+      this.adminStudentSelect( this['STUDENT']['student_id'] - 1 );
     },
-    ...mapMutations(['adminStudentSelect'])
-  },
-  created() {
-  },
-  mounted() {
-
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 </script>

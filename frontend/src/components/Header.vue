@@ -35,7 +35,7 @@ export default {
     User, AdminBtn, AdminMenu, SearchBox, 
   },
   computed: {
-    ...mapState(['mode', 'auth', 'test', 'authTest']),
+    ...mapState(['mode']),
     ...mapGetters(['AUTH'])
   },
   methods: {

@@ -71,7 +71,7 @@ export default {
     userBoxState: 0,
   }},
   computed: {
-    ...mapState(['auth', 'theme', 'test', 'authTest']),
+    ...mapState(['auth', 'theme']),
     ...mapGetters(['AUTH'])
   },
   methods: {

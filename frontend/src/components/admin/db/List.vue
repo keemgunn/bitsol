@@ -1,76 +1,55 @@
 <template>
 <div id="list-wrapper">
 
-<div v-if="scope==='room'">
-  <div id="list"
-    v-for="index in ROOM_INDEX"
-    :key="index">
-    <RoomRecord :index="index" />
+  <div v-if="scope==='room'">
+    <div id="list"
+      v-for="index in ROOM_INDEX"
+      :key="index">
+      <RoomRecord :index="index" :ROOM="ROOM(index)" />
+    </div>
   </div>
-</div>
 
-<div v-if="scope==='student'">
-  <div id="list"
-    v-for="index in STUDENT_INDEX"
-    :key="index">
-    <StudentRecord :index="index" />
+  <div v-if="scope==='student'">
+    <div id="list"
+      v-for="index in STUDENT_INDEX"
+      :key="index">
+      <StudentRecord :index="index" :STUDENT="STUDENT(index)" />
+    </div>
   </div>
-</div>
 
 </div>
 </template>
 
 
-
 <script>
 import RoomRecord from './RoomRecord'
 import StudentRecord from './StudentRecord'
-import { mapState, mapMutations } from 'vuex';
-
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: "List",
-  components: {RoomRecord, StudentRecord},
-  props: [
-    "scope"
-  ],
-  data() { return {
-
-  }},
+  components: { RoomRecord, StudentRecord },
+  props: [ "scope" ],
   computed: {
-    ROOM_INDEX: function(){
-      if(this.test){
-        return this["$store"]["state"]["testIndex"]
-      }else{
-        return this["$store"]["state"]["roomIndex"]
-      }      
-    },
-    STUDENT_INDEX: function(){
-      if(this.test){
-        return this["$store"]["state"]["testIndex"]
-      }else{
-        return this["$store"]["state"]["studentIndex"]
-      }      
-    },
-    ...mapState(['test'])
+    ...mapGetters(['ROOM_INDEX', 'STUDENT_INDEX', 'ROOM_LIST', 'STUDENT_LIST'])
   },
   methods: {
-    ...mapMutations(['SEARCH_test'])
-  },
-  created() {
-    this.SEARCH_test();
-  },
-  mounted() {
-    
+    ...mapMutations(['adminLoadingState']),
+    ROOM(index){
+      return this['ROOM_LIST'][index]
     },
+    STUDENT(index){
+      return this['STUDENT_LIST'][index]
+    }
+  },
   beforeUpdate() {
+    this.adminLoadingState(1);
   },
-  beforeCreate() {
-    
-  },
+  updated() {
+    this.adminLoadingState(0);
+  }
 }
 </script>
-
 
 
 <style lang="scss" scoped> 
@@ -91,10 +70,6 @@ export default {
 
   // background-color: aquamarine;
 }
-
-
-
-
 
 /* --------------- SCROLL -------------- */
 /* width */

@@ -44,17 +44,17 @@ export default {
 
   }},
   computed: {
-    ...mapState(['dbinfo', 'admin', 'roomList', 'studentList']),
-    ...mapGetters(['ROOM_LIST_ALL', 'STUDENT_LIST_ALL'])
+    ...mapState(['dbinfo', 'admin']),
+    ...mapGetters(['ROOM_LIST', 'STUDENT_LIST'])
   },
   methods: {
     ...mapMutations(['LOAD_ROOM_LIST', 'LOAD_STUDENT_LIST'])
   },
   created() {
-    if(this.ROOM_LIST_ALL.length === 0){
+    if(this.ROOM_LIST.length === 0){
       this.LOAD_ROOM_LIST();
     }
-    if(this.STUDENT_LIST_ALL.length === 0){
+    if(this.STUDENT_LIST.length === 0){
       this.LOAD_STUDENT_LIST();
     }
   },

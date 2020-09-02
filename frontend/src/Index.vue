@@ -55,7 +55,7 @@ export default {
     },
   }},
   computed: {
-    ...mapState(['auth', 'mode', 'theme', 'test', 'authTest']),
+    ...mapState(['auth', 'mode', 'theme']),
     ...mapGetters(['AUTH'])
   },
   methods: {

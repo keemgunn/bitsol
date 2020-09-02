@@ -82,7 +82,7 @@
 
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: "DBoption",
@@ -92,12 +92,13 @@ export default {
     'optionBox',
   ],
   computed: {
-    ...mapState(['admin', 'roomIndex', 'studentIndex']),
+    ...mapState(['admin']),
+    ...mapGetters(['ROOM_INDEX', 'STUDENT_INDEX']),
     recordCount: function () {
       if(this.scope === 'room') {
-        return '호실: ' + this.roomIndex.length
+        return '호실: ' + this.ROOM_INDEX.length
       }else{
-        return '학생: ' + this.studentIndex.length
+        return '학생: ' + this.STUDENT_INDEX.length
       }
     },
     option: function () {
@@ -115,15 +116,13 @@ export default {
     optionCheck(opt) {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
     },
-    scopeChange(scope){
-      //____ initialize
-      if(scope === 'room'){
+    scopeChange(s){
+      if(s === 'room'){
         this.SEARCH_student('');
       }else{
         this.SEARCH_room('');
       }
-      //____ modal change
-      this.$emit('toggle', 'scope', scope);
+      this.$emit('toggle', 'scope', s);
     },
     ...mapMutations(['SEARCH_room', 'SEARCH_student'])
   },

@@ -5,11 +5,11 @@
 <div v-if="type==='selection'">
 
   <div class="name">
-    {{STUDENT_LIST.student_name}}
+    {{STUDENT.student_name}}
   </div>
 
   <div class="id">
-    {{STUDENT_LIST.student_id}}
+    {{STUDENT.student_id}}
   </div>
 
   <div class="room">
@@ -17,7 +17,7 @@
   </div>
 
   <div class="num">
-    {{STUDENT_LIST.student_number}}
+    {{STUDENT.student_number}}
   </div>
 
   <div class="delete">
@@ -62,24 +62,20 @@ export default {
 
   }},
   computed: {
-    STUDENT_LIST: function () {
-      if(this.test){
-        return this["$store"]["state"]["studentTest"][this.index]
-      }else{
-        return this["$store"]["state"]["studentList"][this.index]
-      }
+    STUDENT: function(){
+      return this.STUDENT_LIST(this.index)
     },
     ROOM_NAME: function(){
-      if(this.STUDENT_LIST.room_name){
-        return this.STUDENT_LIST.room_name
+      if(this.student.room_name){
+        return this.student.room_name
       }else{
         return '퇴실'
       }
     },
-    ...mapState(['admin', 'studentList', 'test', 'studentTest'])
+    ...mapState(['admin'])
   },
   methods: {
-    ...mapMutations([])
+    ...mapMutations(['STUDENT_LIST'])
   },
   created() {
 

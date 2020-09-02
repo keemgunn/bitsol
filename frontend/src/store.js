@@ -1,29 +1,26 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-// import Joi from 'joi';
-
-Vue.use(Vuex)
-// const resourceHost = 'http://localhost:3000'
 
 import styles from './assets/styles.json';
 import test from './test.json';
 
 const defaultColor = "default";
-
 const DBoptions = {
   showEmpty: false,
   showForeign: false
 };
 let defIndex= { roomArr: [], studentArr: [] };
-let adminDB = { roomList: [], studentList: [] };
 
+
+// const resourceHost = 'http://localhost:3000'
+Vue.use(Vuex)
 export default new Vuex.Store({
-  state: {
-    // test: false, 
-    test: true, 
+  state: { //============================
+    test: false, 
+    // test: true, 
 
-    //============================
+    //-------------------------
     auth: {
       id:null, accessLevel:0, userName:null,
     },
@@ -35,8 +32,7 @@ export default new Vuex.Store({
       colors: styles.colors
     },
     
-
-    //============================
+    //-------------------------
     searchArr: [],
     search: {
       keyword: '',
@@ -45,9 +41,8 @@ export default new Vuex.Store({
       coverBottom: { "height": "100%" },
       loadingState: 0
     },
-    
 
-    //============================
+    //-------------------------
     admin: {
       modal: 'index',
         // index  db  refg  user
@@ -56,22 +51,19 @@ export default new Vuex.Store({
         optionKeys: Object.keys(DBoptions),
         keyword:'',
         roomIndex: [], studentIndex: [],
+        roomList: [], studentList: [],
         selected: [],
         updated: []
       },
-      loadingState: 0
+      loadingState: 0,
+      lastRequest: ''
     },
     
-
-
-    //============================
+    //-------------------------
     alert: null,
 
-    
-    //============================
-    testIndex: [],
   },
-  getters: {
+  getters: { //============================
     AUTH(state){
       if(state.test){
         return test['authTest']
@@ -79,20 +71,41 @@ export default new Vuex.Store({
         return state.auth
       }
     },
-    ROOM_LIST_ALL(){
-      return adminDB.roomList
+
+    ROOM_LIST(state){
+      if(state.test){
+        return test.roomTest
+      }else{
+        return state.admin.db.roomList
+      }
     },
-    STUDENT_LIST_ALL(){
-      return adminDB.studentList
-    }
+    STUDENT_LIST(state){
+      if(state.test){
+        return test.studentTest
+      }else{
+        return state.admin.db.studentList
+      }
+    },
+    ROOM_INDEX(state){
+      if(state.test){
+        return test['testIndex']
+      }else{
+        return state.admin.db.roomIndex
+      }
+    },
+    STUDENT_INDEX(state){
+      if(state.test){
+        return test['testIndex']
+      }else{
+        return state.admin.db.studentIndex
+      }
+    },
 
 
-
-    
   },
-  mutations: {
+  mutations: { //============================
 
-    //___________ AUTHENTICATION METHODS _______
+    //___________ AUTHENTICATION METHODS
     async LOGIN (state, {data}) {
       console.log('$$$ request ...$mutation/LOGIN');
       state.auth.id = data.id;
@@ -133,8 +146,7 @@ export default new Vuex.Store({
     },
 
 
-    //______________ DB METHODS ____________
-
+    //______________ DB METHODS
     async DB_INFO (state) {
       console.log('$$$ request ...$mutation/DB_INFO');
       let {data} = await axios.get('/db/info');
@@ -176,8 +188,10 @@ export default new Vuex.Store({
       }
       defIndex.roomArr = indexArr;
       state.admin.db.roomIndex = indexArr;
-      adminDB.roomList = dataArr;
+      state.admin.db.roomList = dataArr;
+      console.log('...roomList DONE!', state.admin.db.roomList.length);
     },
+    
     async LOAD_STUDENT_LIST (state) {
       state.admin.loadingState = 1;
       console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');
@@ -188,28 +202,12 @@ export default new Vuex.Store({
       }
       defIndex.studentArr = indexArr;
       state.admin.db.studentIndex = indexArr;
-      adminDB.studentList = data.arg;
-    },
-
-    ROOM_LIST(state, index){
-      if(state.test){
-        return test['roomTest'][index]
-      }else{
-        return adminDB['roomList'][index]
-      }
-    },
-    STUDENT_LIST(state, index){
-      if(state.test){
-        return test['studentTest'][index]
-      }else{
-        return adminDB['studentList'][index]
-      }
+      state.admin.db.studentList = data.arg;
+      console.log('...studentList DONE!', state.admin.db.studentList.length);
     },
 
 
-
-    //______________ SEARCH METHODS ____________
-
+    //______________ SEARCH METHODS
     async SEARCH (state, keyword) {
       state.search.loadingState = 1;
       console.log('$$$ request ...$mutation/SEARCH');
@@ -221,7 +219,7 @@ export default new Vuex.Store({
       state.admin.loadingState = 1;
       if(keyword === ''){
         console.log('$$$ ALL ROOM LIST ...$mutation/SEARCH_room');
-        state.roomIndex = defIndex.roomArr;
+        state.admin.db.roomIndex = defIndex.roomArr;
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
@@ -242,7 +240,7 @@ export default new Vuex.Store({
       state.admin.loadingState = 1;
       if(keyword === ''){
         console.log('$$$ ALL STUDENT LIST ...$mutation/SEARCH_student');
-        state.studentIndex = defIndex.studentArr;
+        state.admin.db.studentIndex = defIndex.studentArr;
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
@@ -254,16 +252,9 @@ export default new Vuex.Store({
       }
     },
 
-    SEARCH_test (state) {
-      let Arr = [];
-      for(var i=0; i<state.roomTest.length; i++){
-        Arr.push(i);
-      }
-      state.testIndex = Arr;
-    },
 
 
-    //____________ UI METHODS ____________
+    //____________ UI METHODS
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
       console.log(color);
@@ -289,7 +280,6 @@ export default new Vuex.Store({
       state.db.loadingState = bool;
       console.log('loading: ', bool);
     },
-
     adminStudentSelect(state, student_id){
       console.log("$$$ ad/st-Select: ", student_id);
       if(state.admin.db.selected.includes(student_id)){
@@ -300,6 +290,7 @@ export default new Vuex.Store({
       }
     },
 
+    //_______________________________
     INITIALIZE(state, target){
       if(target === 'db'){
         state.admin.db.options = DBoptions;
@@ -314,15 +305,14 @@ export default new Vuex.Store({
       }
     },
 
-
     ALERT (state, msg) {
       console.log(msg);
       state.alert = msg;
     },
     
   },
-  actions: {
-    //___________ AUTHENTICATION METHODS _______
+  actions: { //============================
+
     async LOGIN ({commit}, identity) {
       console.log("$$$ request ...$action/LOGIN");
       let {data} = await axios.post('auth/login', identity);
