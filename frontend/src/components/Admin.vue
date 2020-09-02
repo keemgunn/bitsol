@@ -1,6 +1,11 @@
 <template>
 <div id="admin">
 
+  <transition name="appear">
+  <div v-if="admin.modal==='index'">
+    {{dbinfo}}
+  </div></transition>
+
   <transition name="appear"><DB 
     v-if="admin.modal==='db'"
   /></transition>

@@ -17,15 +17,15 @@ let defIndex= { roomArr: [], studentArr: [] };
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: { //============================
-    // test: false, 
-    test: true, 
+    test: false, 
+    // test: true, 
 
     //-------------------------
     auth: {
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'admin', // search  admin
+    mode: 'search', // search  admin
     theme: {
       applied: styles["colors"][defaultColor],
       colorKeys: Object.keys(styles.colors),
@@ -44,7 +44,7 @@ export default new Vuex.Store({
 
     //-------------------------
     admin: {
-      modal: 'db',
+      modal: 'index',
         // index  db  refg  user
       db: {
         options: DBoptions,
@@ -277,7 +277,7 @@ export default new Vuex.Store({
     },
 
     adminLoadingState(state, bool){
-      state.db.loadingState = bool;
+      state.admin.db.loadingState = bool;
       console.log('loading: ', bool);
     },
     adminStudentSelect(state, student_id){

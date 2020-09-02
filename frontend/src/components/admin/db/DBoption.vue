@@ -87,10 +87,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: "DBoption",
   components: { },
-  props: [
-    'scope',
-    'optionBox',
-  ],
+  props: ['scope','optionBox',],
   computed: {
     ...mapState(['admin']),
     ...mapGetters(['ROOM_INDEX', 'STUDENT_INDEX']),
@@ -113,6 +110,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['SEARCH_room', 'SEARCH_student']),
     optionCheck(opt) {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
     },
@@ -122,9 +120,16 @@ export default {
       }else{
         this.SEARCH_room('');
       }
+      this.admin.db.keyword = '';
       this.$emit('toggle', 'scope', s);
     },
-    ...mapMutations(['SEARCH_room', 'SEARCH_student'])
+    searchStudent(){
+      if(this.scope === 'room'){
+        this.SEARCH_room(this.admin.db.keyword);
+      }else{
+        this.SEARCH_student(this.admin.db.keyword);
+      }
+    }
   },
   created() {
 
