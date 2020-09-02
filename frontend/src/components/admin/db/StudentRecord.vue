@@ -170,7 +170,7 @@ export default {
   height: 30px;
   // background-color: whitesmoke;
   .icon{
-    fill: var(--i60);
+    fill: var(--i80);
   }.x-text {
     color: transparent;
   }.plus-text {
@@ -243,7 +243,7 @@ export default {
   font-size: 14px;
   text-align: right;
   line-height: 26px;
-  // transition: 400ms;
+  transition: 200ms;
   // background-color: palegoldenrod;
 }
 
@@ -252,7 +252,7 @@ export default {
   position: absolute; top: 3px; left: 5px;
   width: 18px;
   height: 18px;
-  // transition: 400ms;
+  transition: 200ms;
   fill: transparent;
 }.circle {
   position: absolute; top: 1px; left: 3px;
