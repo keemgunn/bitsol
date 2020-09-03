@@ -17,15 +17,15 @@ let defIndex= { roomArr: [], studentArr: [] };
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: { //============================
-    test: false, 
-    // test: true, 
+    // test: false, 
+    test: true, 
 
     //-------------------------
     auth: {
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'search', // search  admin
+    mode: 'admin', // search  admin
     theme: {
       applied: styles["colors"][defaultColor],
       colorKeys: Object.keys(styles.colors),

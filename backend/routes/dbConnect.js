@@ -3,33 +3,31 @@ const express = require('express');
 const router = express.Router();
 
 const mysql = require('../api/mysql');
-const version = require('../api/config');
-
-
+const config = require('../api/config');
 
 
 // ============== DATABASE CONFIGURATIONS
-const dbconfig_root = path.join(__dirname, '../data/db.json');
-const info = version.readSync(dbconfig_root);
 
 router.get('/info', (req, res) => {
   console.log("data request ... /db/info");
   res.json({
-    "schema": info.schema,
-    "build": info.build,
-    "commit": info.commit,
-    "date": info.date,
-    "refgTerm": info.refgTerm,
-    "deadline": info.deadline,
-    "refgLimit": info.refgLimit,
-    "studentCount": info["serial-list"].length
+    "schema": config.dbinfo.schema,
+    "build": config.dbinfo.build,
+    "commit": config.dbinfo.commit,
+    "date": config.dbinfo.date,
+    "refgTerm": config.dbinfo.refgTerm,
+    "deadline": config.dbinfo.deadline,
+    "refgLimit": config.dbinfo.refgLimit,
+    "studentCount": config['dbinfo']["serial-list"].length
   })
 })
 
+
+
 router.get('/info/commit', (req, res) => {
-  info.commit = info.commit + 1 ;
-  version.update(dbconfig_root, info);
-  res.json({ "commit": info.commit });
+  config.dbinfo.commit = config.dbinfo.commit + 1 ;
+  config.update(config.db_root, config.dbinfo);
+  res.json({ "commit": config.dbinfo.commit });
 })
 
 

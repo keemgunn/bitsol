@@ -2,8 +2,25 @@
 <div id="admin">
 
   <transition name="appear">
-  <div v-if="admin.modal==='index'">
-    {{dbinfo}}
+  <div id="index" v-if="admin.modal==='index'">
+    <div class="title">DB 정보</div>
+      <div class="content prop">현재DB:</div>
+      <div class="content data">2020sdafasdfasdfasdfasdf</div>
+      <br>
+      <div class="content prop">마지막 업데이트:</div>
+      <div class="content data">2020-07-27T12:53:49.009Z</div>
+      
+
+
+    <div class="title">냉장고 보관팩</div>
+
+
+    <div class="title">사용자 정보</div>
+
+
+    <div class="title">소프트웨어 정보</div>
+
+    
   </div></transition>
 
   <transition name="appear"><DB 
@@ -75,6 +92,40 @@ export default {
   justify-content: center;
   align-items: center;
   // background-color: deeppink;
+}
+
+#index {
+  display: block;
+  position: relative; top: 0; left: 0;
+  width: fit-content;
+  height: 700px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Nanum Square';
+  letter-spacing: 0;
+  background-color: gainsboro;
+
+  .title {
+    font-weight: 800;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: azure;
+  }
+  .content {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }.prop {
+    font-weight: 700;
+  }.data {
+    font-weight: 500;
+  }.measure {
+    font-size: 14px;
+  }
+
+
 }
 
 
