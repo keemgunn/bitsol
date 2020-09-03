@@ -73,15 +73,18 @@ router.get('/student-list', (req, res) => {
 
 // ============= SEARCH API
 router.post('/search', (req, res) => {
-  console.log("search request keyword: ", req.body.keyword, " .../db/search");
+  console.log("\n\n\nsearch request keyword: ", req.body.keyword, " .../db/search");
+  console.log("account: ", req.body.account);
   mysql.search(req.body.keyword, res);
 })
 router.post('/search/room', (req, res) => {
-  console.log("search request keyword: ", req.body.keyword, " .../db/search/admin");
+  console.log("\n\n\nsearch request keyword: ", req.body.keyword, " .../db/search/admin");
+  console.log("account: ", req.body.account);
   mysql.search_room(req.body.keyword, res);
 })
 router.post('/search/student', (req, res) => {
-  console.log("search request keyword: ", req.body.keyword, " .../db/search/admin");
+  console.log("\n\n\nsearch request keyword: ", req.body.keyword, " .../db/search/admin");
+  console.log("account: ", req.body.account);
   mysql.search_student(req.body.keyword, res);
 })
 

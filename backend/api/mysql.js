@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const config = require('./config.js');
 const Joi = require('joi');
 const randomstring = require("randomstring");
-const { response } = require('express');
 
 const hostName = config.dbinfo.connection.host || 'localhost';
 const userName = config.dbinfo.connection.user || 'root';
@@ -189,7 +188,7 @@ function search(keyword, res){
 
 function search_room(keyword, res){
   const queryID = SearchMonitor(monitor, res);
-  let joiResult = searchKeySchema.validate({keyword});
+  let joiResult = searchAdminKeySchema.validate({keyword});
   if(joiResult.error){
     console.log('joiResult.error');
     res.json({
@@ -206,7 +205,7 @@ function search_room(keyword, res){
 
 function search_student(keyword, res){
   const queryID = SearchMonitor(monitor, res);
-  let joiResult = searchKeySchema.validate({keyword});
+  let joiResult = searchAdminKeySchema.validate({keyword});
   if(joiResult.error){
     console.log('joiResult.error');
     res.json({
@@ -272,6 +271,13 @@ const searchKeySchema = Joi.object({
     .required()
     .trim(true)
 });
+const searchAdminKeySchema = Joi.object({
+  keyword: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
+    .min(1)
+    .required()
+    .trim(true)
+});
 
 
 
@@ -310,7 +316,6 @@ function Monitor(monitor, res) {
 function SearchMonitor(monitor, res) {
   const queryID = randomstring.generate(4);
   monitor.on(queryID, (arg) => {
-    console.log(arg);
     res.json({arg});
     console.log('responsed... queryID: ', queryID);
   });

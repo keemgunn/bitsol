@@ -211,7 +211,7 @@ export default new Vuex.Store({
     async SEARCH (state, keyword) {
       state.search.loadingState = 1;
       console.log('$$$ request ...$mutation/SEARCH');
-      let {data} = await axios.post('/db/search', {keyword});
+      let {data} = await axios.post('/db/search', {keyword, account: state.auth.id});
       state.searchArr = data.arg;
     },
 
@@ -224,7 +224,7 @@ export default new Vuex.Store({
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
         let calc0, calc1, raw;
-        let {data} = await axios.post('/db/search/room', {keyword});
+        let {data} = await axios.post('/db/search/room', {keyword, account: state.auth.id});
         for(var j=0; j < data.arg.length; j++){
           raw = (data["arg"][j]["room_id"]);
           calc1 = parseInt(raw/2) + raw%2 - 1;
@@ -244,7 +244,7 @@ export default new Vuex.Store({
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
-        let {data} = await axios.post('/db/search/student', {keyword});
+        let {data} = await axios.post('/db/search/student', {keyword, account: state.auth.id});
         for(var i=0; i < data.arg.length; i++){
           Arr.push(data["arg"][i]["student_id"]);
         }
