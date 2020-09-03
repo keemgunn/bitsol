@@ -38,7 +38,7 @@ export default {
       }else{
         this.TOGGLE({target:'mode', set:'search'});
         this.admin.modal = 'index';
-        this.INITIALIZE('db');
+        this.INITIALIZE('admin');
       }
     },
     ...mapMutations(['TOGGLE', 'INITIALIZE']),

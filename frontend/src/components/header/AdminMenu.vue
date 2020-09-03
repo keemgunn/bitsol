@@ -17,11 +17,9 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: "AdminMenu",
-  data() {
-    return {
-      modalNow: ''
-    }
-  },
+  data() { return {
+    modalNow: ''
+  }},
   computed: {
     ...mapState(['admin'])
   },

@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from './assets/styles.json';
 import test from './test.json';
 
-const defaultColor = "purple";
+const defaultColor = "default";
 const DBoptions = {
   showEmpty: false,
   showForeign: false
@@ -292,12 +292,20 @@ export default new Vuex.Store({
 
     //_______________________________
     INITIALIZE(state, target){
+      if(target === 'admin'){
+        state.admin.modal = 'index'
+        state.admin.db.options = DBoptions;
+        state.admin.db.keyword = '';
+        state.admin.db.selected = [];
+        state.admin.db.roomIndex = defIndex.roomArr;
+        state.admin.db.studentIndex = defIndex.studentArr;
+      }
       if(target === 'db'){
         state.admin.db.options = DBoptions;
         state.admin.db.keyword = '';
         state.admin.db.selected = [];
-        state.admin.db.roomIndex = [];
-        state.admin.db.studentIndex = [];
+        state.admin.db.roomIndex = defIndex.roomArr;
+        state.admin.db.studentIndex = defIndex.roomArr;
       }
       if(target === 'search'){
         state.searchArr = [];
