@@ -47,7 +47,6 @@
 </template>
 
 
-
 <script>
 import { mapState, mapMutations } from 'vuex';
 import SidecarRecord from './SidecarRecord'
@@ -55,36 +54,17 @@ import SidecarRecord from './SidecarRecord'
 export default {
   name: "Sidecar",
   components: { SidecarRecord },
-  props: [
-
-  ],
-  data() { return {
-
-  }},
   computed: {
     ...mapState(['admin'])
   },
   methods: {
+    ...mapMutations([]),
     toStr(type){
       return type
     },
-    ...mapMutations([])
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
-  },
+  }
 }
 </script>
-
 
 
 <style lang="scss" scoped> 
