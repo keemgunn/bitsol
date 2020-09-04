@@ -12,7 +12,6 @@
     </transition>
 
     <ScopeBtn/>
-
   </div>
 
   <div id="list-wrapper">
@@ -43,16 +42,12 @@ import ScopeBtn from '@/components/search/ScopeBtn';
 import Deadline from '@/components/search/Deadline';
 import Record from '@/components/search/Record';
 import { mapState, mapMutations } from 'vuex';
-// import axios from 'axios';
 
 export default {
   name: "Search",
   components: {
     ScopeBtn, Deadline, Record
   },
-  data() { return {
-
-  }},
   computed: {
     msg: function() {
       if(this.search.keyword === ''){
@@ -65,11 +60,6 @@ export default {
   },
   methods: {
     ...mapMutations(['searchLoadingState',]),
-  },
-  created() {
-  },
-  mounted() {
-
   },
   beforeUpdate() {
     this.searchLoadingState(1);
@@ -184,8 +174,6 @@ export default {
   -webkit-user-select: none;
   // background-color: rgb(122, 216, 153);
 }
-
-
 
 
 

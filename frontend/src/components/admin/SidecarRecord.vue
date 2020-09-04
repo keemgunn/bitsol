@@ -272,6 +272,4 @@ export default {
   background-color: var(--i98);
 }
 
-
-
 </style>
