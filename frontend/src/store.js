@@ -24,7 +24,7 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'admin', // search  admin
+    mode: 'search', // search  admin
     theme: {
       applied: colors[defaultColor],
       colorKeys: Object.keys(colors),
@@ -43,7 +43,7 @@ export default new Vuex.Store({
 
     //-------------------------
     admin: {
-      modal: 'db',
+      modal: 'index',
         // index  db  refg  user
       db: {
         options: DBoptions,

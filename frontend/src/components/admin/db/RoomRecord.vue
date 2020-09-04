@@ -1,7 +1,7 @@
 <template>
-<div id="room-record">
+<div class="admin-record">
 
-<div id="room">{{ROOM.name}}</div>
+<div id="admin-room">{{ROOM.name}}</div>
 
 <div class="AB">
   <div class="adr-text _seat">
@@ -17,7 +17,7 @@
     입주일: {{ROOM["A"]["indate"]}} / 유형: {{ROOM["A"]["term"]}} / 전화번호: {{ROOM["A"]["phone"]}}
   </div>
 
-  <div class="adr-checkbox" 
+  <div class="adr-checkbox cb-room" 
   :class="{ 'none':!ROOM['A']['student_id'],
   'selected':admin.db.selected.includes(ROOM['A']['student_id']-1)}"
   @click="selectStudent('A')">
@@ -49,7 +49,7 @@
     입주일: {{ROOM["B"]["indate"]}} / 유형: {{ROOM["B"]["term"]}} / 전화번호: {{ROOM["B"]["phone"]}}
   </div>
 
-  <div class="adr-checkbox"
+  <div class="adr-checkbox cb-room"
   :class="{ 'none':!ROOM['B']['student_id'],
   'selected':admin.db.selected.includes(ROOM['B']['student_id']-1)}"
   @click="selectStudent('B')">
@@ -90,12 +90,3 @@ export default {
   },
 }
 </script>
-
-
-
-<style lang="scss" scoped> 
-
-
-
-
-</style>

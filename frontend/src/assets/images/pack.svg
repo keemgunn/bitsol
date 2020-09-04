@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>pack</title>
-    <g id="pack" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M5,10 L19,10 L19,19.0006212 C19,19.552906 18.5522847,20.0006212 18,20.0006212 L6,20.0006212 C5.44771525,20.0006212 5,19.552906 5,19.0006212 L5,10 Z M15.671,4 L19,7.329 L19,8 L5,8 L5,5.0006212 C5,4.44833645 5.44771525,4.0006212 6,4.0006212 L15.671,4 Z" id="Combined-Shape" fill="#000000"></path>
-    </g>
-</svg>
