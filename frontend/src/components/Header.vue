@@ -6,7 +6,7 @@
 
     <User/>
 
-    <AdminBtn v-if="AUTHOR.accessLevel > 1" />
+    <AdminBtn v-if="AUTH.accessLevel > 1" />
 
     <transition name="appear"><AdminMenu 
     v-if="mode === 'admin'" />
@@ -27,7 +27,7 @@ import User from '@/components/header/User';
 import SearchBox from '@/components/header/SearchBox';
 import AdminBtn from '@/components/header/AdminBtn';
 import AdminMenu from '@/components/header/AdminMenu';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: "Header",
@@ -35,20 +35,14 @@ export default {
     User, AdminBtn, AdminMenu, SearchBox, 
   },
   computed: {
-    AUTHOR: function(){
-      if(this.test){
-        return this['$store']['state']['authTest']
-      }else{
-        return this['$store']['state']['auth']
-      }
-    },
-    ...mapState(['mode', 'auth', 'test', 'authTest'])
+    ...mapState(['mode']),
+    ...mapGetters(['AUTH'])
   },
   methods: {
     ...mapMutations(['DB_INFO'])
   },
   created() { //_____________________________
-    if(this.AUTHOR.id === null){
+    if(this.AUTH.id === null){
       this.$store.dispatch('RECOVER');
       console.log('### configuration recovered ... @Header');
       this.DB_INFO();

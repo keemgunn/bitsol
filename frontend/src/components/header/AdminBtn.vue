@@ -28,17 +28,20 @@ export default {
   data() { return { 
   }},
   computed: {
-    ...mapState(['mode']),
+    ...mapState(['mode', 'admin']),
   },
   methods: {
     changeMode(){
       if(this.mode === 'search'){
         this.TOGGLE({target:'mode', set:'admin'});
+        this.INITIALIZE('search');
       }else{
         this.TOGGLE({target:'mode', set:'search'});
+        this.admin.modal = 'index';
+        this.INITIALIZE('admin');
       }
     },
-    ...mapMutations(['TOGGLE']),
+    ...mapMutations(['TOGGLE', 'INITIALIZE']),
   }
 }
 </script>

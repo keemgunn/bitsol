@@ -9,26 +9,26 @@
   <div id="login-box-cover"></div>
 
   <transition name="login-box"><LoginBox 
-    v-if="AUTHOR.accessLevel === 0"
+    v-if="AUTH.accessLevel === 0"
     @verify="this.verify"
   /></transition>
 
   <transition name="appear"><Header 
-    v-if="AUTHOR.accessLevel > 0"
+    v-if="AUTH.accessLevel > 0"
   /></transition>
 
   <transition name="appear"><Search
-    v-if="(AUTHOR.accessLevel > 0)
+    v-if="(AUTH.accessLevel > 0)
     && (mode === 'search')"
   /></transition>
 
   <transition name="appear"><Admin 
-    v-if="(AUTHOR.accessLevel > 0)
+    v-if="(AUTH.accessLevel > 0)
     && (mode === 'admin')"
   /></transition>
 
   <div id="light" :style="lightening"
-  v-if="AUTHOR.accessLevel > 0 && mode === ('search')"
+  v-if="AUTH.accessLevel > 0 && mode === ('search')"
   ></div>
 
 <router-view></router-view>
@@ -41,7 +41,7 @@ import LoginBox from '@/components/LoginBox';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
 import Admin from '@/components/Admin'
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
@@ -55,14 +55,8 @@ export default {
     },
   }},
   computed: {
-    AUTHOR: function(){
-      if(this.test){
-        return this['$store']['state']['authTest']
-      }else{
-        return this['$store']['state']['auth']
-      }
-    },
-    ...mapState(['auth', 'mode', 'theme', 'test', 'authTest']),
+    ...mapState(['auth', 'mode', 'theme']),
+    ...mapGetters(['AUTH'])
   },
   methods: {
     //___________ AUTHENTICATION METHODS ____________
@@ -70,7 +64,7 @@ export default {
       this.$store.dispatch('VERIFY');
     },
     sessionOut(){
-      if(this.AUTHOR.accessLevel) { // 이미 인증이 되어있다면 
+      if(this.AUTH.accessLevel) { // 이미 인증이 되어있다면 
         this.$store.dispatch('DEPOSIT');
       }else {
         console.log('no-authorized-history');

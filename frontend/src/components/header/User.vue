@@ -5,7 +5,7 @@
 @mouseleave="userBoxState = 0">
 
   <div id="name">
-    user:{{AUTHOR.userName}}
+    user:{{AUTH.userName}}
   </div>
 
   <transition name="fade">
@@ -59,7 +59,7 @@
 
 <script>
 import Theme from '@/components/header/Theme'
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 
 export default {
@@ -71,14 +71,8 @@ export default {
     userBoxState: 0,
   }},
   computed: {
-    AUTHOR: function(){
-      if(this.test){
-        return this['$store']['state']['authTest']
-      }else{
-        return this['$store']['state']['auth']
-      }
-    },
-    ...mapState(['auth', 'theme', 'test', 'authTest'])
+    ...mapState(['auth', 'theme']),
+    ...mapGetters(['AUTH'])
   },
   methods: {
     logout(){ this.$store.dispatch('LOGOUT'); }

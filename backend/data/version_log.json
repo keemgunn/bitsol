@@ -1,0 +1,82 @@
+[
+  {
+    "version": "2.3.2",
+    "build": "f51069d7cfab0e1df845db17a026a9e3aa6bdff1",
+    "date": "2020.09.04"
+  },
+  {
+    "version": "2.3.1",
+    "build": "9dce51eabb3dbc63e7fc1fdca5a703e2cd9062aa",
+    "date": "2020.09.04"
+  },
+  {
+    "version": "2.3.0",
+    "build": "f7d5d11fc042874fe5371e33897ad54fb3212318",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.166",
+    "build": "6f6c23910b6886b8ccb988416d2a857b21d8fee3",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.165",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.164",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.163",
+    "build": "71b0900dc731b8add0878d02c26cd0e85979967",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.162",
+    "build": "71b0900dc731b8add0878d02c26cd0e85979967",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.161",
+    "build": "71b0900dc731b8add0878d02c26cd0e85979967",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.160",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.159",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.158",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "2.2.157",
+    "build": "71b0900dc731b8add0878d02c26cd0e859799678",
+    "date": "2020.8.4"
+  },
+  {
+    "version": "22157",
+    "build": "ccaf4e2631d96be6f49575e643ecf145c1b461fd\n",
+    "date": "function getUTCFullYear() { [native code] }.function getUTCMonth() { [native code] }.function getUTCDate() { [native code] }"
+  },
+  {
+    "version": "2.2.156",
+    "build": "950a8e045cbbd1154f509680fad813fe8d8d556f",
+    "date": "2020-09-03"
+  },
+  {
+    "version": "2.2.156",
+    "build": "950a8e045cbbd1154f509680fad813fe8d8d556f",
+    "date": "2020-09-03"
+  }
+]

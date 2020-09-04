@@ -1,25 +1,41 @@
 <template>
 <div id="admin-menu">
 
-<div class="menu" :class="{'menu-selected':(admin.modal==='index')}" @click="admin.modal = 'index'">개요</div>
+<div class="menu" :class="{'menu-selected':(admin.modal==='index')}" @click="changeModal('index')">개요</div>
 
-<div class="menu" :class="{'menu-selected':(admin.modal==='db')}" @click="admin.modal = 'db'">DB 관리</div>
+<div class="menu" :class="{'menu-selected':(admin.modal==='db')}" @click="changeModal('db')">DB 관리</div>
 
-<div class="menu" :class="{'menu-selected':(admin.modal==='user')}" @click="admin.modal = 'user'">사용자 관리</div>
+<div class="menu" :class="{'menu-selected':(admin.modal==='user')}" @click="changeModal('user')">사용자 관리</div>
 
-<div class="menu" :class="{'menu-selected':(admin.modal==='refg')}" @click="admin.modal = 'refg'">냉장고팩 관리</div>
+<div class="menu" :class="{'menu-selected':(admin.modal==='refg')}" @click="changeModal('refg')">냉장고팩 관리</div>
 
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: "AdminMenu",
+  data() { return {
+    modalNow: ''
+  }},
   computed: {
     ...mapState(['admin'])
-  }
+  },
+  methods: {
+    changeModal(to){
+      if(this.modalNow !== to){
+        this.$store.state.admin.modal = to;
+        this.INITIALIZE(this.modalNow);
+        this.modalNow = to;
+      }
+    },
+    ...mapMutations(['INITIALIZE'])
+  },
+  created() {
+    this.modalNow = this.admin.modal;
+  },
 }
 </script>
 

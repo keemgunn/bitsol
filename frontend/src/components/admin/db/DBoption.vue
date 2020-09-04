@@ -11,70 +11,18 @@
   @click="scopeChange('student')"
   >전체 학생</div>
 
-  <div class="option-box" 
-  :class="{'option-box-expand':optionBox}"
-  @mouseleave="$emit('toggle', 'optionBox', false)">
-
-    <div class="title" 
-    :class="{'title-expand':optionBox, 'title-checked':option}"
-    @click="$emit('toggle','optionBox',!optionBox)">
-      <div class="title-text">
-        표시 옵션 
-        <div id="number" v-if="option">({{option}})</div>
-      </div>
-      <svg class="title-icon" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>option</title>
-        <polygon points="7 10 12 15 17 10"></polygon>
-      </svg>
-    </div>
-
-    <transition name="appear">
-    <div class="option-wrapper"
-    v-if="optionBox">
-
-      <div class="options"
-      :class="{'options-checked':admin.db.options.showEmpty}"
-      @click="optionCheck('showEmpty')">
-        <div class="opt-checkbox"></div>
-        <div class="opt-text">공실만 표시</div>
-      </div>
-
-      <div class="options"
-      :class="{'options-checked':admin.db.options.showForeign}"
-      @click="optionCheck('showForeign')">
-        <div class="opt-checkbox"></div>
-        <div class="opt-text">외국인 학생</div>
-      </div>
-
-    </div></transition>
-
-  </div>
-
-  <div id="search-box">
-    <input
-    id = "search-field"
-    placeholder="검색"
-    type="text" 
-    @input="admin.db.keyword = $event.target.value"
-    @keyup="searchStudent()"
-    />
-    <div id="icon">
-      <svg viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>search</title>
-        <g id="search">
-          <path d="M25.4145707,8.58542931 C29.3924686,12.5633272 29.9654047,18.6567972 27.1333788,23.2441062 L34.5716035,30.6825162 L30.6825162,34.5716035 L23.2441062,27.1333788 C18.6567972,29.9654047 12.5633272,29.3924686 8.58542931,25.4145707 C3.93819024,20.7673316 3.93819024,13.2326684 8.58542931,8.58542931 C13.2326684,3.93819024 20.7673316,3.93819024 25.4145707,8.58542931 Z M12.4745166,12.4745166 C9.97516114,14.9738721 9.97516114,19.0261279 12.4745166,21.5254834 C14.9738721,24.0248389 19.0261279,24.0248389 21.5254834,21.5254834 C24.0248389,19.0261279 24.0248389,14.9738721 21.5254834,12.4745166 C19.0261279,9.97516114 14.9738721,9.97516114 12.4745166,12.4745166 Z" id="Combined-Shape" fill-rule="nonzero"></path>
-        </g>
-      </svg>
-    </div>
-    <div id="border"></div>
-
-  </div>
+  <SearchBox 
+  v-if="scope==='room'"
+  :scope="scope"
+  />
+  <SearchBox 
+  v-if="scope==='student'"
+  :scope="scope"
+  />
 
   <div id="count-box">
     {{recordCount}}
   </div>
-
-
 
 </div>
 </template>
@@ -82,22 +30,21 @@
 
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
+import SearchBox from './SearchBox'
 
 export default {
   name: "DBoption",
-  components: { },
-  props: [
-    'scope',
-    'optionBox',
-  ],
+  components: { SearchBox },
+  props: ['scope','optionBox',],
   computed: {
-    ...mapState(['admin', 'roomIndex', 'studentIndex']),
+    ...mapState(['admin']),
+    ...mapGetters(['ROOM_INDEX', 'STUDENT_INDEX']),
     recordCount: function () {
       if(this.scope === 'room') {
-        return this.roomIndex.length
+        return '호실: ' + this.ROOM_INDEX.length
       }else{
-        return this.studentIndex.length
+        return '학생: ' + this.STUDENT_INDEX.length
       }
     },
     option: function () {
@@ -112,20 +59,19 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['SEARCH_room', 'SEARCH_student']),
     optionCheck(opt) {
       this["admin"]["db"]["options"][opt] = !this["admin"]["db"]["options"][opt];
     },
-    scopeChange(scope){
-      //____ initialize
-      if(scope === 'room'){
+    scopeChange(s){
+      if(s === 'room'){
         this.SEARCH_student('');
       }else{
         this.SEARCH_room('');
       }
-      //____ modal change
-      this.$emit('toggle', 'scope', scope);
+      this.admin.db.keyword = '';
+      this.$emit('toggle', 'scope', s);
     },
-    ...mapMutations(['SEARCH_room', 'SEARCH_student'])
   },
   created() {
 
@@ -303,70 +249,6 @@ z-index: 20;
     background-color: var(--accent01);
   }
 }
-
-
-#search-box {
-  position: relative;
-  float: right;
-  margin-top: 2px;
-  width: 153px;
-  height: 30px;
-  color: var(--i45);
-  fill: var(--i45);
-  // background-color: darkseagreen;
-}
-#search-box :hover, :focus {
-  color: var(--i30);
-  ~ #border {
-    transition: 200ms;
-    background-color: var(--i30);
-  }
-  ~ #indicator {
-    transition: 200ms;
-    background-color: var(--i30);
-  }
-  ~ #icon{
-    transition: 200ms;
-    fill: var(--i30);
-  }
-}
-#search-field {
-  display: block;
-  position: absolute; bottom: 2px; right: 28px;
-  padding: 0;
-  margin-top: 6px;
-  height: calc(100%);
-  width: calc(100% - 26px);
-  border: 0; outline: 0;
-  font-family: 'Space Mono', 'Nanum Square', sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: 0;
-  text-align: right;
-  color: var(--i30);
-  background-color: transparent;
-  transition: 500ms;
-  &::placeholder {
-  color: var(--i60);
-  font-size: 15px;
-  }
-}#search-field:hover {
-  transition: 200ms;
-  color: var(--i30);
-}
-#border {
-  position: absolute; bottom: 0; left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: var(--i45);
-}
-#icon {
-  position: absolute; bottom: 3px; right: 0px;
-  width: 23px;
-  height: 23px;
-  transition: 200ms;
-}
-
 
 #count-box {
   position: absolute; left: 0px; bottom: 14px;

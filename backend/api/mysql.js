@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const config = require('./config.js');
 const Joi = require('joi');
 const randomstring = require("randomstring");
-const { response } = require('express');
 
 const hostName = config.dbinfo.connection.host || 'localhost';
 const userName = config.dbinfo.connection.user || 'root';
@@ -12,29 +11,32 @@ const connection = mysql.createConnection({
   host: hostName,
   user: userName,
   password: pw, // user password
-  multipleStatements: true
-}); newConnection();
+  multipleStatements: true }); 
+newConnection();
 
+console.log("DATABASE =================================");
 let currentSchema = versionCheck('schema');
-let currentBuild = versionCheck('build');
 let currentVersion = versionCheck('version');
+let commits = versionCheck('commit');
 let refgTerm = versionCheck('refgTerm');
 let deadline = versionCheck('deadline');
 let refgLimit = versionCheck('refgLimit');
+let refgCommit = versionCheck('refgCommit');
+let serials = config["dbinfo"]["serial-list"];
+console.log('  - serial-list:', serials.length);
 
 function versionCheck(prop){
   if(config.dbinfo.hasOwnProperty(prop)){
-    console.log('###versionCheck__', prop, ': ', config["dbinfo"][prop]);
+    console.log('  -', prop, ':', config["dbinfo"][prop]);
     return config["dbinfo"][prop]
   }else {
-    console.log("###versionCheck__: NO PROPERTY NAMED:", String(prop));
+    console.log('  -', prop, ': NO-DATA');
     return undefined
   }
 }
 
 // ################# QUERIES ####################
 use(currentSchema);
-
 let log = [];
 let affected = 0;
 let monitor = new EventEmitter();
@@ -47,13 +49,13 @@ function makeTables(year, res) {
 
   currentSchema = 'bitsolDB_20' + String(year) + '_test04';
   currentVersion = String(year) + ".0";
-  currentBuild = 0;
+  commits = 0;
   serials = [];
   config.dbinfo = {
     "schema": currentSchema,
     "version": currentVersion,
-    "build": currentBuild,
-    "date": new Date(),
+    "commit": commits,
+    "date": config.NOW('*'),
     "serial-list": serials
   }
   
@@ -189,7 +191,7 @@ function search(keyword, res){
 
 function search_room(keyword, res){
   const queryID = SearchMonitor(monitor, res);
-  let joiResult = searchKeySchema.validate({keyword});
+  let joiResult = searchAdminKeySchema.validate({keyword});
   if(joiResult.error){
     console.log('joiResult.error');
     res.json({
@@ -197,7 +199,7 @@ function search_room(keyword, res){
     });
   }else{
     let key = quote(joiResult.value.keyword);
-    let query = "SELECT  r.room_id FROM room r LEFT JOIN students s USING (student_id) WHERE ( ";
+    let query = "SELECT r.room_id FROM room r LEFT JOIN students s USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
@@ -206,7 +208,7 @@ function search_room(keyword, res){
 
 function search_student(keyword, res){
   const queryID = SearchMonitor(monitor, res);
-  let joiResult = searchKeySchema.validate({keyword});
+  let joiResult = searchAdminKeySchema.validate({keyword});
   if(joiResult.error){
     console.log('joiResult.error');
     res.json({
@@ -214,7 +216,7 @@ function search_student(keyword, res){
     });
   }else{
     let key = quote(joiResult.value.keyword);
-    let query = "SELECT  s.student_id FROM students s LEFT JOIN room r USING (student_id) WHERE ( ";
+    let query = "SELECT s.student_id FROM students s LEFT JOIN room r USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
@@ -250,17 +252,16 @@ function serialMaker(chasoo, gender, student_number) {
 function logRefresh(){
   log = [];
   affected = 0;
-  monitor = new EventEmitter();
 }
 
 function versionUp(){
-  currentBuild += 1;
-  currentVersion = currentVersion[0] + currentVersion[1] + "." + String(currentBuild);
+  commits += 1;
+  currentVersion = currentVersion[0] + currentVersion[1] + "." + String(commits);
   config.dbinfo = {
     "schema": currentSchema,
     "version": currentVersion,
-    "build": currentBuild,
-    "date": new Date(),
+    "commit": commits,
+    "date": config.NOW('*'),
     "serial-list": serials
   };
 }
@@ -272,62 +273,13 @@ const searchKeySchema = Joi.object({
     .required()
     .trim(true)
 });
-
-
-
-
-// ========================= MONITOR SETTING
-
-function Monitor(monitor, res) {
-  monitor.on('query success', (arg) => {
-    console.log('$$$ QUERY SUCCESS ... @mysql.js/monitor\n   affected: ', arg.affectedRows);
-    affected += arg.affectedRows;
-    log.push(arg);
-  });
-  monitor.on(queryID, (arg) => {
-    console.log('$$$ SELECT REQUEST ... @mysql.js/monitor');
-    res.json({
-      arg
-    });
-  });
-  monitor.on('query end', (arg) => {
-    // ----------- response methods
-    res.json({
-      "status": 200,
-      affected,
-      log
-    })
-    console.log('### FUNCTION COMPLETE ... @mysql.js/monitor\n   affected:', affected);
-    // ----------- update version config file
-    config.update(config.db_root, config.dbinfo);
-    console.log("### version updated:", config["dbinfo"]["version"]);
-    console.log('### total', serials.length, 'records in students ... @mysql.js');
-    // ----------- update log file
-    // ~~~~~~~~~
-  });
-}
-
-function SearchMonitor(monitor, res) {
-  const queryID = randomstring.generate(4);
-  monitor.on(queryID, (arg) => {
-    console.log(arg);
-    res.json({arg});
-    console.log('responsed... queryID: ', queryID);
-  });
-  return queryID
-}
-
-monitor.on('query error', (arg) => {
-  console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
-  console.log(arg);
+const searchAdminKeySchema = Joi.object({
+  keyword: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9가-힣]'))
+    .min(1)
+    .required()
+    .trim(true)
 });
-
-monitor.on('delete-listener', (name) => {
-  monitor.removeAllListeners(name);
-});
-
-
-
 
 
 
@@ -419,6 +371,57 @@ function select(query, queryID){
 
 
 
+// ========================= MONITOR SETTING
+
+function Monitor(monitor, res) {
+  monitor.on('query success', (arg) => {
+    console.log('$$$ QUERY SUCCESS ... @mysql.js/monitor\n   affected: ', arg.affectedRows);
+    affected += arg.affectedRows;
+    log.push(arg);
+  });
+  monitor.on(queryID, (arg) => {
+    console.log('$$$ SELECT REQUEST ... @mysql.js/monitor');
+    res.json({
+      arg
+    });
+  });
+  monitor.on('query end', (arg) => {
+    // ----------- response methods
+    res.json({
+      "status": 200,
+      affected,
+      log
+    })
+    console.log('### FUNCTION COMPLETE ... @mysql.js/monitor\n   affected:', affected);
+    // ----------- update version config file
+    config.update(config.db_root, config.dbinfo);
+    console.log("### version updated:", config["dbinfo"]["version"]);
+    console.log('### total', serials.length, 'records in students ... @mysql.js');
+    // ----------- update log file
+    // ~~~~~~~~~
+  });
+}
+
+function SearchMonitor(monitor, res) {
+  const queryID = randomstring.generate(4);
+  monitor.on(queryID, (arg) => {
+    res.json({arg});
+    console.log('responsed... queryID: ', queryID);
+  });
+  return queryID
+}
+
+monitor.on('query error', (arg) => {
+  console.log('$$$ QUERY ERROR ... @mysql.js/monitor');
+  console.log(arg);
+});
+
+monitor.on('delete-listener', (name) => {
+  monitor.removeAllListeners(name);
+});
+
+
+
 // ========================= CONNECTION SETTING
 
 function newConnection(){
@@ -431,7 +434,7 @@ function newConnection(){
       } else {
         console.error('$$$ CONNECTION ERROR ... @mysql.js/connection :\n' + err.stack);
       }
-    } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection\n==========================');
+    } console.log('$$$ CONNECTED: ' + connection.threadId + '  ... @mysql.js/connection\n===========================================\n===========================================\n\n');
   });
 }
 function endConnection(){

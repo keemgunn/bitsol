@@ -4,21 +4,23 @@
   <Sidecar />
 
   <div id="content">
-
     <DBoption 
       :scope="scope"
       :optionBox="optionBox"
       @toggle="toggle"
     />
 
-    <List
+    <transition name="appear"><List
+      v-if="scope==='room'"
       :scope="scope"
-    />
+    /></transition>
+    <transition name="appear"><List
+      v-if="scope==='student'"
+      :scope="scope"
+    /></transition>
 
     <div class="cover-scroll-bottom"></div>
   </div>
-
-  
 
 </div>
 </template>
@@ -29,37 +31,25 @@
 import Sidecar from './Sidecar'
 import DBoption from './db/DBoption'
 import List from './db/List'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: "DB",
   components: { Sidecar, DBoption, List },
-  props: [
-    
-  ],
   data() { return {
     scope: 'room',
     optionBox: false,
   }},
   computed: {
-    ...mapState(['admin'])
+    ...mapState(['admin']),
+    ...mapGetters(['ROOM_LIST', 'STUDENT_LIST'])
   },
   methods: {
     toggle(target, set){
       this[target] = set;
     },
-  ...mapMutations([])
   },
   created() {
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 </script>

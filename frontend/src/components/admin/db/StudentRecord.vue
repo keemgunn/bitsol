@@ -2,19 +2,17 @@
 <div id="student-record">
 
   <div class="text-name">
-    {{STUDENT_LIST["student_name"]}}
+    {{STUDENT["student_name"]}}
   </div>
 
-  <div class="text-id">{{STUDENT_LIST["student_id"]}}</div>
+  <div class="text-id">{{STUDENT["student_id"]}}</div>
 
-  <div class="text-major">{{STUDENT_LIST["faculty"]}} {{STUDENT_LIST["major"]}} ({{STUDENT_LIST["student_number"]}})</div>
+  <div class="text-major">{{STUDENT["faculty"]}} {{STUDENT["major"]}} ({{STUDENT["student_number"]}})</div>
 
-  <div class="text-room" v-if="'STUDENT_LIST'['room_name']">
-
+  <div class="text-room" v-if="STUDENT['room_name']">
     <div class="num">
-      {{STUDENT_LIST["room_name"]}}
+      {{STUDENT["room_name"]}}
     </div>
-
     <div class="room-manage-btn x-text">
       <div class="circle x"></div>
       <div class="icon">
@@ -24,15 +22,12 @@
       </div>
       퇴실처리
     </div>
-
   </div>
 
-  <div class="text-room" v-if="!'STUDENT_LIST'['room_name']">
-
+  <div class="text-room" v-if="!STUDENT['room_name']">
     <div class="han">
       퇴실
     </div>
-
     <div class="room-manage-btn plus-text">
       <div class="circle plus"></div>
       <div class="icon">
@@ -42,22 +37,27 @@
       </div>
       호실배정
     </div>
-
   </div>
 
-  <div class="text-info">입사일: {{STUDENT_LIST["indate"]}}</div>
+  <div class="text-info">입사일: {{STUDENT["indate"]}}</div>
 
-  <div class="text-info">입사유형: {{STUDENT_LIST["term"]}}</div>
+  <div class="text-info">입사유형: {{STUDENT["term"]}}</div>
 
   <br>
 
-  <div class="text-info">전화번호: {{STUDENT_LIST["phone"]}}</div>
+  <div class="text-info">전화번호: {{STUDENT["phone"]}}</div>
 
   <br>
 
   <div class="text-info">환불계좌: 이름 은행 000000000000</div>
 
-  <div class="checkbox">
+  <div class="checkbox"
+  :class="{
+    'none':!STUDENT['student_id'],
+    'selected':admin.db.selected.includes(STUDENT['student_id']-1)
+  }"
+  @click="selectStudent()"
+  >
     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>선택</title>
       <polygon points="8 15.42 3 10.42 4.41 9.01 8 12.59 15.59 5 17 6.42"></polygon>
@@ -75,35 +75,15 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   name: "RoomRecord",
   components: { },
-  props: [
-    'index'
-  ],
-  data() { return {
-
-  }},
+  props: ['index', 'STUDENT'],
   computed: {
-    STUDENT_LIST: function () {
-      if(this.test){
-        return this["$store"]["state"]["studentTest"][this.index]
-      }else{
-        return this["$store"]["state"]["studentList"][this.index]
-      }
-    },
-    ...mapState(['test', 'studentList', 'studentTest'])
+    ...mapState(['admin', 'studentList', 'test', 'studentTest'])
   },
   methods: {
-    ...mapMutations(['SEARCH_student'])
-  },
-  created() {
-  },
-  mounted() {
-
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
+    ...mapMutations(['adminStudentSelect']),
+    selectStudent(){
+      this.adminStudentSelect( this['STUDENT']['student_id'] - 1 );
+    },
   },
 }
 </script>
@@ -118,12 +98,16 @@ export default {
   color: var(--i45);
   background-color: var(--i94);
   border: solid 2px var(--i80);
-  transition: 600ms;
+  // transition: 600ms;
    .checkbox{
     background-color: var(--i80);
   }.checkbox:hover{
-    fill: var(--i100);
+    fill: var(--accent00);
     background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.none {
+    display: none;
   }.delete-btn{
     fill: var(--i70);
   }.delete-btn:hover{
@@ -131,7 +115,7 @@ export default {
   }
   // background-color: rgba(0, 255, 255, 0.445);
 }#student-record:hover {
-  transition: 100ms;
+  // transition: 100ms;
   color: var(--i30);
   background-color: var(--i98);
   border: solid 2px var(--i45);
@@ -139,10 +123,25 @@ export default {
     background-color: var(--i70);
   }.checkbox:hover{
     background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.selected:hover {
+  background-color: var(--accent02);
   }.delete-btn{
     fill: var(--i60);
   }.delete-btn:hover{
     fill: var(--i20);
+  }.none {
+    display: none;
+  }
+  .x-text {
+    color: var(--i70);
+  }.plus-text {
+    color: var(--i70);
+  }.x-text:hover{
+    color: var(--alert01);
+  }.plus-text:hover{
+    color: var(--accent01);
   }
 }
 
@@ -170,14 +169,16 @@ export default {
   width: fit-content;
   height: 30px;
   // background-color: whitesmoke;
-  .x-text {
-  color: transparent;
+  .icon{
+    fill: var(--i80);
+  }.x-text {
+    color: transparent;
   }.plus-text {
-  color: transparent;
+    color: transparent;
   }
 }.text-room:hover{
   .room-manage-btn{
-    transition: 200ms;
+    // transition: 200ms;
     .icon{
       fill: var(--i30);
     }.x{
@@ -192,15 +193,15 @@ export default {
   }
   .room-manage-btn:hover{
     cursor: pointer;
-    transition: 200ms;
+    // transition: 200ms;
     .icon{
-      transition: 150ms;
+      // transition: 150ms;
       fill: var(--accent00);
     }.x{
-      transition: 150ms;
+      // transition: 150ms;
       background-color: var(--alert01);
     }.plus{
-      transition: 150ms;
+      // transition: 150ms;
       background-color: var(--accent01);
     }
   }.x-text:hover{
@@ -234,7 +235,7 @@ export default {
 
 .room-manage-btn {
   float: left;
-  position: relative; top: 3px; left: 7px;
+  position: relative; top: 3px; left: 3px;
   width: 80px;
   height: 26px;
   font-family: 'Nanum Square', sans-serif;
@@ -242,7 +243,7 @@ export default {
   font-size: 14px;
   text-align: right;
   line-height: 26px;
-  transition: 400ms;
+  transition: 200ms;
   // background-color: palegoldenrod;
 }
 
@@ -251,14 +252,14 @@ export default {
   position: absolute; top: 3px; left: 5px;
   width: 18px;
   height: 18px;
-  transition: 400ms;
+  transition: 200ms;
   fill: transparent;
 }.circle {
   position: absolute; top: 1px; left: 3px;
   border-radius: 14px;
   width: 22px;
   height: 22px;
-  transition: 400ms;
+  // transition: 400ms;
   background-color: transparent;
 }
 
@@ -288,9 +289,9 @@ export default {
   width: 20px;
   height: 20px;
   fill: var(--i94);
-  transition: 300ms;
+  // transition: 300ms;
 }.checkbox:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
 
@@ -298,10 +299,10 @@ export default {
   position: absolute; top: 8px; right: 8px;
   width: 24px;
   height: 24px;
-  transition: 300ms;
+  // transition: 300ms;
   // background-color: rgb(80, 214, 255);
 }.delete-btn:hover {
-  transition: 150ms;
+  // transition: 150ms;
   cursor: pointer;
 }
 
