@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from './assets/styles.json';
 import test from './test.json';
 
-const defaultColor = "default";
+const defaultColor = "default";``
 const DBoptions = {
   showEmpty: false,
   showForeign: false
