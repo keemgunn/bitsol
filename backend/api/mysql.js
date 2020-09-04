@@ -14,6 +14,7 @@ const connection = mysql.createConnection({
   multipleStatements: true }); 
 newConnection();
 
+console.log("DATABASE =================================");
 let currentSchema = versionCheck('schema');
 let currentVersion = versionCheck('version');
 let commits = versionCheck('commit');
@@ -22,14 +23,14 @@ let deadline = versionCheck('deadline');
 let refgLimit = versionCheck('refgLimit');
 let refgCommit = versionCheck('refgCommit');
 let serials = config["dbinfo"]["serial-list"];
-console.log('--- dbCheck__ serial-list: ', serials.length);
+console.log('  - serial-list:', serials.length);
 
 function versionCheck(prop){
   if(config.dbinfo.hasOwnProperty(prop)){
-    console.log('--- dbCheck__', prop, ': ', config["dbinfo"][prop]);
+    console.log('  -', prop, ':', config["dbinfo"][prop]);
     return config["dbinfo"][prop]
   }else {
-    console.log("--- dbCheck__: NO PROPERTY NAMED:", String(prop));
+    console.log('  -', prop, ': NO-DATA');
     return undefined
   }
 }
