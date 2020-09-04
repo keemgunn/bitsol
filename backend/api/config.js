@@ -26,7 +26,6 @@ let access_log = readSync(access_log_root);
 function NOW(format) {
   let t = new Date();
   str = function(input) {
-    console.log(input);
     if(input < 10){
       return "0" + (input).toString()
     }else{
@@ -34,13 +33,13 @@ function NOW(format) {
     }
   }
   if(format === '*'){
-    return t.getFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate()) + '-' + str(t.getHours()) + ':' + str(t.getMinutes()) + ':' + str(t.getSeconds());
+    return t.getFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate()) + '-' + str(t.getHours()) + ':' + str(t.getMinutes()) + ':' + str(t.getSeconds())
   }else if(format === 'YMD'){
-    return t.getUTCFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate());
+    return t.getUTCFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate())
   }else if(format === 'unix'){
-    return t.getTime();
+    return t.getTime()
   }else if(format == 'raw'){
-    return t;
+    return t
   }
 }
 
@@ -85,7 +84,6 @@ function update(file, source){
 
 require('child_process').exec('git rev-parse HEAD', function(err, stdout) {
   stdout = stdout.slice(0,stdout.length-1);
-  console.log(stdout);
   if(version.build !== stdout){
     let version_log = readSync(version_log_root);
     let oldVer = {

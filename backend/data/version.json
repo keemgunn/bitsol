@@ -1,8 +1,8 @@
 {
-  "version": "2.3.0",
-  "build": "f7d5d11fc042874fe5371e33897ad54fb3212318",
-  "date": "2020.8.4",
-  "server-on": "2020.8.4-15:28:50",
+  "version": "2.3.1",
+  "build": "9dce51eabb3dbc63e7fc1fdca5a703e2cd9062aa",
+  "date": "2020.09.04",
+  "server-on": "2020.09.04-15:58:25",
   "developer": "김건",
   "contact": "gunnkeem@icloud.com"
 }
