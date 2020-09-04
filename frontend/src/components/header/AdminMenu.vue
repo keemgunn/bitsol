@@ -3,7 +3,7 @@
 
 <div class="menu" :class="{'menu-selected':(admin.modal==='index')}" @click="changeModal('index')">개요</div>
 
-<div class="menu" :class="{'menu-selected':(admin.modal==='db')}" @click="changeModal('db')">DB 관리</div>
+<div class="menu" :class="{'menu-selected':(admin.modal==='db')}" @click="changeModal('db')">학생 관리</div>
 
 <div class="menu" :class="{'menu-selected':(admin.modal==='user')}" @click="changeModal('user')">사용자 관리</div>
 

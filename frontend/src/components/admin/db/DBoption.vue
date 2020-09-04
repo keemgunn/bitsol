@@ -9,21 +9,26 @@
   <div class="scope"
   :class="{'scope-selected':scope === 'student'}"
   @click="scopeChange('student')"
-  >전체 학생</div>
+  >학생 목록</div>
 
-  <SearchBox 
-  v-if="scope==='room'"
-  :scope="scope"
-  />
-  <SearchBox 
-  v-if="scope==='student'"
-  :scope="scope"
-  />
+  <div class="scope"
+  :class="{'scope-selected':scope === 'worksheet'}"
+  @click="scopeChange('worksheet')"
+  >DB 관리</div>
 
-  <div id="count-box">
+  <transition name="appear">
+  <div v-if="scope !== 'worksheet'">
+  <SearchBox v-if="scope==='room'"
+  :scope="scope"/>
+  <SearchBox v-if="scope==='student'"
+  :scope="scope"/>
+  </div></transition>
+
+  <transition name="appear">
+  <div v-if="scope !== 'worksheet'" id="count-box">
     {{recordCount}}
-  </div>
-
+  </div></transition>
+  
 </div>
 </template>
 
@@ -66,24 +71,15 @@ export default {
     scopeChange(s){
       if(s === 'room'){
         this.SEARCH_student('');
+      }else if(s === 'student'){
+        this.SEARCH_room('');
       }else{
+        this.SEARCH_student('');
         this.SEARCH_room('');
       }
       this.admin.db.keyword = '';
       this.$emit('toggle', 'scope', s);
     },
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
   },
 }
 </script>

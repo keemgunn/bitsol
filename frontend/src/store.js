@@ -24,7 +24,7 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'search', // search  admin
+    mode: 'admin', // search  admin
     theme: {
       applied: colors[defaultColor],
       colorKeys: Object.keys(colors),
