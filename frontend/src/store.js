@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
-import styles from './assets/styles.json';
+import colors from './assets/styles/colors.json';
 import test from './test.json';
 
 const defaultColor = "default";``
@@ -19,17 +19,16 @@ export default new Vuex.Store({
   state: { //============================
     test: false, 
     // test: true, 
-
     //-------------------------
     auth: {
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
-    mode: 'admin', // search  admin
+    mode: 'search', // search  admin
     theme: {
-      applied: styles["colors"][defaultColor],
-      colorKeys: Object.keys(styles.colors),
-      colors: styles.colors
+      applied: colors[defaultColor],
+      colorKeys: Object.keys(colors),
+      colors: colors
     },
     
     //-------------------------
@@ -44,7 +43,7 @@ export default new Vuex.Store({
 
     //-------------------------
     admin: {
-      modal: 'db',
+      modal: 'index',
         // index  db  refg  user
       db: {
         options: DBoptions,
@@ -112,7 +111,7 @@ export default new Vuex.Store({
       localStorage.id = data.id;
       state.auth.userName = data.config.userName;
       localStorage.userName = data.config.userName;
-      state.theme.applied = styles["colors"][data.config.colorConfig];
+      state.theme.applied = colors[data.config.colorConfig];
       localStorage.colorConfig = data.config.colorConfig;
       console.log('$$$ state loaded ...$mutation/LOGIN');
 
@@ -131,7 +130,7 @@ export default new Vuex.Store({
       console.log('$$$ request ...$mutation/RECOVER');
       state.auth.id = localStorage.id;
       state.auth.userName = localStorage.userName;
-      state.theme.applied = styles["colors"][localStorage.colorConfig];
+      state.theme.applied = colors[localStorage.colorConfig];
     },
 
     LOGOUT (state) {
@@ -139,7 +138,7 @@ export default new Vuex.Store({
       state.auth.accessLevel = 0;
       state.auth.id = null;
       state.auth.userName = null;
-      state.theme.applied = styles["colors"][defaultColor];
+      state.theme.applied = colors[defaultColor];
       delete localStorage.id ;
       delete localStorage.userName ;
       localStorage.colorConfig = defaultColor;
@@ -258,7 +257,7 @@ export default new Vuex.Store({
     CHANGE_THEME (state, {color}) {
       console.log('$$$ request ...$mutation/CHANGE_THEME');
       console.log(color);
-      state.theme.applied = styles["colors"][color];
+      state.theme.applied = colors[color];
       localStorage.colorConfig = color;
       axios.post('/auth/theme/change', {id: localStorage.id, color});
       console.log('$$$ colorCofig updated ...$mutation/CHANGE_THEME');
