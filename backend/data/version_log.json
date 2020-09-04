@@ -1,5 +1,10 @@
 [
   {
+    "version": "2.3.3",
+    "build": "550806445cd2cbe41b4aadb9c9ca00b7cd06a605",
+    "date": "2020.09.04"
+  },
+  {
     "version": "2.3.2",
     "build": "f51069d7cfab0e1df845db17a026a9e3aa6bdff1",
     "date": "2020.09.04"

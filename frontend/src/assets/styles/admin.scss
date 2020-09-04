@@ -1,0 +1,91 @@
+
+#room-record {
+  position: relative; top: 0; left: 0;
+  width: calc(100% - 2px);
+  height: fit-content;
+  font-family: 'Core Gothic D';
+  font-weight: 500;
+  color: var(--i30);
+  border: solid 1px var(--i70);
+  background-color: var(--i94);
+  .division{
+    position: absolute; top: 50%; right: 0;
+    width: calc(100% - 104px);
+    height: 1px;
+    background-color: var(--i80);
+  }
+}#room-record:hover {
+  background-color: var(--i98);
+  border: solid 1px var(--i45);
+  color: var(--i0);
+  .division{
+    background-color: var(--i45);
+  }
+}
+
+#room {
+  position: absolute; top: 0; left: 0;
+  width: fit-content;
+  height: 100%;
+  padding-left: 7px;
+  padding-right: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.79px;
+  line-height: 27px;
+}
+
+.AB {
+  position: relative; top: 0; left: 63px;
+  width: calc(100% - 64px);
+  height: 52px;
+  padding-top: 2px;
+  padding-left: 1px;
+  background-color: var(--i94);
+   .adr-checkbox{
+    position: absolute; top: 7px; right: 31px;
+    width: 18px; height: 18px;
+    fill: var(--accent00);
+    background-color: var(--i80);
+  }.adr-delete{
+    position: absolute; top: 5px; right: 5px;
+    width: 21px; height: 21px;
+    fill: var(--i70);
+  }.selected {
+  background-color: var(--accent01);
+  }
+}.AB:hover {
+  background-color: var(--i98);
+   .adr-checkbox{
+    background-color: var(--i70);
+  }.adr-checkbox:hover{
+    cursor: pointer;
+    background-color: var(--accent01);
+  }.selected {
+  background-color: var(--accent01);
+  }.selected:hover {
+  background-color: var(--accent02);
+  }.adr-delete{
+    fill: var(--i60);
+  }.adr-delete:hover{
+    cursor: pointer;
+    fill: var(--i20);
+  }
+}
+
+.adr-text {
+  display: inline-block;
+  position: relative;
+  margin-left: 3px;
+  font-size: 16px;
+}._seat {
+  font-family: 'Barlow', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.79px;
+  line-height: 27px;
+  letter-spacing: 0.79px;
+}._info {
+  left: 16px;
+  font-size: 14px;
+}
