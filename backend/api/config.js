@@ -46,7 +46,6 @@ function read(file){
   fs.readFile(file, (err, data) => {
     if (err) throw err;
     parsed = JSON.parse(data);
-    console.log("--- read data ... @config.js/read \n", parsed);
   });
   return parsed
 }
@@ -70,7 +69,7 @@ function update(file, source){
   let target = readSync(file);
   Object.assign(target, source);
   writeSync(target, file);
-  console.log('--- Data updated: \n', file, ' ... @config.js/update');
+  console.log('   ... Data updated');
 }
 
 
@@ -78,6 +77,8 @@ function update(file, source){
 // =========================== VERSION CONTROL
 
 require('child_process').exec('git rev-parse HEAD', function(err, stdout) {
+  stdout = stdout.slice(0,stdout.length-1);
+  console.log(stdout);
   if(version.build !== stdout){
     let version_log = readSync(version_log_root);
     let oldVer = {
@@ -90,7 +91,7 @@ require('child_process').exec('git rev-parse HEAD', function(err, stdout) {
 
     let vers = version.version.split('.');
     let commit = parseInt(vers[2]) + 1;
-    version.version = vers[0] + vers[1] + commit;
+    version.version = vers[0] + '.' + vers[1] + '.' + commit;
     version.build = stdout;
     version.date = NOW('YMD');
     version['server-on'] = NOW('*');
