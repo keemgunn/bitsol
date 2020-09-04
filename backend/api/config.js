@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const { func } = require('joi');
 
 
 // =========================== CONFIGS
@@ -24,17 +25,23 @@ let access_log = readSync(access_log_root);
 
 function NOW(format) {
   let t = new Date();
-  let result;
-  if(format === '*'){
-    result = t.getFullYear() + '.' + t.getMonth() + '.' + t.getDate() + '-' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
-  }else if(format === 'YMD'){
-    result = t.getUTCFullYear() + '.' + t.getUTCMonth() + '.' + t.getUTCDate();
-  }else if(format === 'unix'){
-    result = t.getTime();
-  }else if(format == 'raw'){
-    result = t;
+  str = function(input) {
+    console.log(input);
+    if(input < 10){
+      return "0" + (input).toString()
+    }else{
+      return (input).toString()
+    }
   }
-  return result
+  if(format === '*'){
+    return t.getFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate()) + '-' + str(t.getHours()) + ':' + str(t.getMinutes()) + ':' + str(t.getSeconds());
+  }else if(format === 'YMD'){
+    return t.getUTCFullYear() + '.' + str(t.getMonth()+1) + '.' + str(t.getDate());
+  }else if(format === 'unix'){
+    return t.getTime();
+  }else if(format == 'raw'){
+    return t;
+  }
 }
 
 
