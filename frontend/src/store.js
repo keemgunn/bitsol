@@ -17,8 +17,8 @@ let defIndex= { roomArr: [], studentArr: [] };
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: { //============================
-    // test: false, 
-    test: true, 
+    test: false, 
+    // test: true, 
 
     //-------------------------
     auth: {
@@ -44,7 +44,7 @@ export default new Vuex.Store({
 
     //-------------------------
     admin: {
-      modal: 'index',
+      modal: 'db',
         // index  db  refg  user
       db: {
         options: DBoptions,
@@ -215,16 +215,16 @@ export default new Vuex.Store({
       state.searchArr = data.arg;
     },
 
-    async SEARCH_room (state, keyword) {
+    async SEARCH_room (state) {
       state.admin.loadingState = 1;
-      if(keyword === ''){
+      if(state.admin.db.keyword === ''){
         console.log('$$$ ALL ROOM LIST ...$mutation/SEARCH_room');
         state.admin.db.roomIndex = defIndex.roomArr;
       }else{
         console.log('$$$ request ...$mutation/SEARCH_room');
         let Arr = [];
         let calc0, calc1, raw;
-        let {data} = await axios.post('/db/search/room', {keyword, account: state.auth.id});
+        let {data} = await axios.post('/db/search/room', {keyword:state.admin.db.keyword, account: state.auth.id});
         for(var j=0; j < data.arg.length; j++){
           raw = (data["arg"][j]["room_id"]);
           calc1 = parseInt(raw/2) + raw%2 - 1;
@@ -236,17 +236,17 @@ export default new Vuex.Store({
       }
     },
     
-    async SEARCH_student (state, keyword) {
+    async SEARCH_student (state) {
       state.admin.loadingState = 1;
-      if(keyword === ''){
+      if(state.admin.db.keyword === ''){
         console.log('$$$ ALL STUDENT LIST ...$mutation/SEARCH_student');
         state.admin.db.studentIndex = defIndex.studentArr;
       }else{
-        console.log('$$$ request ...$mutation/SEARCH_room');
+        console.log('$$$ request ...$mutation/SEARCH_student');
         let Arr = [];
-        let {data} = await axios.post('/db/search/student', {keyword, account: state.auth.id});
+        let {data} = await axios.post('/db/search/student', {keyword:state.admin.db.keyword, account: state.auth.id});
         for(var i=0; i < data.arg.length; i++){
-          Arr.push(data["arg"][i]["student_id"]);
+          Arr.push(data["arg"][i]["student_id"]-1);
         }
         state.admin.db.studentIndex = Arr;
       }

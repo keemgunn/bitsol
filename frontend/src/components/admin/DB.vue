@@ -14,7 +14,6 @@
       v-if="scope==='room'"
       :scope="scope"
     /></transition>
-
     <transition name="appear"><List
       v-if="scope==='student'"
       :scope="scope"

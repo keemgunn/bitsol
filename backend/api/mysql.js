@@ -199,7 +199,7 @@ function search_room(keyword, res){
     });
   }else{
     let key = quote(joiResult.value.keyword);
-    let query = "SELECT  r.room_id FROM room r LEFT JOIN students s USING (student_id) WHERE ( ";
+    let query = "SELECT r.room_id FROM room r LEFT JOIN students s USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
@@ -216,7 +216,7 @@ function search_student(keyword, res){
     });
   }else{
     let key = quote(joiResult.value.keyword);
-    let query = "SELECT  s.student_id FROM students s LEFT JOIN room r USING (student_id) WHERE ( ";
+    let query = "SELECT s.student_id FROM students s LEFT JOIN room r USING (student_id) WHERE ( ";
     query = query.concat("r.room_name REGEXP ", key, " || ");
     query = query.concat("s.student_name REGEXP ", key, ");");
     select(query, queryID);
