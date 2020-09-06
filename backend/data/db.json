@@ -1,8 +1,8 @@
 {
   "schema": "bitsolDB_2019_test04",
   
-  "version": "2.2.156",
-  "commit": 0,
+  "version": "19.1",
+  "commit": 1,
   "date": "2020-07-27T12:53:49.009Z",
   
   "refgTerm": "19_1",
@@ -12,6 +12,8 @@
   "refgCommit": 21,
   "refgLimit": 2,
   
+  "roomCount": 982,
+  "ocupation": 941,
   "serial-list": [
     "200102M711150374",
     "200103MM006",

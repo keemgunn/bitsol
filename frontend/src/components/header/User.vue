@@ -59,7 +59,7 @@
 
 <script>
 import Theme from '@/components/header/Theme'
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 
 export default {
@@ -75,7 +75,12 @@ export default {
     ...mapGetters(['AUTH'])
   },
   methods: {
-    logout(){ this.$store.dispatch('LOGOUT'); }
+    ...mapMutations(['INITIALIZE']),
+    logout(){ 
+      this.$store.dispatch('LOGOUT'); 
+      this.INITIALIZE('search');
+      this.INITIALIZE('admin');
+    }
   },
 }
 </script>

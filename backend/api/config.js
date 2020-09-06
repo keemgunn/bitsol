@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const { func } = require('joi');
 
 
 // =========================== CONFIGS
@@ -75,7 +74,7 @@ function update(file, source){
   let target = readSync(file);
   Object.assign(target, source);
   writeSync(target, file);
-  console.log('   ... Data updated');
+  console.log('        -- updated -- @config.js');
 }
 
 

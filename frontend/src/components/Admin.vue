@@ -4,23 +4,65 @@
   <transition name="appear">
   <div id="index" v-if="admin.modal==='index'">
     <div class="title">DB 정보</div>
-      <div class="content prop">현재DB:</div>
-      <div class="content data">2020sdafasdfasdfasdfasdf</div>
-      <br>
-      <div class="content prop">마지막 업데이트:</div>
-      <div class="content data">2020-07-27T12:53:49.009Z</div>
-      
-
-
+      <div class="content">
+        <div class="prop">현재DB:</div>
+        <div class="data">2020sdafasdfasdfasdfasdf</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
     <div class="title">냉장고 보관팩</div>
-
-
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
     <div class="title">사용자 정보</div>
-
-
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
     <div class="title">소프트웨어 정보</div>
-
-    
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
+      <div class="content">
+        <div class="prop">마지막 업데이트:</div>
+        <div class="data">2020-07-27T12:53:49.009Z</div>
+      </div>
   </div></transition>
 
   <transition name="appear"><DB 
@@ -53,7 +95,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: "Admin",
-  components: { DB, },
+  components: { DB },
   props: [
     "adminMenu"
   ],
@@ -91,14 +133,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  // background-color: deeppink;
+  background-color: deeppink;
 }
 
 #index {
   display: block;
-  position: relative; top: 0; left: 0;
-  width: fit-content;
-  height: 700px;
+  margin-top: 30px;
+  width: 100%;
+  height: fit-content;
   justify-content: center;
   align-items: center;
   font-family: 'Nanum Square';
@@ -114,14 +156,18 @@ export default {
     background-color: azure;
   }
   .content {
-    display: inline-block;
     margin-bottom: 5px;
     font-size: 16px;
+    text-align: center;
   }.prop {
+    display: inline-block;
     font-weight: 700;
   }.data {
+    display: inline-block;
     font-weight: 500;
+    margin-left: 4px;
   }.measure {
+    display: inline-block;
     font-size: 14px;
   }
 
