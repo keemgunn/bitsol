@@ -10,19 +10,18 @@ const config = require('../api/config');
 
 router.get('/info', (req, res) => {
   console.log("data request ... /db/info");
-  res.json({
-    "schema": config.dbinfo.schema,
-    "build": config.dbinfo.build,
-    "commit": config.dbinfo.commit,
-    "date": config.dbinfo.date,
-    "refgTerm": config.dbinfo.refgTerm,
-    "deadline": config.dbinfo.deadline,
-    "refgLimit": config.dbinfo.refgLimit,
-    "studentCount": config['dbinfo']["serial-list"].length
-  })
+  res.json(config.dbinfo);
 })
 
+router.get('/version-info', (req, res) => {
+  console.log("data request ... /db/version-info");
+  res.json(config.version);
+})
 
+router.get('/user-info', (req, res) => {
+  console.log("data request ... /db/user-info");
+  res.json(config.user);
+})
 
 router.get('/info/commit', (req, res) => {
   config.dbinfo.commit = config.dbinfo.commit + 1 ;

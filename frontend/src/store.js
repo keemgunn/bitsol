@@ -24,6 +24,8 @@ export default new Vuex.Store({
       id:null, accessLevel:0, userName:null,
     },
     dbinfo: {},
+    versioninfo: {},
+    userinfo: {},
     mode: 'admin', // search  admin
     theme: {
       applied: colors[defaultColor],
@@ -148,10 +150,35 @@ export default new Vuex.Store({
     //______________ DB METHODS
     async DB_INFO (state) {
       console.log('$$$ request ...$mutation/DB_INFO');
-      let {data} = await axios.get('/db/info');
-      state.dbinfo = data;
-      console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
-      console.log(data);
+      if(state.test){
+        state.dbinfo = test.dbinfo;
+      }else{
+        let {data} = await axios.get('/db/info');
+        state.dbinfo = data;
+        console.log('$$$ dbinfo loaded ...$mutation/DB_INFO');
+      }
+    },
+
+    async VERSION_INFO (state) {
+      console.log('$$$ request ...$mutation/VERSION_INFO');
+      if(state.test){
+        state.versioninfo = test.versioninfo;
+      }else{
+        let {data} = await axios.get('/db/version-info');
+        state.versioninfo = data;
+        console.log('$$$ versioninfo loaded ...$mutation/VERSION_INFO');
+      }
+    },
+
+    async USER_INFO (state) {
+      console.log('$$$ request ...$mutation/USER_INFO');
+      if(state.test){
+        state.userinfo = test.userinfo;
+      }else{
+        let {data} = await axios.get('/db/user-info');
+        state.userinfo = data;
+        console.log('$$$ userinfo loaded ...$mutation/USER_INFO');
+      }
     },
 
     async DB_COMMIT (state) {
