@@ -266,30 +266,6 @@ function loadRoomList(res){
   select(query, queryID);
 }
 
-function getRoomOccupation(){
-  const queryID = randomstring.generate(4);
-  monitor.on(queryID, () => {
-    config.update(config.db_root, config.dbinfo);
-    console.log('-- room occupation info updated --');
-  });
-  connection.query("SELECT r.room_id FROM room r LEFT JOIN students s USING (student_id);", (error, results, fields) => {
-    if(error){
-      monitor.emit('query error', error);
-    }
-    roomCount = results.length
-    config.dbinfo.roomCount = results.length
-  });
-  connection.query("SELECT r.room_id FROM room r JOIN students s USING (student_id);", (error, results, fields) => {
-    if(error){
-      monitor.emit('query error', error);
-    }
-    occupation =  results.length
-    config.dbinfo.occupation =  results.length
-    monitor.emit(queryID);
-    monitor.emit('delete-listener', queryID);
-  })
-}
-
 
 // ######## QUERY METHODS #########
 
