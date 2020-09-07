@@ -76,7 +76,6 @@
   fill: var(--alert02);
 }
 
-
 .adr-checkbox{
   position: absolute; top: 5px;
   width: 18px; height: 18px;
@@ -96,6 +95,20 @@
 }
 .cb-student{
   right: 6px;
+}
+
+.adr-adj{
+  position: absolute; top: 6px;
+  width: 18px; height: 18px;
+  fill: var(--i70);
+}.adr-adj:hover{
+  cursor: pointer;
+  fill: var(--accent01);
+}.adj-room{
+  right: 57px;
+}.adj-student{
+  top: 5px;
+  right: 30px;
 }
 
 

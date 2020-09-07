@@ -17,6 +17,13 @@
     입주일: {{ROOM["A"]["indate"]}} / 유형: {{ROOM["A"]["term"]}} / 전화번호: {{ROOM["A"]["phone"]}}
   </div>
 
+  <div class="adr-adj adj-room" @click="popAdj('A')">
+    <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>정보 수정</title>
+      <path d="M3,17.25 L3,21 L6.75,21 L17.81,9.94 L14.06,6.19 L3,17.25 Z M20.71,7.04 C21.1,6.65 21.1,6.02 20.71,5.63 L18.37,3.29 C17.98,2.9 17.35,2.9 16.96,3.29 L15.13,5.12 L18.88,8.87 L20.71,7.04 Z"></path>
+    </svg>
+  </div>
+
   <div class="adr-checkbox cb-room" 
   :class="{ 'none':!ROOM['A']['student_id'],
   'selected':admin.db.selected.includes(ROOM['A']['student_id']-1)}"
@@ -49,6 +56,13 @@
     입주일: {{ROOM["B"]["indate"]}} / 유형: {{ROOM["B"]["term"]}} / 전화번호: {{ROOM["B"]["phone"]}}
   </div>
 
+  <div class="adr-adj adj-room" @click="popAdj('B')">
+    <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>정보 수정</title>
+      <path d="M3,17.25 L3,21 L6.75,21 L17.81,9.94 L14.06,6.19 L3,17.25 Z M20.71,7.04 C21.1,6.65 21.1,6.02 20.71,5.63 L18.37,3.29 C17.98,2.9 17.35,2.9 16.96,3.29 L15.13,5.12 L18.88,8.87 L20.71,7.04 Z"></path>
+    </svg>
+  </div>
+
   <div class="adr-checkbox cb-room"
   :class="{ 'none':!ROOM['B']['student_id'],
   'selected':admin.db.selected.includes(ROOM['B']['student_id']-1)}"
@@ -67,6 +81,14 @@
 </div>
 
 <div class="division"></div>
+
+<transition name="appear"><Adj 
+  :index="adjTargetid"
+  @close="closeAdj"
+  v-if="adjModal"/>
+</transition>
+
+
 </div>
 </template>
 
@@ -74,10 +96,15 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import Adj from './Adj'
 
 export default {
   name: "RoomRecord",
-  components: { },
+  components: { Adj },
+  data() { return {
+    adjModal: false,  //false
+    adjTargetid: null  //null
+  }},
   props: ['index', 'ROOM'],
   computed: {
     ...mapState(['admin']),
@@ -87,6 +114,14 @@ export default {
     selectStudent(seat){
       this.adminStudentSelect( this['ROOM'][seat]['student_id'] - 1 );
     },
+    popAdj(seat){
+      this.adjTargetid = this['ROOM'][seat]['student_id'] - 1;
+      this.adjModal = true;
+    },
+    closeAdj(){
+      this.adjModal = false;
+      this.adjTargetid = null;
+    }
   },
 }
 </script>

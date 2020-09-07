@@ -20,7 +20,7 @@
       {{STUDENT.student_number}}
     </div>
 
-    <div class="delete">
+    <div class="delete" @click="uncheck()">
       <svg viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>선택 해제</title>
         <polygon transform="translate(13,-5) rotate(45)" fill-rule="nonzero" points="22.8994949 14.4142136 14.4142136 14.4142136 14.4142136 22.8994949 11.5857864 22.8994949 11.5857864 14.4142136 3.10050506 14.4142136 3.10050506 11.5857864 11.5857864 11.5857864 11.5857864 3.10050506 14.4142136 3.10050506 14.4142136 11.5857864 22.8994949 11.5857864"></polygon>
@@ -127,7 +127,10 @@ export default {
     ...mapGetters(['ROOM_LIST', 'STUDENT_LIST'])
   },
   methods: {
-    ...mapMutations([])
+    ...mapMutations(['adminStudentSelect']),
+    uncheck(){
+      this.adminStudentSelect( this.index );
+    }
   }
 }
 </script>

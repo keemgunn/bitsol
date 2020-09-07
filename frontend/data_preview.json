@@ -31,7 +31,7 @@
 },
 
 "studentList": { 
-  "student_id": 1, 
+  "student_id": 1,  
   "student_name": " 안희범", 
   "room_id": 31, 
   "room_name": "A0116A", 
