@@ -217,7 +217,7 @@ export default new Vuex.Store({
       state.admin.db.roomList = dataArr;
       console.log('...roomList DONE!', state.admin.db.roomList.length);
     },
-    
+    // 
     async LOAD_STUDENT_LIST (state) {
       state.admin.loadingState = 1;
       console.log('$$$ request ...$mutation/LOAD_STUDENT_LIST');

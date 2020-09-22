@@ -127,4 +127,5 @@ module.exports.NOW = NOW;
 module.exports.read = read;
 module.exports.readSync = readSync;
 module.exports.write = write;
+module.exports.writeSync = writeSync;
 module.exports.update = update;

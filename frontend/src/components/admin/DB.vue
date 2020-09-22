@@ -10,14 +10,18 @@
       @toggle="toggle"
     />
 
-    <transition name="appear"><List
+    <transition name="appear">
+      <List
       v-if="scope==='room'"
       :scope="scope"
-    /></transition>
-    <transition name="appear"><List
+      />
+    </transition>
+    <transition name="appear">
+      <List
       v-if="scope==='student'"
       :scope="scope"
-    /></transition>
+      />
+    </transition>
 
     <div class="cover-scroll-bottom"></div>
   </div>

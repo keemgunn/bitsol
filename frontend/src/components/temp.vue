@@ -10,8 +10,6 @@
 
 
 <script>
-
-
 export default {
   name: "",
   components: { },
@@ -21,24 +19,6 @@ export default {
   data() { return {
 
   }},
-  computed: {
-
-  },
-  methods: {
-
-  },
-  created() {
-
-  },
-  mounted() {
-    
-  },
-  beforeUpdate() {
-    
-  },
-  beforeCreate() {
-    
-  },
 }
 </script>
 
