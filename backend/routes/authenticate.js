@@ -1,152 +1,139 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
-const version = require('../api/config');
-const auth = require('../api/auth');
-const { date } = require('joi');
 
-
-// users.json
-let users_json = path.join(__dirname, '../data/users.json');
-let user = version.readSync(users_json);  
-console.log('AUTHORIZED USERS: ', user);
-
-
-// keeping accessKey for 3 seconds
-let deposit = {
-  "requestPointName" : "accessToken"
-};
+const config = require('../api/config');
+const heimdall = require('../api/heimdall');
 
 
 
-// $store/ISSUE
-router.post('/issue', (req, res) => {
-  const userAgent = req["headers"]["user-agent"];
-  const {key, expiresIn, accessTime, requestPoint} = req.body;
-  if(user.hasOwnProperty(key)) {
-    console.log("### userID confirmed .../auth/issue");
-    
-    const accessToken = auth.signToken(user[key]["auth"], requestPoint, expiresIn);
-      user[key]["state"]["isOnline"] = true;
-      user[key]["state"]["platform"] = userAgent;
-      user[key]["state"]["last-access"] = accessTime;
+// ============= @login() => $store/LOGIN
 
-    // access_log 기록
-
-    version.update(users_json, user);
-
-    res.json({
-      accessToken,
-      expiresIn,
-      userKey: user[key]["auth"]["key"]
+router.post('/login', (req, res) => {
+  const device = req["headers"]["user-agent"];
+  const {id, expiresIn, accessTime, requestPoint} = req.body;
+  if(config.user.hasOwnProperty(id)) {
+    console.log("### userID confirmed .../auth/login");
+    const accessToken = heimdall.generate(config["user"][id]["auth"], requestPoint, expiresIn);
+    res.json({ 
+      accessToken, 
+      id:config["user"][id]["auth"]["id"],
+      config: config["user"][id]["config"]
     });
-    
-    console.log("token issued, expiresIn: ", expiresIn, "\n\n\n");
-
+    console.log("token issued, expiresIn: ", expiresIn, "\n");
+    //_____user-info update_____
+      config["user"][id]["state"]["isOnline"] = true;
+      config["user"][id]["state"]["device"] = device;
+      config["user"][id]["state"]["last-access"] = accessTime;
+        config.update(config.user_root, config.user);
+    //_____access-log update_____
+      let newlog ={ accessTime, id, "userName": config["user"][id]["config"]["userName"], device };
+      let log = config.readSync(config.access_log_root);
+      log.unshift(newlog);
+        config.update(config.access_log_root, log);
   }else {
-      console.log("### no userID .../api/issue");
+      console.log("### no userID .../auth/issue\n\n");
       return res.status(401).json({error: 'Authorization failure - No user id'})
   }
 })
 
 
 
-// $store/VERIFY
+// ============= @verify() => $store/VERIFY 
+
 router.post('/verify', (req, res) => {
-  console.log("### initiating-verification ... /auth/verify");
+console.log("\n\n### initiating-verification ... /auth/verify");
+const {id} = req.body || {id: "none"};
   if(req.headers.authorization) {
     console.log("### accessToken-Detected ... /auth/verify");
-    const { requestPoint } = req.body;
-    let result = auth.verify(req.headers.authorization, requestPoint);
-    console.log(result, "\n\n");
-    if(result) {
-        res.json(result);
-    }else {
-      console.log("authorization-failed ... /auth/verify");
-      res.json({
-        "key": "",
-        "accessLevel": 0
-      });
-    }
+    res.json(VERIFY(req.headers.authorization, id))
   }else {
-    console.log("### no-access-token ... /auth/verify");
-    if(req.body) {
-      const { requestPoint } = req.body;
-      if(deposit.hasOwnProperty(requestPoint)){
-        console.log("### access-history-found ... /auth/verify");
-        let result = auth.verify(deposit[requestPoint], requestPoint);
-        console.log(result, "\n\n");
-        if(result) {
-            res.json(result);
-        }else {
-          console.log("authorization-failed ... /auth/verify\n\n");
-          res.json({
-            "key": "",
-            "accessLevel": 0
-          });
-        }
-      }else {
-        console.log("### no-access-history ... /auth/verify\n\n");
-        res.json({
-          "key": "",
-          "accessLevel": 0
-        });
-      }
+  console.log("### no-access-token ... /auth/verify");
+    if(deposit.hasOwnProperty(id)){
+      console.log("### access-history-found ... /auth/verify");
+      res.json(VERIFY(deposit[id], id))
     }else {
-      console.log("no-request-data ... /auth/verify\n\n");
-      res.json({
-        "key": "",
-        "accessLevel": 0
-      });
+      console.log("### no-access-history ... /auth/verify\n\n");
+      res.json({"accessLevel": 0});
     }
   }
-})
+});
+function VERIFY(token, id){
+  let result = heimdall.verify(token, id);
+  if(result.accessLevel) {
+    console.log(result);
+    console.log("### VERIFIED! ... /auth/verify\n\n");
+    return result
+  }else {
+    console.log("authorization-failed ... /auth/verify\n\n");
+    return {"accessLevel": 0}
+  }
+}
 
 
 
-// $store/LOAD_CONFIG
+// ============= $store/LOAD_CONFIG
+
 router.post('/load-config', (req, res) => {
-  const data = req.body;
-  console.log(data);
-  if(user.hasOwnProperty(data.key)) {
-      res.json(user[data.key]["config"]);
-      console.log("### config loaded .../auth/load-config");
+  const {id} = req.body;
+  if(config.user.hasOwnProperty(id)) {
+    res.json(config["user"][id]["config"]);
+    console.log("### config loaded .../auth/load-config");
   }else {
-      console.log("### no userID .../api/load-config");
-      return res.status(404).json({error: 'No user id'})
-  }
-})
-
-
-
-router.post('/reissue', (req, res) => {
-  const {key, requestPoint} = req.body;
-
-  if(requestPoint){ // no RP without login
-    if(user.hasOwnProperty(key)) {
-      console.log("### reissueing .../auth/session-out");
-      const newToken = auth.signToken(user[key]["auth"], requestPoint, 3);
-  
-      deposit[requestPoint] = newToken;
-  
-      user[key]["state"]["isOnline"] = false;
-      user[key]["state"]["platform"] = "";
-  
-      version.update(users_json, user);
-
-      console.log("token reissued, expiresIn: ", 3, "\n\n");
-  
-    }else {
-      console.log("### no userID .../api/session-out");
-      return res.status(404).json({error: 'No user id'});
-    }
-  }else {
-    console.log("### no requestPoint .../api/session-out");
+    console.log("### no userID .../auth/load-config");
     return res.status(404).json({error: 'No user id'})
   }
 })
 
 
 
+// ============= REFRESH METHODS
+let deposit = { "id" : "accessToken" };
 
-module.exports = router
+router.post('/deposit', (req, res) => {
+  console.log(req.headers);
+  const {id} = req.body;
+  deposit[id] = req.headers.authorization;
+    config["user"][id]["state"]["isOnline"] = false;
+    config["user"][id]["state"]["device"] = "";
+  setTimeout(clearDeposit, 1000, id);
+  console.log("### token depositted .../auth/depoist\n");
+})
+router.post('/recover', (req, res) => {
+  const {id} = req.body;
+  const accessToken = deposit[id];
+  res.json({accessToken});
+    config["user"][id]["state"]["isOnline"] = true;
+    config["user"][id]["state"]["device"] = req["headers"]["user-agent"];
+})
+function clearDeposit(id){
+  delete deposit[id];
+  config.update(config.user_root, config.user);
+  console.log("### token deleted .../auth/depoist\n");
+}
+
+
+
+// ============= LOGOUT
+router.post('/logout', (req, res) => {
+  const {id} = req.body;
+  config["user"][id]["state"]["isOnline"] = false;
+  config["user"][id]["state"]["device"] = "";
+  config.update(config.user_root, config.user);
+  console.log("### LOGGED OUT .../auth/logout");
+})
+
+
+
+// ============= THEME CHANGER
+router.post('/theme/change', (req, res) => {
+  console.log(req.body);
+  const {id, color} = req.body;
+  config["user"][id]["config"]["colorConfig"] = color;
+  config.update(config.user_root, config.user);
+  res.json({color});
+})
+
+
+
+module.exports = router;

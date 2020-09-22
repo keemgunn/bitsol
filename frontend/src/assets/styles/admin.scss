@@ -1,0 +1,151 @@
+
+.admin-record {
+  position: relative; top: 0; left: 0;
+  width: calc(100% - 2px);
+  height: fit-content;
+  font-family: 'Core Gothic D';
+  font-weight: 500;
+  color: var(--i30);
+  border: solid 1px var(--i70);
+  background-color: var(--i94);
+  .division{
+    position: absolute; top: 50%; right: 0;
+    width: calc(100% - 104px);
+    height: 1px;
+    background-color: var(--i80);
+  }
+}.admin-record:hover {
+  background-color: var(--i98);
+  border: solid 1px var(--i45);
+  color: var(--i0);
+  .division{
+    background-color: var(--i45);
+  }
+}
+.adr-student{
+  padding: 4px 0px 4px 3px;
+  .adr-btn {
+    user-select: none;
+    -webkit-user-select: none;
+    display: inline-block;
+    position: relative; bottom: 1px;
+    margin-right: 6px;
+    font-size: 13px;
+    color: var(--i60);
+  }.out:hover {
+    cursor: pointer;
+    color: var(--alert02);
+  }.new:hover {
+    cursor: pointer;
+    color: var(--accent01);
+  }
+}
+
+
+#admin-room {
+  position: absolute; top: 0; left: 0;
+  width: fit-content;
+  height: 100%;
+  padding: 2px 6px 0px 7px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.79px;
+  line-height: 27px;
+}
+
+
+.AB {
+  position: relative; top: 0; left: 63px;
+  width: calc(100% - 64px);
+  height: 52px;
+  padding-top: 2px;
+  padding-left: 1px;
+  background-color: var(--i94);
+
+}.AB:hover {
+  background-color: var(--i98);
+}
+
+.adr-delete{
+  position: absolute; top: 5px; right: 5px;
+  width: 21px; height: 21px;
+  fill: var(--i70);
+}.adr-delete:hover{
+  cursor: pointer;
+  fill: var(--alert02);
+}
+
+.adr-checkbox{
+  position: absolute; top: 5px;
+  width: 18px; height: 18px;
+  fill: var(--accent00);
+  background-color: var(--i80);
+}.adr-checkbox:hover{
+  cursor: pointer;
+  background-color: var(--accent01);
+}.selected {
+  background-color: var(--accent01);
+}.selected:hover {
+  background-color: var(--accent02);
+}
+.cb-room{
+  top: 7px;
+  right: 31px;
+}
+.cb-student{
+  right: 6px;
+}
+
+.adr-adj{
+  position: absolute; top: 6px;
+  width: 18px; height: 18px;
+  fill: var(--i70);
+}.adr-adj:hover{
+  cursor: pointer;
+  fill: var(--accent01);
+}.adj-room{
+  right: 57px;
+}.adj-student{
+  top: 5px;
+  right: 30px;
+}
+
+
+.adr-text {
+  display: inline-block;
+  position: relative;
+  margin-left: 3px;
+  font-size: 16px;
+}._seat {
+  font-family: 'Barlow', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.79px;
+  line-height: 27px;
+  letter-spacing: 0.79px;
+}._info {
+  left: 16px;
+  font-size: 14px;
+}._id {
+  bottom: 2px;
+  font-size: 13px;
+  margin-right: 4px;
+  // background-color: fuchsia;
+}._room {
+  font-family: 'Barlow', sans-serif;
+  font-size: 17px;
+  margin-right: 6px;
+}._out {
+  bottom: 1px;
+  font-size: 14px;
+  padding-top: 4px;
+  margin-right: 6px;
+}._des {
+  bottom: 2px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--i30);
+}._info-student {
+  line-height: 18px;
+  font-size: 14px;
+}

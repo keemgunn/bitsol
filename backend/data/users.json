@@ -1,7 +1,7 @@
 {
   "2018317024": {
     "auth": {
-      "key": "2018317024",
+      "id": "2018317024",
       "accessLevel": 3
     },
     "config": {
@@ -9,14 +9,14 @@
       "colorConfig": "default"
     },
     "state": {
-      "isOnline": true,
-      "platform": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52",
-      "last-access": "2020-08-05T14:04:48.134Z"
+      "isOnline": false,
+      "device": "",
+      "last-access": "2020-09-14T15:32:14.894Z"
     }
   },
   "2018317025": {
     "auth": {
-      "key": "2018317025",
+      "id": "2018317025",
       "accessLevel": 2
     },
     "config": {
@@ -25,13 +25,13 @@
     },
     "state": {
       "isOnline": false,
-      "platform": "",
-      "last-access": ""
+      "device": "",
+      "last-access": "2020-08-06T08:37:36.446Z"
     }
   },
   "2018317026": {
     "auth": {
-      "key": "2018317026",
+      "id": "2018317026",
       "accessLevel": 1
     },
     "config": {
@@ -40,7 +40,22 @@
     },
     "state": {
       "isOnline": false,
-      "platform": "",
+      "device": "",
+      "last-access": "2020-08-06T08:59:38.648Z"
+    }
+  },
+  "2018317027": {
+    "auth": {
+      "id": "2018317027",
+      "accessLevel": 1
+    },
+    "config": {
+      "userName": "김건4",
+      "colorConfig": "default"
+    },
+    "state": {
+      "isOnline": false,
+      "device": "",
       "last-access": ""
     }
   }

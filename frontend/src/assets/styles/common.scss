@@ -1,0 +1,23 @@
+::selection {
+  color: var(--accent00);
+  background: var(--accent01);
+}
+
+.none { display: none; }
+
+.ib { display: inline-block;}
+
+
+// ===================== FONTS ============
+
+._3 {
+  font-weight: 300;
+}._4 {
+  font-weight: 400;
+}._5 {
+  font-weight: 500;
+}._6 {
+  font-weight: 600;
+}._7 {
+  font-weight: 700;
+}
